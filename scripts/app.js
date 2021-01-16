@@ -12,7 +12,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (parseInt(lines[train][1].textContent) > 0) {
             console.log(`Train ${train} now starting.`)
             let line = lines[train][0];
+            lines[train][1].textContent = parseInt(lines[train][1].textContent) - 1;
+
             var circle = paper.circle(line[0][1], line[0][0], 10);
+            var text = paper.text(line[0][1], line[0][0], "1")
+            var pointTransmitter = paper.set();
             //var rect = paper.rect(line[0][1], line[0][0], 30, 30).attr({'fill': 'red', 'stroke-width': 0});
 
             circle.attr('fill', '#f00');
@@ -26,18 +30,18 @@ document.addEventListener("DOMContentLoaded", () => {
             //     top: line[0][0]-11
             // });
             // fabricCanvas.add(train)
+            pointTransmitter.push(text, circle)
             for (let i=0;i<line.length;i+=gameSpeed) {
                 // train.left = line[i][1];
                 // train.top = line[i][0];
                 // fabricCanvas.renderAll();
                 //rect.animate({x:line[i][1], y:line[i][0], 'transform': 'r' + i}, 0);
-                circle.animate({cx:line[Math.floor(i)][1]+11, cy:line[Math.floor(i)][0]+11}, 0);
+                pointTransmitter.animate({x:line[Math.floor(i)][1]+11, y:line[Math.floor(i)][0]+11, cx:line[Math.floor(i)][1]+11, cy:line[Math.floor(i)][0]+11}, 0);
                 yield;
             }
             //rect.remove();
-            circle.remove();
+            pointTransmitter.remove();
             //fabricCanvas.remove(train);
-            lines[train][1].textContent = parseInt(lines[train][1].textContent) - 1;
             lines[train][2].textContent = parseInt(lines[train][2].textContent) + 1;
             return train;
         }
@@ -97,13 +101,65 @@ document.addEventListener("DOMContentLoaded", () => {
         flag = true;
     }
 
+    function drawBetweenStartAndButton(start, button) {
+        b1y = parseInt(start.style.left, 10)+5;
+        b2x = parseInt(button.style.top, 10)+5;
+        b2y = parseInt(button.style.left, 10)+5;
+        let path = [[b2x, b1y]];
+        while (path[path.length-1][1]!==b2y) {
+            currentPosY = path[path.length-1][1];
+            if (currentPosY<b2y) {
+                path.push([b2x, currentPosY+1]);
+            } else if (currentPosY>b2y) {
+                path.push([b2x, currentPosY-1]);
+            }
+        }
+        lines.push([path, start, button]);
+        trainTimers.push(1);
+        var linePath = ["M", b1y, b2x];
+        for (let i=1;i<path.length;i++) {
+            linePath.push("L", path[i-1][1]+11, path[i-1][0]+11);
+        }
+        paper.path(linePath).attr({"stroke": "#f00"});
+        flag = true;
+    }
+
+    function drawBetweenButtonAndEnd(button, end) {
+        b1y = parseInt(button.style.left, 10)+5;
+        b2x = parseInt(button.style.top, 10)+5;
+        b2y = parseInt(end.style.left, 10)+5;
+        let path = [[b2x, b1y]];
+        while (path[path.length-1][1]!==b2y) {
+            currentPosY = path[path.length-1][1];
+            if (currentPosY<b2y) {
+                path.push([b2x, currentPosY+1]);
+            } else if (currentPosY>b2y) {
+                path.push([b2x, currentPosY-1]);
+            }
+        }
+        lines.push([path, button, end]);
+        trainTimers.push(1);
+        var linePath = ["M", b1y, b2x];
+        for (let i=1;i<path.length;i++) {
+            linePath.push("L", path[i-1][1]+11, path[i-1][0]+11);
+        }
+        paper.path(linePath).attr({"stroke": "#f00"});
+        flag = true;
+    }
+
     function stationButtonClicked() {
         if (currentSelectedStation === null) {
             this.disabled = true;
             currentSelectedStation = this;
         } else {
             currentSelectedStation.disabled = false;
-            drawBetweenButtons(currentSelectedStation, this);
+            if (stripPx(currentSelectedStation.style.height) == window.innerHeight) {  // Check if click is between start and button or two buttons
+                drawBetweenStartAndButton(currentSelectedStation, this);
+            } else if (stripPx(this.style.height) == window.innerHeight) {
+                drawBetweenButtonAndEnd(currentSelectedStation, this);
+            } else {
+                drawBetweenButtons(currentSelectedStation, this);
+            }
             currentSelectedStation = null;
         }
     }
@@ -121,6 +177,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return result;
     }
 
+    function stripPx(value) {
+        return value.substr(0, value.length-2);
+    }
+
     function setupDividers() {
         paper.path(["M", 1/10 * window.innerWidth, 0, "L", 1/10 * window.innerWidth, window.innerHeight]).attr({"stroke-width": 5, "stroke": "grey"})
         paper.path(["M", 9/10 * window.innerWidth, 0, "L", 9/10 * window.innerWidth, window.innerHeight]).attr({"stroke-width": 5, "stroke": "grey"})
@@ -135,37 +195,39 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log(`Invalid game speed '${foundGameSpeed}'.`);  
         }
 
-        for (let i=0;i<4;i++) {  // Starting Buttons
-            let button = document.createElement("button");
-            button.textContent = "10";
-            button.className = "circleButton";
-            button.style.color = "white";
-            button.style.background = "red";
-            button.style.top = Math.floor(Math.random() * window.innerHeight) + "px";
-            button.style.left = Math.floor(Math.random() * (window.innerWidth * 1/10)) + "px";
-            button.addEventListener('click', function(event) { stationButtonClicked.call(this); })
-            document.body.appendChild(button);
-        }
+        // Starting divider
+        let button = document.createElement("button");
+        button.textContent = "10";
+        button.className = "startEndBarrier";
+        button.style.color = "white";
+        button.style.background = "red";
+        button.style.height = window.innerHeight + "px";
+        button.style.width = 20 + "px";
+        button.style.top = 0 + "px";
+        button.style.left = 0 + "px";
+        button.addEventListener('click', function(event) { stationButtonClicked.call(this); })
+        document.body.appendChild(button);
 
-        for (let i=0;i<4;i++) {  // Ending Buttons
-            let button = document.createElement("button");
-            button.textContent = "0";
-            button.className = "circleButton";
-            button.style.color = "white";
-            button.style.background = "red";
-            button.style.top = Math.floor(Math.random() * window.innerHeight) + "px";
-            button.style.left = Math.floor(Math.random() * (window.innerWidth * 1/10)) + window.innerWidth * 9/10 + "px";
-            button.addEventListener('click', function(event) { stationButtonClicked.call(this); })
-            document.body.appendChild(button);
-        }
+        // Ending divider
+        button = document.createElement("button");
+        button.textContent = "0";
+        button.className = "startEndBarrier";
+        button.style.color = "white";
+        button.style.background = "red";
+        button.style.height = window.innerHeight + "px";
+        button.style.width = 20 + "px";
+        button.style.top = 0 + "px";
+        button.style.left = window.innerWidth-20 + "px";
+        button.addEventListener('click', function(event) { stationButtonClicked.call(this); })
+        document.body.appendChild(button);
 
         for (let i=1;i<=10;i++) {  // Intermediary Buttons
-            let button = document.createElement("button");
+            button = document.createElement("button");
             button.textContent = "5";
             button.className = "circleButton";
             button.style.color = "white";
             button.style.background = "red";
-            button.style.top = Math.floor(Math.random() * window.innerHeight) + "px";
+            button.style.top = Math.floor(Math.random() * (window.innerHeight - 25))  + "px";
             button.style.left = Math.floor(Math.random() * (window.innerWidth * 8/10)) + window.innerHeight * 1/10 + "px";
             button.addEventListener('click', function(event) { stationButtonClicked.call(this); })
             document.body.appendChild(button);
