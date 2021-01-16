@@ -5,10 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
     var currentSelectedStation = null
     var flag = false;
     var paper = Raphael(0, 0, window.innerWidth, window.innerHeight);
-    var spawnTimer = 240; // In frames (Basically in 1/60ths of a second)
-    var gameSpeed = 0.25; // Factor of 1
-
-    var fabricCanvas = new fabric.Canvas('mainCanvas');
+    var spawnTimer = 40; // In 1/100s
+    var gameSpeed = 0.25;
 
     function* driveTrain(train) {
         if (parseInt(lines[train][1].textContent) > 0) {
@@ -61,7 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
             let currentVal = trainIterators[i].next().value;
             if (currentVal !== undefined) {
                 trainTimers[currentVal] = spawnTimer;
-                console.log(`Train ${currentVal} arrived.`)
             }
         }
     }
@@ -92,15 +89,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         lines.push([path, b1, b2]);
         trainTimers.push(1);
-        
-        for (let i=0;i<path.length;i++) {
-            fabricCanvas.add(new fabric.Line([i===0?b1y:path[i-1][1], i===0?b1x:path[i-1][0], path[i][1], path[i][0]], {
-                fill: 'red',
-                stroke: 'red',
-                strokeWidth: 5,
-                selectable: false
-            }));
+        var linePath = ["M", b1y, b1x];
+        for (let i=1;i<path.length;i++) {
+            linePath.push("L", path[i-1][1]+11, path[i-1][0]+11);
         }
+        paper.path(linePath).attr({"stroke": "#f00"});
         flag = true;
     }
 
@@ -128,31 +121,59 @@ document.addEventListener("DOMContentLoaded", () => {
         return result;
     }
 
+    function setupDividers() {
+        paper.path(["M", 1/10 * window.innerWidth, 0, "L", 1/10 * window.innerWidth, window.innerHeight]).attr({"stroke-width": 5, "stroke": "grey"})
+        paper.path(["M", 9/10 * window.innerWidth, 0, "L", 9/10 * window.innerWidth, window.innerHeight]).attr({"stroke-width": 5, "stroke": "grey"})
+    }
+
     function setup() {
+        setupDividers();
         foundGameSpeed = parseFloat(findGetParameter("gameSpeed"));
-        if (foundGameSpeed < 0.5 || (foundGameSpeed === 1)) {
+        if (foundGameSpeed < 0.5 || Number.isInteger(foundGameSpeed)) {
             gameSpeed = parseFloat(foundGameSpeed);
         } else {
             console.log(`Invalid game speed '${foundGameSpeed}'.`);  
         }
 
-        fabricCanvas.setHeight(window.innerHeight);
-        fabricCanvas.setWidth(window.innerWidth);
-        for (var i=1;i<=10;i++) {
-            var button = document.createElement("button");
+        for (let i=0;i<4;i++) {  // Starting Buttons
+            let button = document.createElement("button");
             button.textContent = "10";
             button.className = "circleButton";
             button.style.color = "white";
             button.style.background = "red";
-            button.style.top = Math.floor(Math.random()*window.innerHeight) + "px";
-            button.style.left = Math.floor(Math.random()*window.innerWidth) + "px";
+            button.style.top = Math.floor(Math.random() * window.innerHeight) + "px";
+            button.style.left = Math.floor(Math.random() * (window.innerWidth * 1/10)) + "px";
             button.addEventListener('click', function(event) { stationButtonClicked.call(this); })
             document.body.appendChild(button);
-            gameLoop();
         }
+
+        for (let i=0;i<4;i++) {  // Ending Buttons
+            let button = document.createElement("button");
+            button.textContent = "0";
+            button.className = "circleButton";
+            button.style.color = "white";
+            button.style.background = "red";
+            button.style.top = Math.floor(Math.random() * window.innerHeight) + "px";
+            button.style.left = Math.floor(Math.random() * (window.innerWidth * 1/10)) + window.innerWidth * 9/10 + "px";
+            button.addEventListener('click', function(event) { stationButtonClicked.call(this); })
+            document.body.appendChild(button);
+        }
+
+        for (let i=1;i<=10;i++) {  // Intermediary Buttons
+            let button = document.createElement("button");
+            button.textContent = "5";
+            button.className = "circleButton";
+            button.style.color = "white";
+            button.style.background = "red";
+            button.style.top = Math.floor(Math.random() * window.innerHeight) + "px";
+            button.style.left = Math.floor(Math.random() * (window.innerWidth * 8/10)) + window.innerHeight * 1/10 + "px";
+            button.addEventListener('click', function(event) { stationButtonClicked.call(this); })
+            document.body.appendChild(button);
+        }
+        gameLoop();
     }
 
     setup();
 
-    // TODO: Transport from side to side, not too many in one node, limited number of lines.
+    // LOG: Just found out the program was running at 600fps - fun.
 })
