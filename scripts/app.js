@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
     var flag = false;
     var paper = Raphael(0, 0, window.innerWidth, window.innerHeight);
     var gameSpeed = 0.25;
+    var totalAvailablePoints = 0;
+    var startTime;
     const spawnTimer = 40; // In 1/100s
     const buttonSizeModifier = 1;
 
@@ -23,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
             var circle = paper.circle(line[0][1], line[0][0], 10);
             var text = paper.text(line[0][1], line[0][0], "1")
             var pointTransmitter = paper.set();
-
+            
             circle.attr('fill', '#f00');
             circle.attr('stroke', '#fff');
             pointTransmitter.push(text, circle)
@@ -36,6 +38,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (stripPx(lines[train][2].style.height) != window.innerHeight) {
                 lines[train][2].style.height = 30 + parseInt(lines[train][2].textContent) * buttonSizeModifier + "px";
                 lines[train][2].style.width = 30 + parseInt(lines[train][2].textContent) * buttonSizeModifier + "px";
+            } else {
+                if (parseInt(lines[train][2].textContent) === totalAvailablePoints) {
+                    var timeNow = performance.now();
+                    alert("Level completed! Hours: " + Math.floor((timeNow - startTime)/3600000) + ", Minutes: " + Math.floor((timeNow - startTime)/60000) + ", Seconds: " + Math.floor((timeNow - startTime)/1000) + ", Milliseconds: " + Math.floor(timeNow - startTime));
+                }
             }
             return train;
         }
@@ -232,6 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Starting divider
         let button = document.createElement("button");
         button.textContent = "10";
+        totalAvailablePoints += 10;
         button.className = "startEndBarrier";
         button.style.color = "white";
         button.style.background = "red";
@@ -258,6 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i=1;i<=10;i++) {  // Intermediary Buttons
             button = document.createElement("button");
             button.textContent = "5";
+            totalAvailablePoints += 5;
             button.className = "circleButton";
             button.style.color = "white";
             button.style.background = "red";
@@ -266,6 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
             button.addEventListener('click', function(event) { stationButtonClicked.call(this); })
             document.body.appendChild(button);
         }
+        startTime = performance.now();
         gameLoop();
     }
 
