@@ -5,7 +5,7 @@ My idea for a train game.
 - [ ] Goal - Transport points from side to side
 - [ ] Not too many points should be in one node, else a punishment
 - [x] Node size is varied by the amount of points it holds
-- [ ] Use a limited number of lines
+- [x] Use a limited number of lines
 - [x] Make the game timed, more points for faster etc.
 - [ ] Make good use of colours
 - [ ] Use different colours for different nodes that transmit points faster / slower

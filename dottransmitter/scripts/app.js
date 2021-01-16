@@ -74,39 +74,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function drawBetweenButtons(b1, b2) {
-        b1x = parseInt(b1.style.top, 10)+5;
-        b1y = parseInt(b1.style.left, 10)+5;
-        b2x = parseInt(b2.style.top, 10)+5;
-        b2y = parseInt(b2.style.left, 10)+5;
-        let path = [[b1x, b1y]];
-        while (path[path.length-1][0]!==b2x || path[path.length-1][1]!==b2y) {
-            currentPosX = path[path.length-1][0];
-            currentPosY = path[path.length-1][1];
-            if (currentPosX<b2x) {
-                path.push([currentPosX+1, currentPosY]);
-            } else if (currentPosX>b2x) {
-                path.push([currentPosX-1, currentPosY]);
-            } else if (currentPosY<b2y) {
-                path.push([currentPosX, currentPosY+1]);
-            } else if (currentPosY>b2y) {
-                path.push([currentPosX, currentPosY-1]);
-            }
-        }
-        lines.push([path, b1, b2]);
-        trainTimers.push(1);
-        var linePath = ["M", b1y, b1x];
-        for (let i=1;i<path.length;i++) {
-            linePath.push("L", path[i-1][1]+11, path[i-1][0]+11);
-        }
-        const thisTimerIndex = trainTimers.length-1;
-        paper.path(linePath)
-            .attr({"stroke": "#f00", "stroke-width": "5px"})
-            .click((
-                function() {
-                    removeLine(this, thisTimerIndex );
+        if (parseInt(document.getElementById('lineCount').innerHTML.substr(17)) > 0) {
+            document.getElementById('lineCount').innerHTML = "Available Lines: " + (parseInt(document.getElementById('lineCount').innerHTML.substr(17))-1).toString();
+            b1x = parseInt(b1.style.top, 10)+5;
+            b1y = parseInt(b1.style.left, 10)+5;
+            b2x = parseInt(b2.style.top, 10)+5;
+            b2y = parseInt(b2.style.left, 10)+5;
+            let path = [[b1x, b1y]];
+            while (path[path.length-1][0]!==b2x || path[path.length-1][1]!==b2y) {
+                currentPosX = path[path.length-1][0];
+                currentPosY = path[path.length-1][1];
+                if (currentPosX<b2x) {
+                    path.push([currentPosX+1, currentPosY]);
+                } else if (currentPosX>b2x) {
+                    path.push([currentPosX-1, currentPosY]);
+                } else if (currentPosY<b2y) {
+                    path.push([currentPosX, currentPosY+1]);
+                } else if (currentPosY>b2y) {
+                    path.push([currentPosX, currentPosY-1]);
                 }
-            ));
-        flag = true;
+            }
+            lines.push([path, b1, b2]);
+            trainTimers.push(1);
+            var linePath = ["M", b1y, b1x];
+            for (let i=1;i<path.length;i++) {
+                linePath.push("L", path[i-1][1]+11, path[i-1][0]+11);
+            }
+            const thisTimerIndex = trainTimers.length-1;
+            paper.path(linePath)
+                .attr({"stroke": "#f00", "stroke-width": "5px"})
+                .click((
+                    function() {
+                        removeLine(this, thisTimerIndex );
+                    }
+                ));
+            flag = true;
+        }
     }
 
     function trainIteratorFinder(index) {
@@ -118,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function removeLine(line, index) {
+        document.getElementById('lineCount').innerHTML = "Available Lines: " + (parseInt(document.getElementById('lineCount').innerHTML.substr(17))-1).toString();
         trainTimers[index] = -1;
         while (true) {
             if (trainIterators[trainIteratorFinder(index)][0].next().value !== undefined) {
@@ -129,63 +133,69 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function drawBetweenStartAndButton(start, button) {
-        b1y = parseInt(start.style.left, 10)+5;
-        b2x = parseInt(button.style.top, 10)+5;
-        b2y = parseInt(button.style.left, 10)+5;
-        let path = [[b2x, b1y]];
-        while (path[path.length-1][1]!==b2y) {
-            currentPosY = path[path.length-1][1];
-            if (currentPosY<b2y) {
-                path.push([b2x, currentPosY+1]);
-            } else if (currentPosY>b2y) {
-                path.push([b2x, currentPosY-1]);
-            }
-        }
-        lines.push([path, start, button]);
-        trainTimers.push(1);
-        var linePath = ["M", b1y, b2x];
-        for (let i=1;i<path.length;i++) {
-            linePath.push("L", path[i-1][1]+11, path[i-1][0]+11);
-        }
-        const thisTimerIndex = trainTimers.length-1;
-        paper.path(linePath)
-            .attr({"stroke": "#f00", "stroke-width": "5px"})
-            .click((
-                function() {
-                    removeLine(this, thisTimerIndex);
+        if (parseInt(document.getElementById('lineCount').innerHTML.substr(17)) > 0) {
+            document.getElementById('lineCount').innerHTML = "Available Lines: " + (parseInt(document.getElementById('lineCount').innerHTML.substr(17))-1).toString();
+            b1y = parseInt(start.style.left, 10)+5;
+            b2x = parseInt(button.style.top, 10)+5;
+            b2y = parseInt(button.style.left, 10)+5;
+            let path = [[b2x, b1y]];
+            while (path[path.length-1][1]!==b2y) {
+                currentPosY = path[path.length-1][1];
+                if (currentPosY<b2y) {
+                    path.push([b2x, currentPosY+1]);
+                } else if (currentPosY>b2y) {
+                    path.push([b2x, currentPosY-1]);
                 }
-            ));
-        flag = true;
+            }
+            lines.push([path, start, button]);
+            trainTimers.push(1);
+            var linePath = ["M", b1y, b2x];
+            for (let i=1;i<path.length;i++) {
+                linePath.push("L", path[i-1][1]+11, path[i-1][0]+11);
+            }
+            const thisTimerIndex = trainTimers.length-1;
+            paper.path(linePath)
+                .attr({"stroke": "#f00", "stroke-width": "5px"})
+                .click((
+                    function() {
+                        removeLine(this, thisTimerIndex);
+                    }
+                ));
+            flag = true;
+        }
     }
 
     function drawBetweenButtonAndEnd(button, end) {
-        b1y = parseInt(button.style.left, 10)+5;
-        b2x = parseInt(button.style.top, 10)+5;
-        b2y = parseInt(end.style.left, 10)+5;
-        let path = [[b2x, b1y]];
-        while (path[path.length-1][1]!==b2y) {
-            currentPosY = path[path.length-1][1];
-            if (currentPosY<b2y) {
-                path.push([b2x, currentPosY+1]);
-            } else if (currentPosY>b2y) {
-                path.push([b2x, currentPosY-1]);
-            }
-        }
-        lines.push([path, button, end]);
-        trainTimers.push(1);
-        var linePath = ["M", b1y, b2x];
-        for (let i=1;i<path.length;i++) {
-            linePath.push("L", path[i-1][1]+11, path[i-1][0]+11);
-        }
-        const thisTimerIndex = trainTimers.length-1;
-        paper.path(linePath)
-            .attr({"stroke": "#f00", "stroke-width": "5px"})
-            .click((
-                function() {
-                    removeLine(this, thisTimerIndex);
+        if (parseInt(document.getElementById('lineCount').innerHTML.substr(17)) > 0) {
+            document.getElementById('lineCount').innerHTML = "Available Lines: " + (parseInt(document.getElementById('lineCount').innerHTML.substr(17))-1).toString();
+            b1y = parseInt(button.style.left, 10)+5;
+            b2x = parseInt(button.style.top, 10)+5;
+            b2y = parseInt(end.style.left, 10)+5;
+            let path = [[b2x, b1y]];
+            while (path[path.length-1][1]!==b2y) {
+                currentPosY = path[path.length-1][1];
+                if (currentPosY<b2y) {
+                    path.push([b2x, currentPosY+1]);
+                } else if (currentPosY>b2y) {
+                    path.push([b2x, currentPosY-1]);
                 }
-            ));
-        flag = true;
+            }
+            lines.push([path, button, end]);
+            trainTimers.push(1);
+            var linePath = ["M", b1y, b2x];
+            for (let i=1;i<path.length;i++) {
+                linePath.push("L", path[i-1][1]+11, path[i-1][0]+11);
+            }
+            const thisTimerIndex = trainTimers.length-1;
+            paper.path(linePath)
+                .attr({"stroke": "#f00", "stroke-width": "5px"})
+                .click((
+                    function() {
+                        removeLine(this, thisTimerIndex);
+                    }
+                ));
+            flag = true;
+        }
     }
 
     function stationButtonClicked() {
@@ -247,6 +257,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 1000);
     }
 
+    function setupLineCounter() {
+        var lineText = document.createElement('p');
+        lineText.id = "lineCount";
+        lineText.innerHTML = "Available Lines: 10";
+        lineText.style.top = "0px";
+        lineText.style.left = window.innerWidth*3 / 4 - 40 + "px";
+        lineText.style.position = "absolute";
+        document.body.appendChild(lineText);
+    }
+
     function setupDividers() {
         paper.path(["M", 1/10 * window.innerWidth, 0, "L", 1/10 * window.innerWidth, window.innerHeight]).attr({"stroke-width": 5, "stroke": "grey"})
         paper.path(["M", 9/10 * window.innerWidth, 0, "L", 9/10 * window.innerWidth, window.innerHeight]).attr({"stroke-width": 5, "stroke": "grey"})
@@ -255,6 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function setup() {
         setupDividers();
         setupTimer();
+        setupLineCounter();
         foundGameSpeed = parseFloat(findGetParameter("gameSpeed"));
         if (foundGameSpeed < 0.5 || Number.isInteger(foundGameSpeed)) {
             gameSpeed = parseFloat(foundGameSpeed);
