@@ -2,67 +2,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
     var lines = []
     var trainTimers = []
+    var trainIterators = [];
     var currentSelectedStation = null
     var flag = false;
     var paper = Raphael(0, 0, window.innerWidth, window.innerHeight);
-    var spawnTimer = 40; // In 1/100s
     var gameSpeed = 0.25;
+    const spawnTimer = 40; // In 1/100s
+    const buttonSizeModifier = 1;
 
     function* driveTrain(train) {
         if (parseInt(lines[train][1].textContent) > 0) {
             console.log(`Train ${train} now starting.`)
             let line = lines[train][0];
             lines[train][1].textContent = parseInt(lines[train][1].textContent) - 1;
+            if (stripPx(lines[train][1].style.height) != window.innerHeight) {
+                lines[train][1].style.height = 30 + parseInt(lines[train][1].textContent) * buttonSizeModifier + "px";
+                lines[train][1].style.width = 30 + parseInt(lines[train][1].textContent) * buttonSizeModifier + "px";
+            }
 
             var circle = paper.circle(line[0][1], line[0][0], 10);
             var text = paper.text(line[0][1], line[0][0], "1")
             var pointTransmitter = paper.set();
-            //var rect = paper.rect(line[0][1], line[0][0], 30, 30).attr({'fill': 'red', 'stroke-width': 0});
 
             circle.attr('fill', '#f00');
             circle.attr('stroke', '#fff');
-            // var train = new fabric.Circle({
-            //     radius: 15,
-            //     fill: 'red',
-            //     stroke: 'red',
-            //     strokeWidth: 3,
-            //     left: line[0][1]-11,
-            //     top: line[0][0]-11
-            // });
-            // fabricCanvas.add(train)
             pointTransmitter.push(text, circle)
             for (let i=0;i<line.length;i+=gameSpeed) {
-                // train.left = line[i][1];
-                // train.top = line[i][0];
-                // fabricCanvas.renderAll();
-                //rect.animate({x:line[i][1], y:line[i][0], 'transform': 'r' + i}, 0);
                 pointTransmitter.animate({x:line[Math.floor(i)][1]+11, y:line[Math.floor(i)][0]+11, cx:line[Math.floor(i)][1]+11, cy:line[Math.floor(i)][0]+11}, 0);
                 yield;
             }
-            //rect.remove();
             pointTransmitter.remove();
-            //fabricCanvas.remove(train);
             lines[train][2].textContent = parseInt(lines[train][2].textContent) + 1;
+            if (stripPx(lines[train][2].style.height) != window.innerHeight) {
+                lines[train][2].style.height = 30 + parseInt(lines[train][2].textContent) * buttonSizeModifier + "px";
+                lines[train][2].style.width = 30 + parseInt(lines[train][2].textContent) * buttonSizeModifier + "px";
+            }
             return train;
         }
         return train;
     }
 
-    var trainIterators = [];
-
     function draw() {
         for (let i=0;i<trainTimers.length;i++) {
             if (trainTimers[i] === 0) {
-                trainIterators.push(driveTrain(i));
+                trainIterators.push([driveTrain(i), i]);
                 trainTimers[i]--;
             } else if  (trainTimers[i] > 0) {
                 trainTimers[i]--;
             }
         }
         for (let i=0;i<trainIterators.length;i++) {
-            let currentVal = trainIterators[i].next().value;
-            if (currentVal !== undefined) {
-                trainTimers[currentVal] = spawnTimer;
+            if (trainIterators[i] !== -1) {
+                let currentVal = trainIterators[i][0].next().value;
+                if (currentVal !== undefined) {
+                    trainTimers[currentVal] = spawnTimer;
+                }
             }
         }
     }
@@ -97,8 +91,34 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i=1;i<path.length;i++) {
             linePath.push("L", path[i-1][1]+11, path[i-1][0]+11);
         }
-        paper.path(linePath).attr({"stroke": "#f00"});
+        const thisTimerIndex = trainTimers.length-1;
+        paper.path(linePath)
+            .attr({"stroke": "#f00", "stroke-width": "5px"})
+            .click((
+                function() {
+                    removeLine(this, thisTimerIndex );
+                }
+            ));
         flag = true;
+    }
+
+    function trainIteratorFinder(index) {
+        for (let i=0;i<trainIterators.length;i++) {
+            if (trainIterators[i][1] === index) {
+                return i;
+            }
+        }
+    }
+
+    function removeLine(line, index) {
+        trainTimers[index] = -1;
+        while (true) {
+            if (trainIterators[trainIteratorFinder(index)][0].next().value !== undefined) {
+                break;
+            }
+        }
+        trainIterators[trainIteratorFinder(index)] = -1;
+        line.remove();
     }
 
     function drawBetweenStartAndButton(start, button) {
@@ -120,7 +140,14 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i=1;i<path.length;i++) {
             linePath.push("L", path[i-1][1]+11, path[i-1][0]+11);
         }
-        paper.path(linePath).attr({"stroke": "#f00"});
+        const thisTimerIndex = trainTimers.length-1;
+        paper.path(linePath)
+            .attr({"stroke": "#f00", "stroke-width": "5px"})
+            .click((
+                function() {
+                    removeLine(this, thisTimerIndex);
+                }
+            ));
         flag = true;
     }
 
@@ -143,7 +170,14 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i=1;i<path.length;i++) {
             linePath.push("L", path[i-1][1]+11, path[i-1][0]+11);
         }
-        paper.path(linePath).attr({"stroke": "#f00"});
+        const thisTimerIndex = trainTimers.length-1;
+        paper.path(linePath)
+            .attr({"stroke": "#f00", "stroke-width": "5px"})
+            .click((
+                function() {
+                    removeLine(this, thisTimerIndex);
+                }
+            ));
         flag = true;
     }
 

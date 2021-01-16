@@ -4,7 +4,7 @@ My idea for a train game.
 ## TODO:
 - [ ] Goal - Transport points from side to side
 - [ ] Not too many points should be in one node, else a punishment
-- [ ] Node size is varied by the amount of points it holds
+- [x] Node size is varied by the amount of points it holds
 - [ ] Use a limited number of lines
 - [ ] Make the game timed, more points for faster etc.
 - [ ] Make good use of colours
@@ -16,4 +16,5 @@ My idea for a train game.
 - [ ] Maybe incorporate different types of lines, that transmit faster / slower etc.
 - [ ] Make lines coloured
 - [ ] Make some stations have a reward for visiting them
-- [x] Make the ends boxes instead of dots.
+- [x] Make the ends boxes instead of dots
+- [x] Add the ability to remove lines 
