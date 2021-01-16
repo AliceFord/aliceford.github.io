@@ -222,6 +222,31 @@ document.addEventListener("DOMContentLoaded", () => {
         return value.substr(0, value.length-2);
     }
 
+    function updateTimer() {
+        let timer = document.getElementById('timer')
+        let minutes = parseInt(timer.innerHTML.substr(0, 2));
+        let seconds = parseInt(timer.innerHTML.substr(3, 5));
+        if (seconds < 60) {
+            timer.innerHTML = minutes.toString().padStart(2, '0') + ":" + (seconds+1).toString().padStart(2, '0');
+        } else {
+            timer.innerHTML = (minutes+1).toString().padStart(2, '0') + ":00";
+        }
+    }
+
+    function setupTimer() {
+        startTime = performance.now();
+        var text = document.createElement('p');
+        text.id = "timer";
+        text.innerHTML = "00:00";
+        text.style.top = "0px";
+        text.style.left = window.innerWidth / 2 - 40 + "px";
+        text.style.position = "absolute";
+        document.body.appendChild(text);
+        setInterval(function() {
+            updateTimer();
+        }, 1000);
+    }
+
     function setupDividers() {
         paper.path(["M", 1/10 * window.innerWidth, 0, "L", 1/10 * window.innerWidth, window.innerHeight]).attr({"stroke-width": 5, "stroke": "grey"})
         paper.path(["M", 9/10 * window.innerWidth, 0, "L", 9/10 * window.innerWidth, window.innerHeight]).attr({"stroke-width": 5, "stroke": "grey"})
@@ -229,6 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setup() {
         setupDividers();
+        setupTimer();
         foundGameSpeed = parseFloat(findGetParameter("gameSpeed"));
         if (foundGameSpeed < 0.5 || Number.isInteger(foundGameSpeed)) {
             gameSpeed = parseFloat(foundGameSpeed);
@@ -275,10 +301,10 @@ document.addEventListener("DOMContentLoaded", () => {
             button.addEventListener('click', function(event) { stationButtonClicked.call(this); })
             document.body.appendChild(button);
         }
-        startTime = performance.now();
+        
         gameLoop();
     }
-
+    
     setup();
 
     // LOG: Just found out the program was running at 600fps - fun.

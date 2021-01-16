@@ -6,7 +6,7 @@ My idea for a train game.
 - [ ] Not too many points should be in one node, else a punishment
 - [x] Node size is varied by the amount of points it holds
 - [ ] Use a limited number of lines
-- [ ] Make the game timed, more points for faster etc.
+- [x] Make the game timed, more points for faster etc.
 - [ ] Make good use of colours
 - [ ] Use different colours for different nodes that transmit points faster / slower
 - [ ] Use different colour point transmitters for how many points they transmit
@@ -19,3 +19,9 @@ My idea for a train game.
 - [x] Make the ends boxes instead of dots
 - [x] Add the ability to remove lines 
 - [ ] Add static vs random levels.
+
+
+## .trg file type
+Starting_points
+Number_of_circles
+Number_of_points x_pos y_pos
