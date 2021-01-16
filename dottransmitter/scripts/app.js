@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
             pointTransmitter.push(text, circle)
             for (let i=0;i<line.length;i+=gameSpeed) {
                 pointTransmitter.animate({x:line[Math.floor(i)][1]+11, y:line[Math.floor(i)][0]+11, cx:line[Math.floor(i)][1]+11, cy:line[Math.floor(i)][0]+11}, 0);
-                yield;
+                yield -2;
             }
             pointTransmitter.remove();
             lines[train][2].textContent = parseInt(lines[train][2].textContent) + 1;
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i=0;i<trainIterators.length;i++) {
             if (trainIterators[i] !== -1) {
                 let currentVal = trainIterators[i][0].next().value;
-                if (currentVal !== undefined) {
+                if (currentVal !== -2) {
                     trainTimers[currentVal] = spawnTimer;
                 }
             }
@@ -121,12 +121,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function removeLine(line, index) {
-        document.getElementById('lineCount').innerHTML = "Available Lines: " + (parseInt(document.getElementById('lineCount').innerHTML.substr(17))-1).toString();
+        document.getElementById('lineCount').innerHTML = "Available Lines: " + (parseInt(document.getElementById('lineCount').innerHTML.substr(17))+1).toString();
         trainTimers[index] = -1;
-        while (true) {
-            if (trainIterators[trainIteratorFinder(index)][0].next().value !== undefined) {
-                break;
-            }
+        
+        while (trainIterators[trainIteratorFinder(index)][0].next().value === -2) {
+            console.log("DELTE IN PROGRESS.");
         }
         trainIterators[trainIteratorFinder(index)] = -1;
         line.remove();
