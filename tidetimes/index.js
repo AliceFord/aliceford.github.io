@@ -9,7 +9,7 @@ function doRequest(url, callback) {
 $(document).ready(function() {
     $("#main-form").submit(function() {
         var locaton = document.getElementById("inputLocation").value;
-        var url = "http://hypixeleaderboards.com/private-proxy/?header=pstack&url=http://api.positionstack.com/v1/forward&query=" + encodeURIComponent(locaton);
+        var url = "https://hypixeleaderboards.com/private-proxy/?header=pstack&url=http://api.positionstack.com/v1/forward&query=" + encodeURIComponent(locaton);
 
         var locationData;
         var allLocationsData;
@@ -17,7 +17,7 @@ $(document).ready(function() {
         doRequest(url, function() {
             if (this.readyState == 4 && this.status == 200) {
                 locationData = JSON.parse(this.responseText);
-                var url = "http://hypixeleaderboards.com/private-proxy/?url=https://admiraltyapi.azure-api.net/uktidalapi/api/V1/Stations&header=ocp";
+                var url = "https://hypixeleaderboards.com/private-proxy/?url=https://admiraltyapi.azure-api.net/uktidalapi/api/V1/Stations&header=ocp";
                 doRequest(url, function() {
                     if (this.readyState == 4 && this.status == 200) {
                         allLocationsData = JSON.parse(this.responseText);

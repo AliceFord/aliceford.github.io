@@ -10,7 +10,7 @@ function doRequest(url, callback) {
 
 $(document).ready(function() {
     const urlParams = new URLSearchParams(window.location.search);
-    const url = "http://hypixeleaderboards.com/private-proxy/?header=ocp&url=https://admiraltyapi.azure-api.net/uktidalapi/api/V1/Stations/" + urlParams.get("id") + "/TidalEvents"
+    const url = "https://hypixeleaderboards.com/private-proxy/?header=ocp&url=https://admiraltyapi.azure-api.net/uktidalapi/api/V1/Stations/" + urlParams.get("id") + "/TidalEvents"
     doRequest(url, function() {
         if (this.readyState == 4 && this.status == 200) {
             var locationData = JSON.parse(this.responseText);
