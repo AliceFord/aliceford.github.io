@@ -9,6 +9,9 @@ function updateHash() {
     case "MD4":
         output = md4(data);
         break;
+    case "MD5":
+        output = md5(data);
+        break;
     default:
         break;
     }

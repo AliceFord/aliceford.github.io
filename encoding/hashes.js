@@ -147,11 +147,11 @@ function md4_ff(a, b, c, d, x, s)
 }
 function md4_gg(a, b, c, d, x, s)
 {
-  return md4_cmn((b & c) | (b & d) | (c & d), a, 0, x, s, 1518500249);
+  return md4_cmn((b & c) | (b & d) | (c & d), a, 0, x, s, 0x5a827999);
 }
 function md4_hh(a, b, c, d, x, s)
 {
-  return md4_cmn(b ^ c ^ d, a, 0, x, s, 1859775393);
+  return md4_cmn(b ^ c ^ d, a, 0, x, s, 0x6ed9eba1);
 }
 
 
@@ -250,5 +250,162 @@ function md4(message) {
     return leArrayToHex(new Array(A, B, C, D));
 }
 
+
+function md5_cmn(q, a, b, x, s, t)
+{
+  return safe_add(rol(safe_add(safe_add(a, q), safe_add(x, t)), s), b);
+}
+function md5_ff(a, b, c, d, x, s, t)
+{
+  return md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);
+}
+function md5_gg(a, b, c, d, x, s, t)
+{
+  return md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);
+}
+function md5_hh(a, b, c, d, x, s, t)
+{
+  return md5_cmn(b ^ c ^ d, a, b, x, s, t);
+}
+function md5_ii(a, b, c, d, x, s, t)
+{
+  return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
+}
+
+function md5(message) {
+    const T = [ 0,  // For some reason this list is 1-indexed
+        0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
+        0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
+        0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
+        0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
+        0xf61e2562, 0xc040b340, 0x265e5a51, 0xe9b6c7aa,
+        0xd62f105d, 0x02441453, 0xd8a1e681, 0xe7d3fbc8,
+        0x21e1cde6, 0xc33707d6, 0xf4d50d87, 0x455a14ed,
+        0xa9e3e905, 0xfcefa3f8, 0x676f02d9, 0x8d2a4c8a,
+        0xfffa3942, 0x8771f681, 0x6d9d6122, 0xfde5380c,
+        0xa4beea44, 0x4bdecfa9, 0xf6bb4b60, 0xbebfbc70,
+        0x289b7ec6, 0xeaa127fa, 0xd4ef3085, 0x04881d05,
+        0xd9d4d039, 0xe6db99e5, 0x1fa27cf8, 0xc4ac5665,
+        0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039,
+        0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1,
+        0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
+        0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
+    ];
+
+
+    var M = strToLEArray(message);
+    var N = message.length * 8;
+
+    // Padding
+    M[N >> 5] |= 0x80 << (N % 32);
+    M[(((N + 64) >>> 9) << 4) + 14] = N;
+
+    var A = 0x67452301;
+    var B = 0xefcdab89;
+    var C = 0x98badcfe;
+    var D = 0x10325476;
+
+    // Do rounds
+
+    for (let i = 0; i < M.length; i += 16) {
+        var AA = A;
+        var BB = B;
+        var CC = C;
+        var DD = D;
+
+        A = md5_ff(A, B, C, D, M[i+ 0],  7, T[ 1]);
+        D = md5_ff(D, A, B, C, M[i+ 1], 12, T[ 2]);
+        C = md5_ff(C, D, A, B, M[i+ 2], 17, T[ 3]);
+        B = md5_ff(B, C, D, A, M[i+ 3], 22, T[ 4]);
+
+        A = md5_ff(A, B, C, D, M[i+ 4],  7, T[ 5]);
+        D = md5_ff(D, A, B, C, M[i+ 5], 12, T[ 6]);
+        C = md5_ff(C, D, A, B, M[i+ 6], 17, T[ 7]);
+        B = md5_ff(B, C, D, A, M[i+ 7], 22, T[ 8]);
+
+        A = md5_ff(A, B, C, D, M[i+ 8],  7, T[ 9]);
+        D = md5_ff(D, A, B, C, M[i+ 9], 12, T[10]);
+        C = md5_ff(C, D, A, B, M[i+10], 17, T[11]);
+        B = md5_ff(B, C, D, A, M[i+11], 22, T[12]);
+
+        A = md5_ff(A, B, C, D, M[i+12],  7, T[13]);
+        D = md5_ff(D, A, B, C, M[i+13], 12, T[14]);
+        C = md5_ff(C, D, A, B, M[i+14], 17, T[15]);
+        B = md5_ff(B, C, D, A, M[i+15], 22, T[16]);
+
+
+        A = md5_gg(A, B, C, D, M[i+ 1],  5, T[17]);
+        D = md5_gg(D, A, B, C, M[i+ 6],  9, T[18]);
+        C = md5_gg(C, D, A, B, M[i+11], 14, T[19]);
+        B = md5_gg(B, C, D, A, M[i+ 0], 20, T[20]);
+
+        A = md5_gg(A, B, C, D, M[i+ 5],  5, T[21]);
+        D = md5_gg(D, A, B, C, M[i+10],  9, T[22]);
+        C = md5_gg(C, D, A, B, M[i+15], 14, T[23]);
+        B = md5_gg(B, C, D, A, M[i+ 4], 20, T[24]);
+
+        A = md5_gg(A, B, C, D, M[i+ 9],  5, T[25]);
+        D = md5_gg(D, A, B, C, M[i+14],  9, T[26]);
+        C = md5_gg(C, D, A, B, M[i+ 3], 14, T[27]);
+        B = md5_gg(B, C, D, A, M[i+ 8], 20, T[28]);
+
+        A = md5_gg(A, B, C, D, M[i+13],  5, T[29]);
+        D = md5_gg(D, A, B, C, M[i+ 2],  9, T[30]);
+        C = md5_gg(C, D, A, B, M[i+ 7], 14, T[31]);
+        B = md5_gg(B, C, D, A, M[i+12], 20, T[32]);
+
+        
+        A = md5_hh(A, B, C, D, M[i+ 5],  4, T[33]);
+        D = md5_hh(D, A, B, C, M[i+ 8], 11, T[34]);
+        C = md5_hh(C, D, A, B, M[i+11], 16, T[35]);
+        B = md5_hh(B, C, D, A, M[i+14], 23, T[36]);
+
+        A = md5_hh(A, B, C, D, M[i+ 1],  4, T[37]);
+        D = md5_hh(D, A, B, C, M[i+ 4], 11, T[38]);
+        C = md5_hh(C, D, A, B, M[i+ 7], 16, T[39]);
+        B = md5_hh(B, C, D, A, M[i+10], 23, T[40]);
+
+        A = md5_hh(A, B, C, D, M[i+13],  4, T[41]);
+        D = md5_hh(D, A, B, C, M[i+ 0], 11, T[42]);
+        C = md5_hh(C, D, A, B, M[i+ 3], 16, T[43]);
+        B = md5_hh(B, C, D, A, M[i+ 6], 23, T[44]);
+
+        A = md5_hh(A, B, C, D, M[i+ 9],  4, T[45]);
+        D = md5_hh(D, A, B, C, M[i+12], 11, T[46]);
+        C = md5_hh(C, D, A, B, M[i+15], 16, T[47]);
+        B = md5_hh(B, C, D, A, M[i+ 2], 23, T[48]);
+        
+
+        A = md5_ii(A, B, C, D, M[i+ 0],  6, T[49]);
+        D = md5_ii(D, A, B, C, M[i+ 7], 10, T[50]);
+        C = md5_ii(C, D, A, B, M[i+14], 15, T[51]);
+        B = md5_ii(B, C, D, A, M[i+ 5], 21, T[52]);
+
+        A = md5_ii(A, B, C, D, M[i+12],  6, T[53]);
+        D = md5_ii(D, A, B, C, M[i+ 3], 10, T[54]);
+        C = md5_ii(C, D, A, B, M[i+10], 15, T[55]);
+        B = md5_ii(B, C, D, A, M[i+ 1], 21, T[56]);
+
+        A = md5_ii(A, B, C, D, M[i+ 8],  6, T[57]);
+        D = md5_ii(D, A, B, C, M[i+15], 10, T[58]);
+        C = md5_ii(C, D, A, B, M[i+ 6], 15, T[59]);
+        B = md5_ii(B, C, D, A, M[i+13], 21, T[60]);
+
+        A = md5_ii(A, B, C, D, M[i+ 4],  6, T[61]);
+        D = md5_ii(D, A, B, C, M[i+11], 10, T[62]);
+        C = md5_ii(C, D, A, B, M[i+ 2], 15, T[63]);
+        B = md5_ii(B, C, D, A, M[i+ 9], 21, T[64]);
+
+
+        A = safe_add(A, AA);
+        B = safe_add(B, BB);
+        C = safe_add(C, CC);
+        D = safe_add(D, DD);
+    }
+
+    return leArrayToHex(new Array(A, B, C, D));
+}
+
 //console.log(md2("yo"));  // ff8182fd0faa026ad1adc74f31952e45
 //console.log(md4("yo"));  // 3357f1feed651ea2e31e87329568d3e8
+//console.log(md5("yo"));  // 6d0007e52f7afb7d5a0650b0ffb8a4d1
