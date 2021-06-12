@@ -6,27 +6,19 @@ function autoUpdateHash() {
 
 function updateHash() {
     const data = document.getElementById("input").value;
-    const algos = {
-        "MD2": document.getElementById("md2").checked,
-        "MD4": document.getElementById("md4").checked,
-        "MD5": document.getElementById("md5").checked,
-        "CRC-8": document.getElementById("crc8").checked,
-        "CRC-16": document.getElementById("crc16").checked,
-        "CRC-32": document.getElementById("crc32").checked,
-        "CRC-64": document.getElementById("crc64").checked,
-    };
+    const algos = (hash) => document.getElementById(hash).checked;
     var output = {};
 
-    if (algos["MD2"]) {
+    if (algos("md2")) {
         output["MD2"] = md2(data);
     }
-    if (algos["MD4"]) {
+    if (algos("md4")) {
         output["MD4"] =  md4(data);
     }
-    if (algos["MD5"]) {
+    if (algos("md5")) {
         output["MD5"] =  md5(data);
     }
-    if (algos["CRC-8"]) {
+    if (algos("crc8")) {
         output["CRC-8"] = crc8(data, 0x00, 0x07, 0x00, false, false);
         output["CRC-8/AUTOSAR"] = crc8(data, 0xff, 0x2f, 0xff, false, false);
         output["CRC-8/BLUETOOTH"] = crc8(data, 0x00, 0xa7, 0x00, true, true);
@@ -48,7 +40,7 @@ function updateHash() {
         output["CRC-8/TECH-3250"] = crc8(data, 0xff, 0x1d, 0x00, true, true);
         output["CRC-8/WCDMA"] = crc8(data, 0x00, 0x9b, 0x00, true, true);
     }
-    if (algos["CRC-16"]) {
+    if (algos("crc16")) {
         output["CRC-16/ARC"] = crc16(data, 0x0000, 0x8005, 0x0000, true , true );
         output["CRC-16/CDMA2000"] = crc16(data, 0xffff, 0xc867, 0x0000, false, false);
         output["CRC-16/CMS"] = crc16(data, 0xffff, 0x8005, 0x0000, false, false);
@@ -80,7 +72,7 @@ function updateHash() {
         output["CRC-16/USB"] = crc16(data, 0xffff, 0x8005, 0xffff, true , true );
         output["CRC-16/XMODEM"] = crc16(data, 0x0000, 0x1021, 0x0000, false, false);
     }
-    if (algos["CRC-32"]) {
+    if (algos("crc32")) {
         output["CRC-32/AIXM"] = crc32(data, 0x00000000, 0x814141ab, 0x00000000, false, false);
         output["CRC-32/AUTOSAR"] = crc32(data, 0xffffffff, 0xf4acfb13, 0xffffffff, true , true );
         output["CRC-32/BASE91-D"] = crc32(data, 0xffffffff, 0xa833982b, 0xffffffff, true , true );
@@ -93,11 +85,17 @@ function updateHash() {
         output["CRC-32/MPEG-2"] = crc32(data, 0xffffffff, 0x04c11db7, 0x00000000, false, false);
         output["CRC-32/XFER"] = crc32(data, 0x00000000, 0x000000af, 0x00000000, false, false);
     }
-    if (algos["CRC-64"]) {
+    if (algos("crc64")) {
         output["CRC-64/ECMA-182"] = crc64(data, 0x0000000000000000n, 0x42f0e1eba9ea3693n, 0x0000000000000000n, false, false);
         output["CRC-64/GO-ISO"] = crc64(data, 0xffffffffffffffffn, 0x000000000000001bn, 0xffffffffffffffffn, true , true );
         output["CRC-64/WE"] = crc64(data, 0xffffffffffffffffn, 0x42f0e1eba9ea3693n, 0xffffffffffffffffn, false, false);
         output["CRC-64/XZ"] = crc64(data, 0xffffffffffffffffn, 0x42f0e1eba9ea3693n, 0xffffffffffffffffn, true , true );
+    }
+    if (algos("bsd")) {
+        output["BSD"] = bsd(data);
+    }
+    if (algos("sysv")) {
+        output["SYSV"] = sysv(data);
     }
     const table = document.getElementById("outputTable");
     jQuery("[id=dynamic]").remove(); 

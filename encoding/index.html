@@ -16,7 +16,7 @@
   </head>
 
   <body>
-    <div style="margin-top: 2em; margin-left: 1em; margin-right: 1em; overflow-y: visible;" class="container row"  id="mainBox">
+    <div style="overflow-y: visible;" class="container row"  id="mainBox">
         <div style="align-content: center; width: 850px; max-width: 100%;" class="col-sm-10">
             <textarea cols="30" class="form-control" style="min-height: 100px; max-height: 500px; resize: vertical;" id="input" placeholder="Input" oninput="autoUpdateHash();"></textarea>
             <div style="margin: 15px;">
@@ -28,7 +28,7 @@
                         <input type="radio" value="ascii" checked>ASCII
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" value="hex">Hex
+                        <input type="radio" value="hex" disabled>Hex
                     </label>
                 </label>
 
@@ -51,19 +51,8 @@
                 </table>
             </div>
         </div>
-        <div class="col-sm-2">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="md2" onclick="autoUpdateHash();">
-                <label class="form-check-label" for="md2">MD2</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="md4" onclick="autoUpdateHash();">
-                <label class="form-check-label" for="md4">MD4</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="md5" onclick="autoUpdateHash();">
-                <label class="form-check-label" for="md5">MD5</label>
-            </div>
+        <div class="col-sm-2" style="font-family: monospace;">
+            <label><b>Cyclic Redundancy Checks</b></label>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="crc8" onclick="autoUpdateHash();">
                 <label class="form-check-label" for="crc8">CRC-8</label>
@@ -79,6 +68,28 @@
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="crc64" onclick="autoUpdateHash();">
                 <label class="form-check-label" for="crc64">CRC-64</label>
+            </div>
+            <label><b>Checksums</b></label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="bsd" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="bsd">BSD</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="sysv" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="bsd">SYSV</label>
+            </div>
+            <label><b>Unkeyed Cryptographic Hash Functions</b></label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="md2" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="md2">MD2</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="md4" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="md4">MD4</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="md5" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="md5">MD5</label>
             </div>
         </div>
     </div>

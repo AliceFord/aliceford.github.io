@@ -563,6 +563,25 @@ function crc64(message, initial, polynomial, outXor, reflectIn, reflectOut) {
     return "0x" + output;
 }
 
+function bsd(message) {
+    var checksum = 0;
+    message.split("").forEach((value, index) => {
+        checksum = (checksum >> 1) + ((checksum & 1) << 15);
+        checksum += message.charCodeAt(index);
+        checksum &= 0xffff;
+    });
+    return checksum.toString(16).padStart(4, "0");
+}
+
+function sysv(message) {
+    var s = 0;
+    message.split("").forEach((value, index) => {
+        s += message.charCodeAt(index);
+    });
+    var r = s % (2**16) + (s % (2**32)) / (2**16);
+    return parseInt(((r % (2**16)) + r / (2**16)).toFixed(0)).toString(16).padStart(4, "0");
+}
+
 //console.log(md2("yo"));  // ff8182fd0faa026ad1adc74f31952e45
 //console.log(md4("yo"));  // 3357f1feed651ea2e31e87329568d3e8
 //console.log(md5("yo"));  // 6d0007e52f7afb7d5a0650b0ffb8a4d1
@@ -570,3 +589,5 @@ function crc64(message, initial, polynomial, outXor, reflectIn, reflectOut) {
 //console.log(crc16("yo", 0xffff, 0x1021, 0x0000, false, false));  // 0x3287
 //console.log(crc32("yo", 0xffffffff, 0x04c11db7, 0xffffffff, true, true));  // 0x6229ac89
 //console.log(crc64("yo", 0x0000000000000000n, 0x42f0e1eba9ea3693n, 0x0000000000000000n, false, false));  // 0xe41d1bc85ee70836
+//console.log(bsd("yo"));  // 32939
+//console.log(sysv("yo"));  // 232
