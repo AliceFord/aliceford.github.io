@@ -16,9 +16,8 @@
   </head>
 
   <body>
-    <div style="margin-top: 2em; margin-left: 1em; margin-right: 1em; overflow-y: visible;" class="container">
-        <div style="align-content: center; width: 850px; max-width: 100%;" id="mainBox">
-            
+    <div style="margin-top: 2em; margin-left: 1em; margin-right: 1em; overflow-y: visible;" class="container row"  id="mainBox">
+        <div style="align-content: center; width: 850px; max-width: 100%;" class="col-sm-10">
             <textarea cols="30" class="form-control" style="min-height: 100px; max-height: 500px; resize: vertical;" id="input" placeholder="Input" oninput="autoUpdateHash();"></textarea>
             <div style="margin: 15px;">
                 <label>
@@ -37,16 +36,6 @@
                     <input type="checkbox" id="autoHash" checked>Auto Hash
                 </label>
             </div>
-            <select class="form-control" id="inputAlgo">
-                <option>Hashing Algorithm</option>
-                <option>MD2</option>
-                <option>MD4</option>
-                <option>MD5</option>
-                <option>CRC-8</option>
-                <option>CRC-16</option>
-                <option>CRC-32</option>
-                <option>CRC-64</option>
-            </select>
             <div class="submit">
                 <input class="btn btn-success" id="execute" type="button" value="Hash" onclick="updateHash();">
             </div>
@@ -60,6 +49,36 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="md2" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="md2">MD2</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="md4" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="md4">MD4</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="md5" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="md5">MD5</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="crc8" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="crc8">CRC-8</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="crc16" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="crc16">CRC-16</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="crc32" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="crc32">CRC-32</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="crc64" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="crc64">CRC-64</label>
             </div>
         </div>
     </div>
