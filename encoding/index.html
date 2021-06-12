@@ -52,6 +52,7 @@
             </div>
         </div>
         <div class="col-sm-2" style="font-family: monospace;">
+            <p style="font-size: small;">P.S. If a button is greyed out, it is WIP.</p>
             <label><b>Cyclic Redundancy Checks</b></label>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="crc8" onclick="autoUpdateHash();">
@@ -76,7 +77,36 @@
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="sysv" onclick="autoUpdateHash();">
-                <label class="form-check-label" for="bsd">SYSV</label>
+                <label class="form-check-label" for="sysv">SYSV</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="fletcher8" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="fletcher8">Fletcher-8</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="fletcher16" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="fletcher16">Fletcher-16</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="fletcher32" onclick="autoUpdateHash();" disabled>
+                <label class="form-check-label" for="fletcher32">Fletcher-32</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="fletcher64" onclick="autoUpdateHash();" disabled>
+                <label class="form-check-label" for="fletcher64">Fletcher-64</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="alder32" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="alder32">Alder-32</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="lrc" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="lrc">Longitudinal Redundancy Check</label>
+            </div>
+            <label><b>Non-Cryptographic Hash Functions</b></label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="one-at-a-time" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="one-at-a-time">Jenkins One at a Time</label>
             </div>
             <label><b>Unkeyed Cryptographic Hash Functions</b></label>
             <div class="form-check">

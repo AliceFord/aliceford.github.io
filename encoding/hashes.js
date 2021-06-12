@@ -570,7 +570,7 @@ function bsd(message) {
         checksum += message.charCodeAt(index);
         checksum &= 0xffff;
     });
-    return checksum.toString(16).padStart(4, "0");
+    return "0x" + checksum.toString(16).padStart(4, "0");
 }
 
 function sysv(message) {
@@ -579,7 +579,80 @@ function sysv(message) {
         s += message.charCodeAt(index);
     });
     var r = s % (2**16) + (s % (2**32)) / (2**16);
-    return parseInt(((r % (2**16)) + r / (2**16)).toFixed(0)).toString(16).padStart(4, "0");
+    return "0x" + parseInt(((r % (2**16)) + r / (2**16)).toFixed(0)).toString(16).padStart(4, "0");
+}
+
+function fletcher8(message) {
+    var sum1 = 0;
+    var sum2 = 0;
+    for (let i = 0; i < message.length; i++) {
+        sum1 = (sum1 + message.charCodeAt(i)) % 15;
+        sum2 = (sum2 + sum1) % 15;
+    }
+    return "0x" + ((sum2 << 4) | sum1).toString(16).padStart(2, "0");
+}
+
+function fletcher16(message) {
+    var sum1 = 0;
+    var sum2 = 0;
+    for (let i = 0; i < message.length; i++) {
+        sum1 = (sum1 + message.charCodeAt(i)) % 255;
+        sum2 = (sum2 + sum1) % 255;
+    }
+    return "0x" + ((sum2 << 8) | sum1).toString(16).padStart(4, "0");
+}
+
+function fletcher32(message) {
+    var sum1 = 0;
+    var sum2 = 0;
+    for (let i = 0; i < message.length; i+=2) {
+        sum1 = (sum1 + message.charCodeAt(i) + message.charCodeAt(i+1)) % 0xffff;
+        sum2 = (sum2 + sum1) % 0xffff;
+    }
+    return "0x" + ((sum2 << 16) | sum1).toString(16).padStart(8, "0");
+}
+
+function fletcher64(message) {
+    var sum1 = 0n;
+    var sum2 = 0n;
+    for (let i = 0; i < message.length; i++) {
+        sum1 = (sum1 + BigInt(message.charCodeAt(i))) % 0xffffffffn;
+        sum2 = (sum2 + sum1) % 0xffffffffn;
+    }
+    return "0x" + ((sum2 << 32n) | sum1).toString(16).padStart(16, "0");
+}
+
+function alder32(message) {
+    const MOD_ALDER = 65521;
+    var a = 1, b = 0;
+    for (let i = 0; i < message.length; i++) {
+        a = (a + message.charCodeAt(i)) % MOD_ALDER;
+        b = (b + a) % MOD_ALDER;
+    }
+    return "0x" + (((b << 16) | a) >>> 0).toString(16).padStart(8, "0");
+}
+
+function lrc(message) {
+    var lrc = 0;
+    for (let i = 0; i < message.length; i++) {
+        lrc = (lrc + message.charCodeAt(i)) & 0xff;
+    }
+    lrc = ((lrc ^ 0xff) + 1) & 0xff;
+    return "0x" + lrc.toString(16).padStart(2, "0");
+}
+
+function oneAtATime(message) {
+    var i = 0;
+    var hash = 0;
+    while (i != message.length) {
+        hash += message.charCodeAt(i++);
+        hash += hash << 10;
+        hash ^= hash >>> 6;
+    }
+    hash += hash << 3;
+    hash ^= hash >>> 11;
+    hash += hash << 15;
+    return uintCast(hash).toString(16).padStart(8, "0");
 }
 
 //console.log(md2("yo"));  // ff8182fd0faa026ad1adc74f31952e45
@@ -591,3 +664,10 @@ function sysv(message) {
 //console.log(crc64("yo", 0x0000000000000000n, 0x42f0e1eba9ea3693n, 0x0000000000000000n, false, false));  // 0xe41d1bc85ee70836
 //console.log(bsd("yo"));  // 32939
 //console.log(sysv("yo"));  // 232
+//console.log(fletcher8("yo"))  // 0x87
+//console.log(fletcher16("yo"))  // 0x62e8
+//console.log(fletcher32("yo"))  // 0x016100e8
+//console.log(fletcher64("yo"))  // 0x00000161000000e8
+//console.log(alder32("yo")) // 0x016300e9
+//console.log(lrc("yo")) // 0x18
+//console.log(oneAtATime("yo")) // 0xc75186a9

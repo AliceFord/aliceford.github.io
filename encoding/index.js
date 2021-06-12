@@ -97,6 +97,27 @@ function updateHash() {
     if (algos("sysv")) {
         output["SYSV"] = sysv(data);
     }
+    if (algos("fletcher8")) {
+        output["Fletcher-8"] = fletcher8(data);
+    }
+    if (algos("fletcher16")) {
+        output["Fletcher-16"] = fletcher16(data);
+    }
+    if (algos("fletcher32")) {
+        output["Fletcher-32"] = fletcher32(data);
+    }
+    if (algos("fletcher64")) {
+        output["Fletcher-64"] = fletcher64(data);
+    }
+    if (algos("alder32")) {
+        output["Alder-32"] = alder32(data);
+    }
+    if (algos("lrc")) {
+        output["Longitudinal Redundancy Check"] = lrc(data);
+    }
+    if (algos("one-at-a-time")) {
+        output["Jenkins One at a Time"] = oneAtATime(data);
+    }
     const table = document.getElementById("outputTable");
     jQuery("[id=dynamic]").remove(); 
     Object.entries(output).forEach(([key, value]) => {
