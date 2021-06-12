@@ -76,6 +76,29 @@ function updateHash() {
             "CRC-16/XMODEM": crc16(data, 0x0000, 0x1021, 0x0000, false, false)
         };
         break;
+    case "CRC-32":
+        output = {
+            "CRC-32/AIXM": crc32(data, 0x00000000, 0x814141ab, 0x00000000, false, false),
+            "CRC-32/AUTOSAR": crc32(data, 0xffffffff, 0xf4acfb13, 0xffffffff, true , true ),
+            "CRC-32/BASE91-D": crc32(data, 0xffffffff, 0xa833982b, 0xffffffff, true , true ),
+            "CRC-32/BZIP2": crc32(data, 0xffffffff, 0x04c11db7, 0xffffffff, false, false),
+            "CRC-32/CD-ROM-EDC": crc32(data, 0x00000000, 0x8001801b, 0x00000000, true , true ),
+            "CRC-32/CKSUM": crc32(data, 0x00000000, 0x04c11db7, 0xffffffff, false, false),
+            "CRC-32/ISCSI": crc32(data, 0xffffffff, 0x1edc6f41, 0xffffffff, true , true ),
+            "CRC-32/ISO-HDLC": crc32(data, 0xffffffff, 0x04c11db7, 0xffffffff, true , true ),
+            "CRC-32/JAMCRC": crc32(data, 0xffffffff, 0x04c11db7, 0x00000000, true , true ),
+            "CRC-32/MPEG-2": crc32(data, 0xffffffff, 0x04c11db7, 0x00000000, false, false),
+            "CRC-32/XFER": crc32(data, 0x00000000, 0x000000af, 0x00000000, false, false)
+        };
+        break;
+    case "CRC-64":
+        output = {
+            "CRC-64/ECMA-182": crc64(data, 0x0000000000000000n, 0x42f0e1eba9ea3693n, 0x0000000000000000n, false, false),
+            "CRC-64/GO-ISO": crc64(data, 0xffffffffffffffffn, 0x000000000000001bn, 0xffffffffffffffffn, true , true ),
+            "CRC-64/WE": crc64(data, 0xffffffffffffffffn, 0x42f0e1eba9ea3693n, 0xffffffffffffffffn, false, false),
+            "CRC-64/XZ": crc64(data, 0xffffffffffffffffn, 0x42f0e1eba9ea3693n, 0xffffffffffffffffn, true , true )
+        };
+        break;
     default:
         break;
     }

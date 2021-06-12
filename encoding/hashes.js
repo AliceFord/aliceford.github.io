@@ -452,8 +452,36 @@ function reflectCRC16(val) {
     return resByte;
 }
 
-const byteCast = (n) => (n >> 0) & 0xff;
-const ushortCast = (n) => (n >> 0) & 0xffff;
+function reflectCRC32(val) {
+    var resByte = 0;
+    for (let i = 0; i < 32; i++)
+    {
+        if ((val & (1 << i)) != 0)
+        {
+            resByte |= uintCast(1 << (31 - i));
+        }
+    }
+
+    return resByte;
+}
+
+function reflectCRC64(val) {
+    var resByte = 0n;
+    for (let i = 0n; i < 64n; i++)
+    {
+        if ((val & ulongCast(1n << i)) != 0n)
+        {
+            resByte |= ulongCast(1n << (63n - i));
+        }
+    }
+
+    return resByte;
+}
+
+const byteCast = (n) => ((n >>> 0) & 0xff) >>> 0;
+const ushortCast = (n) => ((n >>> 0) & 0xffff) >>> 0;
+const uintCast = (n) => ((n >>> 0) & 0xffffffff) >>> 0;
+const ulongCast = (n) => ((BigInt(n) >> 0n) & 0xffffffffffffffffn) >> 0n;
 
 function crc8(message, initial, polynomial, outXor, reflectIn, reflectOut) {
     var crc = initial;
@@ -471,7 +499,7 @@ function crc8(message, initial, polynomial, outXor, reflectIn, reflectOut) {
         }
     });
     crc = reflectOut ? reflectCRC8(crc) : crc;
-    let output = byteCast(crc ^ outXor).toString(16);
+    let output = byteCast(crc ^ outXor).toString(16).padStart(2, "0");;
     return "0x" + output;
 }
 
@@ -491,7 +519,47 @@ function crc16(message, initial, polynomial, outXor, reflectIn, reflectOut) {
         }
     });
     crc = reflectOut ? reflectCRC16(crc) : crc;
-    let output = ushortCast(crc ^ outXor).toString(16);
+    let output = ushortCast(crc ^ outXor).toString(16).padStart(4, "0");;
+    return "0x" + output;
+}
+
+function crc32(message, initial, polynomial, outXor, reflectIn, reflectOut) {
+    var crc = initial;
+    var bArray = strToByteArray(message);
+    bArray.forEach((value, index) => {
+        let byte = reflectIn ? reflectCRC8(value) : value;
+        crc ^= uintCast(byte << 24);
+
+        for (let i = 0; i < 8; i++) {
+            if ((crc & 0x80000000) != 0) {
+                crc = uintCast((crc << 1) ^ polynomial);
+            } else {
+                crc <<= 1;
+            }
+        }
+    });
+    crc = reflectOut ? reflectCRC32(crc) : crc;
+    let output = uintCast(crc ^ outXor).toString(16).padStart(8, "0");
+    return "0x" + output;
+}
+
+function crc64(message, initial, polynomial, outXor, reflectIn, reflectOut) {
+    var crc = initial;
+    var bArray = strToByteArray(message);
+    bArray.forEach((value, index) => {
+        let byte = reflectIn ? reflectCRC8(value) : value;
+        crc ^= ulongCast(ulongCast(byte) << 56n);
+
+        for (let i = 0n; i < 8n; i++) {
+            if ((crc & 0x8000000000000000n) != 0n) {
+                crc = ulongCast((crc << 1n) ^ polynomial);
+            } else {
+                crc <<= 1n;
+            }
+        }
+    });
+    crc = reflectOut ? reflectCRC64(crc) : crc;
+    let output = ulongCast(crc ^ outXor).toString(16).padStart(16, "0");
     return "0x" + output;
 }
 
@@ -500,3 +568,5 @@ function crc16(message, initial, polynomial, outXor, reflectIn, reflectOut) {
 //console.log(md5("yo"));  // 6d0007e52f7afb7d5a0650b0ffb8a4d1
 //console.log(crc8("yo", 0x00, 0x07, 0x00, false, false));  // 0x15
 //console.log(crc16("yo", 0xffff, 0x1021, 0x0000, false, false));  // 0x3287
+//console.log(crc32("yo", 0xffffffff, 0x04c11db7, 0xffffffff, true, true));  // 0x6229ac89
+//console.log(crc64("yo", 0x0000000000000000n, 0x42f0e1eba9ea3693n, 0x0000000000000000n, false, false));  // 0xe41d1bc85ee70836
