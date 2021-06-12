@@ -406,6 +406,97 @@ function md5(message) {
     return leArrayToHex(new Array(A, B, C, D));
 }
 
+function numToByteArray(num) {
+    var byteArray = [0, 0, 0, 0, 0, 0, 0, 0];
+
+    for ( var index = 0; index < byteArray.length; index++ ) {
+        var byte = num & 0xff;
+        byteArray [ index ] = byte;
+        num = (num - byte) / 256 ;
+    }
+    byteArray = byteArray.filter(a => Number(a));  // Filters out 0s
+    return byteArray;
+}
+
+function strToByteArray(str) {
+    var byteArray = [];
+    str.split("").forEach((value, index) => {
+        byteArray.push(str.charCodeAt(index));
+    });
+    return byteArray;
+}
+
+function reflectCRC8(val) {
+    var resByte = 0;
+    for (let i = 0; i < 8; i++)
+    {
+        if ((val & (1 << i)) != 0)
+        {
+            resByte |= byteCast(1 << (7 - i));
+        }
+    }
+
+    return resByte;
+}
+
+function reflectCRC16(val) {
+    var resByte = 0;
+    for (let i = 0; i < 16; i++)
+    {
+        if ((val & (1 << i)) != 0)
+        {
+            resByte |= ushortCast(1 << (15 - i));
+        }
+    }
+
+    return resByte;
+}
+
+const byteCast = (n) => (n >> 0) & 0xff;
+const ushortCast = (n) => (n >> 0) & 0xffff;
+
+function crc8(message, initial, polynomial, outXor, reflectIn, reflectOut) {
+    var crc = initial;
+    var bArray = strToByteArray(message);
+    bArray.forEach((value, index) => {
+        let byte = reflectIn ? reflectCRC8(value) : value;
+        crc ^= byte;
+
+        for (let i = 0; i < 8; i++) {
+            if ((crc & 0x80) != 0) {
+                crc = byteCast((crc << 1) ^ polynomial);
+            } else {
+                crc <<= 1;
+            }
+        }
+    });
+    crc = reflectOut ? reflectCRC8(crc) : crc;
+    let output = byteCast(crc ^ outXor).toString(16);
+    return "0x" + output;
+}
+
+function crc16(message, initial, polynomial, outXor, reflectIn, reflectOut) {
+    var crc = initial;
+    var bArray = strToByteArray(message);
+    bArray.forEach((value, index) => {
+        let byte = reflectIn ? reflectCRC8(value) : value;
+        crc ^= ushortCast(byte << 8);
+
+        for (let i = 0; i < 8; i++) {
+            if ((crc & 0x8000) != 0) {
+                crc = ushortCast((crc << 1) ^ polynomial);
+            } else {
+                crc <<= 1;
+            }
+        }
+    });
+    crc = reflectOut ? reflectCRC16(crc) : crc;
+    let output = ushortCast(crc ^ outXor).toString(16);
+    return "0x" + output;
+}
+
 //console.log(md2("yo"));  // ff8182fd0faa026ad1adc74f31952e45
 //console.log(md4("yo"));  // 3357f1feed651ea2e31e87329568d3e8
 //console.log(md5("yo"));  // 6d0007e52f7afb7d5a0650b0ffb8a4d1
+//console.log(crc8("yo", 0x00, 0x07, 0x00, false, false));  // 0x15
+//console.log(crc16("yo", 0xffff, 0x1021, 0x0000, false, false));  // 0x3287

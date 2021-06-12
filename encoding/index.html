@@ -4,7 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
 
     <title>Encoding</title>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -16,26 +15,51 @@
     <link href="main.css" rel="stylesheet">
   </head>
 
-  <body class="text-center">
-    <div id="main" class="w-auto" style="overflow: hidden;">
-        <div class="input">
-          <textarea id="input" placeholder="Input"></textarea>
+  <body>
+    <div style="margin-top: 2em; margin-left: 1em; margin-right: 1em; overflow-y: visible;" class="container">
+        <div style="align-content: center; width: 850px; max-width: 100%;" id="mainBox">
+            
+            <textarea cols="30" class="form-control" style="min-height: 100px; max-height: 500px; resize: vertical;" id="input" placeholder="Input" oninput="autoUpdateHash();"></textarea>
+            <div style="margin: 15px;">
+                <label>
+                    Input type: 
+                </label>
+                <label>
+                    <label class="radio-inline">
+                        <input type="radio" value="ascii" checked>ASCII
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" value="hex">Hex
+                    </label>
+                </label>
+
+                <label class="checkbox-inline" style="margin-left: 15px; margin-bottom: 0px; vertical-align: middle;">
+                    <input type="checkbox" id="autoHash" checked>Auto Hash
+                </label>
+            </div>
+            <select class="form-control" id="inputAlgo">
+                <option>Hashing Algorithm</option>
+                <option>MD2</option>
+                <option>MD4</option>
+                <option>MD5</option>
+                <option>CRC-8</option>
+                <option>CRC-16</option>
+            </select>
+            <div class="submit">
+                <input class="btn btn-success" id="execute" type="button" value="Hash" onclick="updateHash();">
+            </div>
+            <div style="font-family:monospace;" class="table-responsive table-body table-sm">
+
+                <table class="table table-hover" id="outputTable">
+                    <tbody>
+                        <tr>
+                            <th>Algorithm</th>
+                            <th>Result</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <select class="form-control" id="inputAlgo">
-            <option>Hashing Algorithm</option>
-            <option>MD2</option>
-            <option>MD4</option>
-            <option>MD5</option>
-        </select>
-        <div class="submit">
-          <input class="btn btn-success" id="execute" type="button" value="Hash" onclick="updateHash();">
-          <!-- <label>
-            <input id="auto-update" type="checkbox" value="1" checked="checked">Auto Update
-          </label> -->
-        </div>
-        <div class="output">
-          <textarea id="output" placeholder="Output"></textarea>
-        </div>
-      </div>
+    </div>
   </body>
 </html>
