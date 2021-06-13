@@ -16,25 +16,42 @@
   </head>
 
   <body>
-    <div style="overflow-y: visible;" class="container row"  id="mainBox">
+    <div style="overflow-y: visible; padding-top: 100px" class="container row"  id="mainBox">
         <div style="align-content: center; width: 850px; max-width: 100%;" class="col-sm-10">
             <textarea cols="30" class="form-control" style="min-height: 100px; max-height: 500px; resize: vertical;" id="input" placeholder="Input" oninput="autoUpdateHash();"></textarea>
-            <div style="margin: 15px;">
-                <label>
-                    Input type: 
-                </label>
-                <label>
-                    <label class="radio-inline">
-                        <input type="radio" value="ascii" checked>ASCII
+            <div style="margin: 15px; font-family: monospace;">
+                <div class="col-sm-8">
+                    <label>
+                        Input: 
                     </label>
-                    <label class="radio-inline">
-                        <input type="radio" value="hex" disabled>Hex
+                    <label>
+                        <label class="radio-inline">
+                            <input type="radio" value="ascii" checked>ASCII
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="hex" disabled>Hex
+                        </label>
                     </label>
-                </label>
+                    <label class="checkbox-inline" style="margin-left: 15px; margin-bottom: 0px; vertical-align: middle;">
+                        <input type="checkbox" id="autoHash" checked>Auto Hash
+                    </label>
+                </div>
 
-                <label class="checkbox-inline" style="margin-left: 15px; margin-bottom: 0px; vertical-align: middle;">
-                    <input type="checkbox" id="autoHash" checked>Auto Hash
-                </label>
+                <div class="col-sm-8">
+                    <label>Output: </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="outputHex" onclick="updateColumns();" checked>Hex
+                    </label>
+                    <label class="checkbox-inline" style="margin-left: 10px;">
+                        <input type="checkbox" id="outputDec" onclick="updateColumns();">Dec
+                    </label>
+                    <label class="checkbox-inline" style="margin-left: 10px;">
+                        <input type="checkbox" id="outputOct" onclick="updateColumns();">Oct
+                    </label>
+                    <label class="checkbox-inline" style="margin-left: 10px;">
+                        <input type="checkbox" id="outputBin" onclick="updateColumns();">Bin
+                    </label>
+                </div>
             </div>
             <div class="submit">
                 <input class="btn btn-success" id="execute" type="button" value="Hash" onclick="updateHash();">
@@ -44,15 +61,19 @@
                 <table class="table table-hover" id="outputTable">
                     <tbody>
                         <tr>
+                            <th></th>
+                            <th colspan="4" style="text-align: center;">Result</th>
+                        </tr>
+                        <tr id="tableHeaderBox">
                             <th>Algorithm</th>
-                            <th>Result</th>
+                            <th class="tableHeader">Hex</th>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
         <div class="col-sm-2" style="font-family: monospace;">
-            <p style="font-size: small;">P.S. If a button is greyed out, it is WIP.</p>
+            <p style="font-size: small;">P.S. If a button is greyed out, then it's WIP.</p>
             <label><b>Cyclic Redundancy Checks</b></label>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="crc8" onclick="autoUpdateHash();">
@@ -107,6 +128,10 @@
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="one-at-a-time" onclick="autoUpdateHash();">
                 <label class="form-check-label" for="one-at-a-time">Jenkins One at a Time</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="djb2" onclick="autoUpdateHash();" disabled>
+                <label class="form-check-label" for="djb2">djb2</label>
             </div>
             <label><b>Unkeyed Cryptographic Hash Functions</b></label>
             <div class="form-check">

@@ -500,7 +500,7 @@ function crc8(message, initial, polynomial, outXor, reflectIn, reflectOut) {
     });
     crc = reflectOut ? reflectCRC8(crc) : crc;
     let output = byteCast(crc ^ outXor).toString(16).padStart(2, "0");;
-    return "0x" + output;
+    return output;
 }
 
 function crc16(message, initial, polynomial, outXor, reflectIn, reflectOut) {
@@ -520,7 +520,7 @@ function crc16(message, initial, polynomial, outXor, reflectIn, reflectOut) {
     });
     crc = reflectOut ? reflectCRC16(crc) : crc;
     let output = ushortCast(crc ^ outXor).toString(16).padStart(4, "0");;
-    return "0x" + output;
+    return output;
 }
 
 function crc32(message, initial, polynomial, outXor, reflectIn, reflectOut) {
@@ -540,7 +540,7 @@ function crc32(message, initial, polynomial, outXor, reflectIn, reflectOut) {
     });
     crc = reflectOut ? reflectCRC32(crc) : crc;
     let output = uintCast(crc ^ outXor).toString(16).padStart(8, "0");
-    return "0x" + output;
+    return output;
 }
 
 function crc64(message, initial, polynomial, outXor, reflectIn, reflectOut) {
@@ -560,7 +560,7 @@ function crc64(message, initial, polynomial, outXor, reflectIn, reflectOut) {
     });
     crc = reflectOut ? reflectCRC64(crc) : crc;
     let output = ulongCast(crc ^ outXor).toString(16).padStart(16, "0");
-    return "0x" + output;
+    return output;
 }
 
 function bsd(message) {
@@ -570,7 +570,7 @@ function bsd(message) {
         checksum += message.charCodeAt(index);
         checksum &= 0xffff;
     });
-    return "0x" + checksum.toString(16).padStart(4, "0");
+    return checksum.toString(16).padStart(4, "0");
 }
 
 function sysv(message) {
@@ -579,7 +579,7 @@ function sysv(message) {
         s += message.charCodeAt(index);
     });
     var r = s % (2**16) + (s % (2**32)) / (2**16);
-    return "0x" + parseInt(((r % (2**16)) + r / (2**16)).toFixed(0)).toString(16).padStart(4, "0");
+    return parseInt(((r % (2**16)) + r / (2**16)).toFixed(0)).toString(16).padStart(4, "0");
 }
 
 function fletcher8(message) {
@@ -589,7 +589,7 @@ function fletcher8(message) {
         sum1 = (sum1 + message.charCodeAt(i)) % 15;
         sum2 = (sum2 + sum1) % 15;
     }
-    return "0x" + ((sum2 << 4) | sum1).toString(16).padStart(2, "0");
+    return ((sum2 << 4) | sum1).toString(16).padStart(2, "0");
 }
 
 function fletcher16(message) {
@@ -599,7 +599,7 @@ function fletcher16(message) {
         sum1 = (sum1 + message.charCodeAt(i)) % 255;
         sum2 = (sum2 + sum1) % 255;
     }
-    return "0x" + ((sum2 << 8) | sum1).toString(16).padStart(4, "0");
+    return ((sum2 << 8) | sum1).toString(16).padStart(4, "0");
 }
 
 function fletcher32(message) {
@@ -609,7 +609,7 @@ function fletcher32(message) {
         sum1 = (sum1 + message.charCodeAt(i) + message.charCodeAt(i+1)) % 0xffff;
         sum2 = (sum2 + sum1) % 0xffff;
     }
-    return "0x" + ((sum2 << 16) | sum1).toString(16).padStart(8, "0");
+    return ((sum2 << 16) | sum1).toString(16).padStart(8, "0");
 }
 
 function fletcher64(message) {
@@ -619,7 +619,7 @@ function fletcher64(message) {
         sum1 = (sum1 + BigInt(message.charCodeAt(i))) % 0xffffffffn;
         sum2 = (sum2 + sum1) % 0xffffffffn;
     }
-    return "0x" + ((sum2 << 32n) | sum1).toString(16).padStart(16, "0");
+    return ((sum2 << 32n) | sum1).toString(16).padStart(16, "0");
 }
 
 function alder32(message) {
@@ -629,7 +629,7 @@ function alder32(message) {
         a = (a + message.charCodeAt(i)) % MOD_ALDER;
         b = (b + a) % MOD_ALDER;
     }
-    return "0x" + (((b << 16) | a) >>> 0).toString(16).padStart(8, "0");
+    return (((b << 16) | a) >>> 0).toString(16).padStart(8, "0");
 }
 
 function lrc(message) {
@@ -638,7 +638,7 @@ function lrc(message) {
         lrc = (lrc + message.charCodeAt(i)) & 0xff;
     }
     lrc = ((lrc ^ 0xff) + 1) & 0xff;
-    return "0x" + lrc.toString(16).padStart(2, "0");
+    return lrc.toString(16).padStart(2, "0");
 }
 
 function oneAtATime(message) {
@@ -654,6 +654,17 @@ function oneAtATime(message) {
     hash += hash << 15;
     return uintCast(hash).toString(16).padStart(8, "0");
 }
+
+function djb2(message) {
+    var hash = 5381;
+    for (let i = 0; i < message.length; i++) {
+        hash = ((hash << 5) + hash) + message.charCodeAt(i);
+    }
+
+    return hash;
+}
+
+
 
 //console.log(md2("yo"));  // ff8182fd0faa026ad1adc74f31952e45
 //console.log(md4("yo"));  // 3357f1feed651ea2e31e87329568d3e8
@@ -671,3 +682,4 @@ function oneAtATime(message) {
 //console.log(alder32("yo")) // 0x016300e9
 //console.log(lrc("yo")) // 0x18
 //console.log(oneAtATime("yo")) // 0xc75186a9
+//console.log(djb2("yo"));

@@ -4,6 +4,32 @@ function autoUpdateHash() {
     }
 }
 
+function updateColumns() {
+    const table = document.getElementById("tableHeaderBox");
+    jQuery("[class=tableHeader]").remove(); 
+    if (document.getElementById("outputHex").checked) {
+        var cell = table.insertCell(-1);
+        cell.classList.add("tableHeader");
+        cell.innerHTML = "Hex";
+    }
+    if (document.getElementById("outputDec").checked) {
+        var cell = table.insertCell(-1);
+        cell.classList.add("tableHeader");
+        cell.innerHTML = "Dec";
+    }
+    if (document.getElementById("outputOct").checked) {
+        var cell = table.insertCell(-1);
+        cell.classList.add("tableHeader");
+        cell.innerHTML = "Oct";
+    }
+    if (document.getElementById("outputBin").checked) {
+        var cell = table.insertCell(-1);
+        cell.classList.add("tableHeader");
+        cell.innerHTML = "Bin";
+    }
+    updateHash();
+}
+
 function updateHash() {
     const data = document.getElementById("input").value;
     const algos = (hash) => document.getElementById(hash).checked;
@@ -13,10 +39,10 @@ function updateHash() {
         output["MD2"] = md2(data);
     }
     if (algos("md4")) {
-        output["MD4"] =  md4(data);
+        output["MD4"] = md4(data);
     }
     if (algos("md5")) {
-        output["MD5"] =  md5(data);
+        output["MD5"] = md5(data);
     }
     if (algos("crc8")) {
         output["CRC-8"] = crc8(data, 0x00, 0x07, 0x00, false, false);
@@ -118,18 +144,39 @@ function updateHash() {
     if (algos("one-at-a-time")) {
         output["Jenkins One at a Time"] = oneAtATime(data);
     }
+    if (algos("djb2")) {
+        output["djb2"] = djb2(data);
+    }
     const table = document.getElementById("outputTable");
-    jQuery("[id=dynamic]").remove(); 
+    jQuery("[class=dynamic]").remove(); 
     Object.entries(output).forEach(([key, value]) => {
+        const currentValue = value;
         const row = table.insertRow(-1);
-        row.id = "dynamic"
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
+        row.classList.add("dynamic");
 
+        var cell1 = row.insertCell(0);
         cell1.innerHTML = key;
-        cell2.innerHTML = value;
+        
+        var headers = jQuery("[class=tableHeader]").map(function() {
+            return this.innerHTML;
+        }).get();
+
+        headers.forEach((value, index) => {
+            var cell = row.insertCell(index + 1);
+            if (value == "Hex") {
+                cell.innerHTML = currentValue;
+            } else if (value == "Dec") {
+                var maxLength = "";
+                for (let i = 0; i < currentValue.length; i++) maxLength += "f";
+                cell.innerHTML = parseInt(currentValue, 16).toString(10).padStart(parseInt(maxLength, 16).toString(10).length, "0");
+            } else if (value == "Oct") {
+                cell.innerHTML = parseInt(currentValue, 16).toString(8).padStart(currentValue.length + (1 * ((currentValue.length - 1) / 3)) + 1, "0");
+            } else if (value == "Bin") {
+                cell.innerHTML = parseInt(currentValue, 16).toString(2).padStart(currentValue.length * 4, "0");
+            }
+        });
     });
-    $('[id=mainBox]').css({'padding-top': (34 * Object.entries(output).length.toString()) + 'px'});
+    $('[id=mainBox]').css({'padding-top': 100 + (34 * Object.entries(output).length.toString()) + 'px'});
 }
 
 $(document).ready(function() {
