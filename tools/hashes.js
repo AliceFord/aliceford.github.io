@@ -664,6 +664,52 @@ function djb2(message) {
     return hash;
 }
 
+function roundUp(num, round) {
+    if (num % round == 0) return num;
+    else return num + (4 - (num % round));
+}
+
+function base64URL(message) {
+    return base64(message, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_");
+}
+
+function base64(message, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") {
+    var binString = "";
+    for (let i = 0; i < message.length; i++) {
+        binString += message.charCodeAt(i).toString(2).padStart(8, "0");
+    }
+
+    var result = "";
+    for (let i = 0; i < binString.length; i += 6) {
+        let currentString = binString.substring(i, i+6);
+        currentString = currentString.padEnd(6, "0");
+        result += alphabet[parseInt(currentString, 2)];
+    }
+    return result.length % 4 == 0 ? result : result.padEnd(roundUp(result.length, 4), "=");
+}
+
+function ascii85(message) {
+    //const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~"
+    var strNum = "";
+    var output = "";
+    for (let i = 0; i < message.length; i++) strNum += message.charCodeAt(i).toString(16).padStart(2, "0");
+    for (let i = 0; i < strNum.length; i += 8) {
+        var currentWithoutPadding = strNum.substring(i, i+8);
+        var current = currentWithoutPadding.padEnd(8, "0");
+        var num = parseInt(current, 16);
+        output += String.fromCharCode(Math.floor((num / 52200625) % 85) + 33);
+        output += String.fromCharCode(Math.floor((num / 614125) % 85) + 33);
+        output += String.fromCharCode(Math.floor((num / 7225) % 85) + 33);;
+        output += String.fromCharCode(Math.floor((num / 85) % 85) + 33);
+        output += String.fromCharCode(((num) % 85) + 33);
+        if (currentWithoutPadding.length != current.length && i + 8 > strNum.length) {
+            output = output.substring(0, output.length - (4 - (currentWithoutPadding.length / 2)));
+        }
+    }
+
+    return output;
+}
+
 
 
 //console.log(md2("yo"));  // ff8182fd0faa026ad1adc74f31952e45
@@ -683,3 +729,5 @@ function djb2(message) {
 //console.log(lrc("yo")) // 0x18
 //console.log(oneAtATime("yo")) // 0xc75186a9
 //console.log(djb2("yo"));
+//console.log(base64("yo")); // eW8=
+//console.log(ascii85("yo")); // H#E

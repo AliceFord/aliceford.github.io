@@ -5,7 +5,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Encoding</title>
+    <title>Tools</title>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -16,25 +16,40 @@
   </head>
 
   <body>
-    <div style="overflow-y: visible; padding-top: 100px" class="container row"  id="mainBox">
-        <div style="align-content: center; width: 850px; max-width: 100%;" class="col-sm-10">
-            <textarea cols="30" class="form-control" style="min-height: 100px; max-height: 500px; resize: vertical;" id="input" placeholder="Input" oninput="autoUpdateHash();"></textarea>
-            <div style="margin: 15px; font-family: monospace;">
+    <div style="overflow-y: visible; padding-top: 200px" class="container row"  id="mainBox">
+        <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #f5f5f5;">
+            <a class="navbar-brand" href="#">TechieTools</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="index.html">Encoding and Hashing</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="how-to.html">How-To</a>
+                </li>
+              </ul>
+            </div>
+        </nav>
+        <div style="align-content: center; width: 850px; max-width: 100%;" class="col-sm-8" id="inputDiv">
+            <textarea cols="30" class="form-control" style="min-height: 100px; max-height: 500px; resize: vertical;" id="dataEntry" placeholder="Input" oninput="autoUpdateHash();"></textarea>
+            <div style="margin: 15px;">
                 <div class="col-sm-8">
-                    <label>
-                        Input: 
+                    <label>Input: </label>
+                    <label class="radio-inline">
+                        <input class="inputMethod" type="radio" value="ascii" id="ascii" onclick="changeInputMethod('ascii');" checked>ASCII
                     </label>
-                    <label>
-                        <label class="radio-inline">
-                            <input type="radio" value="ascii" checked>ASCII
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" value="hex" disabled>Hex
-                        </label>
+                    <label class="radio-inline">
+                        <input class="inputMethod" type="radio" value="file" id="file" onclick="changeInputMethod('file');">File
+                    </label>
+                    <label class="radio-inline">
+                        <input class="inputMethod" type="radio" value="hex" id="hex" onclick="changeInputMethod('hex');" disabled>Hex
                     </label>
                     <label class="checkbox-inline" style="margin-left: 15px; margin-bottom: 0px; vertical-align: middle;">
                         <input type="checkbox" id="autoHash" checked>Auto Hash
-                    </label>
+                    </label>                    
                 </div>
 
                 <div class="col-sm-8">
@@ -56,7 +71,7 @@
             <div class="submit">
                 <input class="btn btn-success" id="execute" type="button" value="Hash" onclick="updateHash();">
             </div>
-            <div style="font-family:monospace;" class="table-responsive table-body table-sm">
+            <div class="table-responsive table-body table-sm">
 
                 <table class="table table-hover" id="outputTable">
                     <tbody>
@@ -72,7 +87,7 @@
                 </table>
             </div>
         </div>
-        <div class="col-sm-2" style="font-family: monospace;">
+        <div class="col-sm-2">
             <p style="font-size: small;">P.S. If a button is greyed out, then it's WIP.</p>
             <label><b>Cyclic Redundancy Checks</b></label>
             <div class="form-check">
@@ -145,6 +160,21 @@
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="md5" onclick="autoUpdateHash();">
                 <label class="form-check-label" for="md5">MD5</label>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label><b>Encoding</b></label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="b64" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="b64">Base64</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="b64url" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="b64url">Base64URL</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="a85" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="a85">Ascii85</label>
             </div>
         </div>
     </div>

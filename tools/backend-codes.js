@@ -1,0 +1,3 @@
+function microQR(message) {
+    
+}

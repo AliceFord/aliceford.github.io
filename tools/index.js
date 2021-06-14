@@ -4,6 +4,38 @@ function autoUpdateHash() {
     }
 }
 
+var currentInputMethod = "ascii";
+
+function changeInputMethod(method) {
+    var data = jQuery("[class=inputMethod]");
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].value != method) {
+            data[i].checked = false;
+        }
+    }
+    var element;
+
+    if (method == "ascii") {
+        element = document.createElement("textarea");
+        element.cols = 30;
+        element.classList.add("form-control");
+        element.style.minHeight = "100px";
+        element.style.maxHeight = "500px";
+        element.style.resize = "vertical";
+        element.id = "dataEntry";
+        element.placeholder = "Input"
+        element.oninput = function(){autoUpdateHash()};
+    } else if (method == "file") {
+        element = document.createElement("input");
+        element.type = "file";
+        element.id = "dataEntry";
+    }
+    const replace = document.getElementById("dataEntry");
+    replace.parentNode.replaceChild(element, replace);
+
+    currentInputMethod = method;
+}
+
 function updateColumns() {
     const table = document.getElementById("tableHeaderBox");
     jQuery("[class=tableHeader]").remove(); 
@@ -31,7 +63,20 @@ function updateColumns() {
 }
 
 function updateHash() {
-    const data = document.getElementById("input").value;
+    var data;
+    if (currentInputMethod == "ascii") {
+        data = document.getElementById("dataEntry").value;
+        doHash(data);
+    } else if (currentInputMethod == "file") {
+        var file = document.getElementById("dataEntry").files[0];
+        var fr = new FileReader();
+        fr.readAsText(file);
+        fr.onload = function() {doHash(fr.result)};
+    }
+}
+
+function doHash(data) {
+    console.log(data);
     const algos = (hash) => document.getElementById(hash).checked;
     var output = {};
 
@@ -147,6 +192,15 @@ function updateHash() {
     if (algos("djb2")) {
         output["djb2"] = djb2(data);
     }
+    if (algos("b64")) {
+        output["Base64"] = base64(data);
+    }
+    if (algos("b64url")) {
+        output["Base64URL"] = base64URL(data);
+    }
+    if (algos("a85")) {
+        output["Ascii85"] = ascii85(data);
+    }
     const table = document.getElementById("outputTable");
     jQuery("[class=dynamic]").remove(); 
     Object.entries(output).forEach(([key, value]) => {
@@ -160,21 +214,26 @@ function updateHash() {
         var headers = jQuery("[class=tableHeader]").map(function() {
             return this.innerHTML;
         }).get();
-
-        headers.forEach((value, index) => {
-            var cell = row.insertCell(index + 1);
-            if (value == "Hex") {
-                cell.innerHTML = currentValue;
-            } else if (value == "Dec") {
-                var maxLength = "";
-                for (let i = 0; i < currentValue.length; i++) maxLength += "f";
-                cell.innerHTML = parseInt(currentValue, 16).toString(10).padStart(parseInt(maxLength, 16).toString(10).length, "0");
-            } else if (value == "Oct") {
-                cell.innerHTML = parseInt(currentValue, 16).toString(8).padStart(currentValue.length + (1 * ((currentValue.length - 1) / 3)) + 1, "0");
-            } else if (value == "Bin") {
-                cell.innerHTML = parseInt(currentValue, 16).toString(2).padStart(currentValue.length * 4, "0");
-            }
-        });
+        if (key == "Base-64" || key == "Ascii85") {
+            var cell = row.insertCell(1);
+            cell.colSpan = 4;
+            cell.innerHTML = currentValue;
+        } else {
+            headers.forEach((value, index) => {
+                var cell = row.insertCell(index + 1);
+                if (value == "Hex") {
+                    cell.innerHTML = currentValue;
+                } else if (value == "Dec") {
+                    var maxLength = "";
+                    for (let i = 0; i < currentValue.length; i++) maxLength += "f";
+                    cell.innerHTML = parseInt(currentValue, 16).toString(10).padStart(parseInt(maxLength, 16).toString(10).length, "0");
+                } else if (value == "Oct") {
+                    cell.innerHTML = parseInt(currentValue, 16).toString(8).padStart(currentValue.length + (1 * ((currentValue.length - 1) / 3)) + 1, "0");
+                } else if (value == "Bin") {
+                    cell.innerHTML = parseInt(currentValue, 16).toString(2).padStart(currentValue.length * 4, "0");
+                }
+            });
+        }
     });
     $('[id=mainBox]').css({'padding-top': 100 + (34 * Object.entries(output).length.toString()) + 'px'});
 }
