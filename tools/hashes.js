@@ -689,7 +689,6 @@ function base64(message, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrs
 }
 
 function ascii85(message) {
-    //const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~"
     var strNum = "";
     var output = "";
     for (let i = 0; i < message.length; i++) strNum += message.charCodeAt(i).toString(16).padStart(2, "0");

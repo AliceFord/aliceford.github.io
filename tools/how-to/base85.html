@@ -12,7 +12,7 @@
     <script src="../index.js"></script>
     <script src="../hashes.js"></script>
     <script src="dynamic.js"></script>
-    <script src="_base64.js"></script>
+    <script src="_base85.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="../howto.css" rel="stylesheet">
     <link rel="stylesheet" href="github.css">
@@ -55,10 +55,10 @@
                   <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">Encoding</a>
                   <ul class="collapse list-unstyled show" id="homeSubmenu">
                       <li>
-                          <a href="base64.html" class="active">Base64</a>
+                          <a href="base64.html">Base64</a>
                       </li>
                       <li>
-                          <a href="base85.html">Base85</a>
+                          <a href="base85.html" class="active">Base85</a>
                       </li>
                   </ul>
               </li>
@@ -79,45 +79,52 @@
           </ul>
       </nav>
       <div style="margin-top: 75px;" class="col-lg-9">
-        <h2>How to: Base64 Encoding</h2>
+        <h2>How to: Base85 Encoding</h2>
         <p>Quick links: <a href="#explanation" class="quick-link">Code Explanation</a> | <a href="#dynamic" class="quick-link">Variable inspector</a></p>
-        <p>Base64 encoding is rather simple. To do it, first convert your message to binary, then split into 6 bit sections. Use a predefined alphabet on these, then pad with '=' until the length % 4 is 0.</p>
+        <p>Base85 (Ascii85) encoding is a simple process, slightly more complex than that of base64. To sum it up, we get our message, convert to hex, do some large dividing and add some padding.</p>
         <pre>
-            <code class="highlight-javascript">function base64(message, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") {
-    var binString = "";
-    for (let i = 0; i < message.length; i++) {
-        binString += message.charCodeAt(i).toString(2).padStart(8, "0");
+            <code class="highlight-javascript">function ascii85(message) {
+    var strNum = "";
+    var output = "";
+    for (let i = 0; i < message.length; i++) strNum += message.charCodeAt(i).toString(16).padStart(2, "0");
+    for (let i = 0; i < strNum.length; i += 8) {
+        var currentWithoutPadding = strNum.substring(i, i+8);
+        var current = currentWithoutPadding.padEnd(8, "0");
+        var num = parseInt(current, 16);
+        output += String.fromCharCode(Math.floor((num / 52200625) % 85) + 33);
+        output += String.fromCharCode(Math.floor((num / 614125) % 85) + 33);
+        output += String.fromCharCode(Math.floor((num / 7225) % 85) + 33);;
+        output += String.fromCharCode(Math.floor((num / 85) % 85) + 33);
+        output += String.fromCharCode(((num) % 85) + 33);
+        if (currentWithoutPadding.length != current.length && i + 8 > strNum.length) {
+            output = output.substring(0, output.length - (4 - (currentWithoutPadding.length / 2)));
+        }
     }
 
-    var result = "";
-    for (let i = 0; i < binString.length; i += 6) {
-        let currentString = binString.substring(i, i+6);
-        currentString = currentString.padEnd(6, "0");
-        result += alphabet[parseInt(currentString, 2)];
-    }
-    return result.length % 4 == 0 ? result : result.padEnd(roundUp(result.length, 4), "=");
+    return output;
 }</code>
         </pre>
         <h4 id="explanation">Explanation of the code</h4>
-        <p>On line 1, we create the function, taking in a message (string) and an alphabet, which is how we encode each letter.</p>
-        <p>Next on line 2, we intialize a binary string <code>binString</code> variable, then we fill it with the binary of each letter in the message. These values are padded to all be 8-bit ASCII. We then initialize a <code>result</code> string on line 7.</p>
-        <p>In lines 8-12, we loop through the binary string, crucially going forward in groups of 6, for 6-bit values. On line 9, we take in the binary string as variable <code>currentString</code>. Then on line 10 we pad this with 0's to be a 6-bit binary value. Finally, on line 11, we add this binary value's equivalent letter in our alphabet variable onto the result string.</p>
-        <p>Finally, we return the result if it is a multiple of 4 long, else we return it with the end padded with '=' until the next multiple of 4. The <code>roundUp()</code> function here just returns the length of the result rounded up to the nearest 4.</p>
-        <p>For base64URL, the only difference is to use a different alphabet, namely "<code>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_</code>".</p>
+        <p>On line 1, we define the function <code>ascii85</code> with parameter <code>message</code>, the message we wish to encode.</p>
+        <p>On lines 2 and 3, we define empty strings <code>strNum</code> and <code>output</code> which store the message as hex and the output as base85.</p>
+        <p>Later on line 4, we loop through each character of the message, and add its hex representation to the <code>strNum</code> variable.</p>
+        <p>On line 5, we begin a for loop, looping through the hex of strNum in 64-bit words (8 characters of hex).</p>
+        <p>In lines 6-8, we read in the hex to <code>currentWithoutPadding</code>, pad this into <code>current</code> and decode this from base 16 into <code>num</code>.</p>
+        <p>In lines 9-13, we encode the data. This may look complex, but really all we are doing is the (number / 85^n) mod 85, converting the number to base85. We then add 33 to get to the correct place in the alphabet for ascii85, starting at the '!' character (see the ascii table <a class="quick-link" href="http://www.asciitable.com/">here</a>).</p>
+        <p>Finally, in line 14, we test to see if we have reached the end of the hex, with too many bits of padding. If this is true, we just remove a few characters from the end of the string, namely <code>output.length - (4 - (currentWithoutPadding.length / 2))</code>.</p>
         <p>If you want this code, you can download it here: </p>
-        <form action="base64.js"><button class="btn">Download</button></form>
+        <form action="base85.js"><button class="btn">Download</button></form>
         <br>
         <h3 id="dynamic">Variable inspector</h3>
         <textarea cols="10" class="form-control" style="min-height: 50px; max-height: 100px; resize: vertical;" id="dataEntry" placeholder="Input" oninput="updateDynamic();"></textarea>
         <p>Output: <code id="output"></code></p>
-        <p>binString: <code id="binString"></code></p>
-        <p>currentString (each time): <code id="currentString"></code></p>
+        <p>strNum: <code id="strNum"></code></p>
       </div>
     </div>
     <script>
     hljs.highlightAll();
     hljs.initLineNumbersOnLoad();
-    initDynamic(base64Verbose);
+    initDynamic(ascii85Verbose);
     </script>
   </body>
 </html>
