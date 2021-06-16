@@ -687,7 +687,9 @@ function base64(message, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrs
     }
     return result.length % 4 == 0 ? result : result.padEnd(roundUp(result.length, 4), "=");
 }
-
+/**
+ * @param  {string} message
+ */
 function ascii85(message) {
     var strNum = "";
     var output = "";
