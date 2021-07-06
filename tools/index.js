@@ -15,7 +15,7 @@ function changeInputMethod(method) {
     }
     var element;
 
-    if (method == "ascii") {
+    if (method == "ascii" || method == "bin" || method == "hex") {
         element = document.createElement("textarea");
         element.cols = 30;
         element.classList.add("form-control");
@@ -72,11 +72,34 @@ function updateHash() {
         var fr = new FileReader();
         fr.readAsText(file);
         fr.onload = function() {doHash(fr.result)};
+    } else if (currentInputMethod == "bin") {
+        data = document.getElementById("dataEntry").value;
+        if (data == "") {
+            doHash("");
+            return;
+        }
+        let dataArr = data.match(/.{1,8}/g);
+        let outputInAscii = "";
+        dataArr.forEach(element => {
+            outputInAscii += String.fromCharCode(parseInt(element, 2));
+        });
+        doHash(outputInAscii);
+    } else if (currentInputMethod == "hex") {
+        data = document.getElementById("dataEntry").value;
+        if (data == "") {
+            doHash("");
+            return;
+        }
+        let dataArr = data.match(/.{1,2}/g);
+        let outputInAscii = "";
+        dataArr.forEach(element => {
+            outputInAscii += String.fromCharCode(parseInt(element, 16));
+        });
+        doHash(outputInAscii);
     }
 }
 
 function doHash(data) {
-    console.log(data);
     const algos = (hash) => document.getElementById(hash).checked;
     var output = {};
 
