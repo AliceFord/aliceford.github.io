@@ -107,9 +107,21 @@ function doHash(data) {
         if (algos("code39")) {
             output["Code39"] = dcode39(data);
         }
+        if (algos("codabar")) {
+            output["Codabar"] = dcodabar(data);
+        }
+        if (algos("code128")) {
+            output["Code128"] = dcode128(data);
+        }
     } else {
         if (algos("code39")) {
             output["Code39"] = ecode39(data);
+        }
+        if (algos("codabar")) {
+            output["Codabar"] = ecodabar(data);
+        }
+        if (algos("code128")) {
+            output["Code128"] = ecode128(data);
         }
     }
 
