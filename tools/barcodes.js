@@ -113,6 +113,12 @@ function doHash(data) {
         if (algos("code128")) {
             output["Code128"] = dcode128(data);
         }
+        if (algos("i2of5")) {
+            output["Interleaved 2 of 5"] = di2of5(data);
+        }
+        if (algos("qrcode")) {
+            output["QR Code"] = dqrcode(data);
+        }
     } else {
         if (algos("code39")) {
             output["Code39"] = ecode39(data);
@@ -122,6 +128,12 @@ function doHash(data) {
         }
         if (algos("code128")) {
             output["Code128"] = ecode128(data);
+        }
+        if (algos("i2of5")) {
+            output["Interleaved 2 of 5"] = ei2of5(data);
+        }
+        if (algos("qrcode")) {
+            output["QR Code"] = eqrcode(data);
         }
     }
 
