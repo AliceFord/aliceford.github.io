@@ -725,14 +725,15 @@ function eqrcode(code) {
     }
 
     function setupQRCode(_modules) {
+        let invalidLocations = [];
         let size = _modules.length - 1;
         for (let i = 0; i < 7; i++) {
-            _modules[i][0] = 1;
-            _modules[i][6] = 1;
-            _modules[0][i] = 1;
-            _modules[6][i] = 1;
+            _modules[i][0] = 1; 
+            _modules[i][6] = 1; 
+            _modules[0][i] = 1; 
+            _modules[6][i] = 1; 
 
-            _modules[i][size] = 1;
+            _modules[i][size] = 1; 
             _modules[i][size - 6] = 1;
             _modules[0][size - i] = 1;
             _modules[6][size - i] = 1;
@@ -742,7 +743,6 @@ function eqrcode(code) {
             _modules[size][i] = 1;
             _modules[size - 6][i] = 1;
         }
-
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
                 _modules[i + 2][j + 2] = 1;
@@ -750,19 +750,63 @@ function eqrcode(code) {
                 _modules[i + 2][size - (j + 2)] = 1;
             }
         }
-
-        if (V > 1) {
-            
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                invalidLocations.push([i, j]);
+            }
         }
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 8; j++) {
+                invalidLocations.push([i, size - j]);
+                invalidLocations.push([size - j, i]);
+            }
+        }
+        
+        V = 2;
+        if (V > 1) {
+            let locations = QRCODE_ALIGNMENT_LOCATIONS[V];
+            var validLocations = [];
+            for (let i = 0; i < locations.length; i++) {
+                for (let j = 0; j < locations.length; j++) {
+                    if (!((i == 0 && j == 0) || (i == 0 && j == locations.length - 1) || (i == locations.length - 1 && j == 0))) {
+                        validLocations.push([locations[i], locations[j]]);
+                    }
+                }
+            }
+            console.log(validLocations);
+            validLocations.forEach((value) => {
+                _modules[value[0]][value[1]] = 1;
+                for (let i = -2; i < 3; i++) {
+                    console.log(i);
+                    _modules[value[0]+i][value[1]+2] = 1;
+                    _modules[value[0]+i][value[1]-2] = 1;
+                    _modules[value[0]+2][value[1]+i] = 1;
+                    _modules[value[0]-2][value[1]+i] = 1;
+                }
+            });
+        }
+        V = 1;
+
+        validLocations.forEach((value) => {
+            for (let i = -2; i < 3; i++) {
+                for (let j = -2; j < 3; j++) {
+                    invalidLocations.push([value[0] + i, value[1] + j]);
+                }
+            }
+        });
 
         for (let i = 0; i < size - 16 + 1; i += 2) {
             _modules[i + 8][6] = 1;
             _modules[6][i + 8] = 1;
         }
+        for (let i = 0; i < size + 1; i++) {
+            invalidLocations.push([6, i]);
+            invalidLocations.push([i, 6]);
+        }
         
         _modules[8][size - 7] = 1;
         
-        return _modules;
+        return [_modules, invalidLocations];
     }
 
     function determineMaskPenalty(_modules) {
@@ -1007,12 +1051,15 @@ function eqrcode(code) {
 
     console.log(bitstring.length);
 
-    modules = setupQRCode(modules);
+    let qrcodesetup = setupQRCode(modules);
+    modules = qrcodesetup[0];
+
+    var disallowedLocations = qrcodesetup[1];
 
     let pos = 0;
 
     let s = 20;  // size
-
+    
     for (let i = 0; i < 12; i++) {
         modules[s][s-i] = parseInt(bitstring[pos++]);
         modules[s-1][s-i] = parseInt(bitstring[pos++]);
