@@ -490,25 +490,33 @@ function generatePNGFromBinary(binary) {
  * @param  {Number[][]} bitarr
  */
 function generatePNGFromBitArray(bitarr) {
+    let moduleSize = 5;
     let canvas = document.createElement("canvas");
-    canvas.width = bitarr.length;
-    canvas.height = bitarr[0].length;
+    canvas.width = bitarr.length * moduleSize;
+    canvas.height = bitarr[0].length * moduleSize;
     let ctx = canvas.getContext("2d");
     let image = ctx.createImageData(canvas.width, canvas.height);
     let data = image.data;
 
-    for (let i = 0; i < bitarr.length; i++) {
-        for (let j = 0; j < bitarr[0].length; j++) {
-            if (bitarr[j][i] == 0) {
-                data[(i * bitarr.length + j) * 4] = 255;
-                data[(i * bitarr.length + j) * 4 + 1] = 255;
-                data[(i * bitarr.length + j) * 4 + 2] = 255;
-                data[(i * bitarr.length + j) * 4 + 3] = 255;
-            } else {
-                data[(i * bitarr.length + j) * 4] = 0;
-                data[(i * bitarr.length + j) * 4 + 1] = 0;
-                data[(i * bitarr.length + j) * 4 + 2] = 0;
-                data[(i * bitarr.length + j) * 4 + 3] = 255;
+    let looplen = bitarr.length;
+
+    for (let i = 0; i < looplen; i++) {
+        for (let j = 0; j < looplen; j++) {
+            for (let x = 0; x < moduleSize; x++) {
+                for (let y = 0; y < moduleSize; y++) {
+                    let location = ((i * bitarr.length * moduleSize + j) * moduleSize + x + y * bitarr.length * moduleSize) * 4;
+                    if (bitarr[j][i] == 0) {
+                        data[location] = 255;
+                        data[location + 1] = 255;
+                        data[location + 2] = 255;
+                        data[location + 3] = 255;
+                    } else {
+                        data[location] = 0;
+                        data[location + 1] = 0;
+                        data[location + 2] = 0;
+                        data[location + 3] = 255;
+                    }
+                }
             }
         }
     }
@@ -762,7 +770,6 @@ function eqrcode(code) {
             }
         }
         
-        V = 2;
         if (V > 1) {
             let locations = QRCODE_ALIGNMENT_LOCATIONS[V];
             var validLocations = [];
@@ -777,23 +784,21 @@ function eqrcode(code) {
             validLocations.forEach((value) => {
                 _modules[value[0]][value[1]] = 1;
                 for (let i = -2; i < 3; i++) {
-                    console.log(i);
                     _modules[value[0]+i][value[1]+2] = 1;
                     _modules[value[0]+i][value[1]-2] = 1;
                     _modules[value[0]+2][value[1]+i] = 1;
                     _modules[value[0]-2][value[1]+i] = 1;
                 }
             });
-        }
-        V = 1;
 
-        validLocations.forEach((value) => {
-            for (let i = -2; i < 3; i++) {
-                for (let j = -2; j < 3; j++) {
-                    invalidLocations.push([value[0] + i, value[1] + j]);
+            validLocations.forEach((value) => {
+                for (let i = -2; i < 3; i++) {
+                    for (let j = -2; j < 3; j++) {
+                        invalidLocations.push([value[0] + i, value[1] + j]);
+                    }
                 }
-            }
-        });
+            });
+        }
 
         for (let i = 0; i < size - 16 + 1; i += 2) {
             _modules[i + 8][6] = 1;
@@ -895,19 +900,33 @@ function eqrcode(code) {
         return score1 + score2 + score3 + score4;
     }
 
+    function isIncludedArr(arr, arr2) {
+        for (let i = 0; i < arr.length; i++) {
+            let valid = true;
+            for (let j = 0; j < arr[i].length; j++) {
+                if (arr[i][j] != arr2[j]) {
+                    valid = false;
+                    break;
+                }
+            }
+            if (valid) return true;
+        }
+        return false;
+    }
+
     function applyMask(_modules, mask) {
         let size = _modules.length - 1;
         let copy = [];
-        for (let i = 0; i < 21; i++) {
+        for (let i = 0; i < _modules.length; i++) {
             copy[i] = [];
-            for (let j = 0; j < 21; j++) {
+            for (let j = 0; j < _modules[0].length; j++) {
                 copy[i][j] = 0;
             }
         }
 
         for (let i = 0; i < copy.length; i++) {
             for (let j = 0; j < copy[0].length; j++) {
-                if (!((i < 8 && j < 8) || (i > size - 8 && j < 8) || (i < 8 && j > size - 8) || (i == 8 && j == size - 7) || (i == 6) || (j == 6))) {
+                if (!isIncludedArr(disallowedLocations, [i, j])) {
                     if (mask(j, i)) {
                         copy[i][j] = 1 - _modules[i][j];
                     } else {
@@ -947,20 +966,130 @@ function eqrcode(code) {
         return _modules;
     }
 
-    code = "HELLO WORLD";
+    function getNextValidLocation(_size, _pos, _dir, _hitTiming) {
+        if ((_pos[0] == 9 && _pos[1] == _size && _dir == 0) || (_pos[0] == 9 && _pos[1] == 0 && _dir == 1)) {
+            return [8, _size - 8, 1, _hitTiming];
+        }
+        if (_pos[0] <= 8) {
+            if (_hitTiming) {
+                if (_dir == 1) {
+                    if (_pos[0] % 2 == 1) {
+                        return [_pos[0] - 1, _pos[1], _dir, _hitTiming];
+                    } else {
+                        if (isIncludedArr(disallowedLocations, [_pos[0] + 1, _pos[1] - 1])) {
+                            return [_pos[0] - 1, _pos[1], 0, _hitTiming];
+                        } else {
+                            return [_pos[0] + 1, _pos[1] - 1, _dir, _hitTiming];
+                        }
+                    }
+                } else {
+                    if (_pos[0] % 2 == 1) {
+                        return [_pos[0] - 1, _pos[1], _dir, _hitTiming];
+                    } else {
+                        if (isIncludedArr(disallowedLocations, [_pos[0] + 1, _pos[1] + 1])) {
+                            return [_pos[0] - 1, _pos[1], 1, _hitTiming];
+                        } else {
+                            return [_pos[0] + 1, _pos[1] + 1, _dir, _hitTiming];
+                        }
+                    }
+                }
+            } else {
+                if (_dir == 1) {
+                    if (_pos[0] % 2 == 0) {
+                        return [_pos[0] - 1, _pos[1], _dir, _hitTiming];
+                    } else {
+                        if (isIncludedArr(disallowedLocations, [_pos[0] + 1, _pos[1] - 1])) {
+                            return [_pos[0] - 2, _pos[1], 0, true];
+                        } else {
+                            return [_pos[0] + 1, _pos[1] - 1, _dir, _hitTiming];
+                        }
+                    }
+                } else {
+                    if (_pos[0] % 2 == 0) {
+                        return [_pos[0] - 1, _pos[1], _dir, _hitTiming];
+                    } else {
+                        if (isIncludedArr(disallowedLocations, [_pos[0] + 1, _pos[1] + 1])) {
+                            return [_pos[0] - 2, _pos[1], 1, true];
+                        } else {
+                            return [_pos[0] + 1, _pos[1] + 1, _dir, _hitTiming];
+                        }
+                    }
+                }
+            }
+        }
+        else if (_dir == 1) {
+            if (_pos[0] % 2 == 0) {
+                if (!isIncludedArr(disallowedLocations, [_pos[0]-1, _pos[1]])) {
+                    return [_pos[0]-1, _pos[1], _dir, _hitTiming];
+                } else {
+                    return [_pos[0], _pos[1]-1, _dir, _hitTiming];
+                }
+            } else {
+                if (_pos[1]-1 < 0) {
+                    return [_pos[0]-1, _pos[1], 0, _hitTiming];
+                }
+                if (!isIncludedArr(disallowedLocations, [_pos[0]+1, _pos[1]-1])) {
+                    return [_pos[0]+1, _pos[1]-1, _dir, _hitTiming];
+                } else {
+                    if (!isIncludedArr(disallowedLocations, [_pos[0], _pos[1]-1])) {
+                        return [_pos[0], _pos[1]-1, _dir, _hitTiming];
+                    } else {
+                        if (!isIncludedArr(disallowedLocations, [_pos[0], _pos[1]-2])) {  // is it a timing pattern?
+                            return [_pos[0]+1, _pos[1]-2, _dir, _hitTiming];
+                        } else {  // is it an alignment pattern?
+                            if (!isIncludedArr(disallowedLocations, [_pos[0], _pos[1]-6])) {
+                                return [_pos[0]+1, _pos[1]-6, _dir, _hitTiming];
+                            } else {  // it's a finder pattern!
+                                return [_pos[0]-1, _pos[1], 0, _hitTiming];
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            if (_pos[0] % 2 == 0) {
+                if (!isIncludedArr(disallowedLocations, [_pos[0]-1, _pos[1]])) {
+                    return [_pos[0]-1, _pos[1], _dir, _hitTiming];
+                } else {
+                    return [_pos[0], _pos[1]+1, _dir, _hitTiming];
+                }
+            } else {
+                if (_pos[1]+1 > _size) {
+                    return [_pos[0]-1, _pos[1], 1, _hitTiming];
+                }
+                if (!isIncludedArr(disallowedLocations, [_pos[0]+1, _pos[1]+1])) {
+                    return [_pos[0]+1, _pos[1]+1, _dir, _hitTiming];
+                } else {
+                    if (!isIncludedArr(disallowedLocations, [_pos[0], _pos[1]+1])) {
+                        return [_pos[0], _pos[1]+1, _dir, _hitTiming];
+                    } else {
+                        if (!isIncludedArr(disallowedLocations, [_pos[0], _pos[1]+2])) {  // is it a timing pattern?
+                            return [_pos[0]+1, _pos[1]+2, _dir, _hitTiming];
+                        } else {  // is it an alignment pattern?
+                            if (!isIncludedArr(disallowedLocations, [_pos[0], _pos[1]+6])) {
+                                return [_pos[0]+1, _pos[1]+6, _dir, _hitTiming];
+                            } else { 
+                                console.log("bad");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     // CURRENTLY ONLY ALPHANUMERIC MODE
-    let ecl = "M";  // Error Correction Level
+    let ecl = "Q";  // Error Correction Level
     let V = -1;  // version
 
     Object.entries(QRCODE_CHARACTER_CAPACITIES).some(element => {
-        if (element[1][ecl][1] > code.length) {
+        if (element[1][ecl][1] >= code.length) {
             V = element[0];
             return true;
         }
     });
 
-    console.log(V);
+    console.log("Version: " + V);
 
     let decimals = [];
     for (let i = 0; i < code.length; i++) {
@@ -989,7 +1118,8 @@ function eqrcode(code) {
     let bitCapacity = QRCODE_ERROR_CORRECTION[V.toString() + "-" + ecl][0] * 8;
 
     if (bitCapacity - 4 <= bitstring.length) {
-        for (let i = 0; i < bitCapacity - bitstring.length; i++) {
+        let looplen = bitCapacity - bitstring.length;
+        for (let i = 0; i < looplen; i++) {
             bitstring += "0";
         }
     } else {
@@ -1042,80 +1172,31 @@ function eqrcode(code) {
     }
 
     var modules = [];
-    for (let i = 0; i < 21; i++) {
+    for (let i = 0; i < (4 * V) + 17; i++) {
         modules[i] = [];
-        for (let j = 0; j < 21; j++) {
+        for (let j = 0; j < (4 * V) + 17; j++) {
             modules[i][j] = 0;
         }
     }
-
-    console.log(bitstring.length);
 
     let qrcodesetup = setupQRCode(modules);
     modules = qrcodesetup[0];
 
     var disallowedLocations = qrcodesetup[1];
 
-    let pos = 0;
+    let s = modules.length - 1;  // size
+    let prevPos = [s-1, s+1];
+    let dir = 1;  // 1 is up, 0 is down
+    let hitTimingPattern = false;
 
-    let s = 20;  // size
-    
-    for (let i = 0; i < 12; i++) {
-        modules[s][s-i] = parseInt(bitstring[pos++]);
-        modules[s-1][s-i] = parseInt(bitstring[pos++]);
-    }
+    console.log(bitstring.length);
 
-    for (let i = 0; i < 12; i++) {
-        modules[s-2][s-(11-i)] = parseInt(bitstring[pos++]);
-        modules[s-3][s-(11-i)] = parseInt(bitstring[pos++]);
-    }
-
-    for (let i = 0; i < 12; i++) {
-        modules[s-4][s-i] = parseInt(bitstring[pos++]);
-        modules[s-5][s-i] = parseInt(bitstring[pos++]);
-    }
-
-    for (let i = 0; i < 12; i++) {
-        modules[s-6][s-(11-i)] = parseInt(bitstring[pos++]);
-        modules[s-7][s-(11-i)] = parseInt(bitstring[pos++]);
-    }
-    
-    for (let i = 0; i < 14; i++) {
-        modules[s-8][s-i] = parseInt(bitstring[pos++]);
-        modules[s-9][s-i] = parseInt(bitstring[pos++]);
-    }
-    for (let i = 5; i >= 0; i--) {
-        modules[s-8][i] = parseInt(bitstring[pos++]);
-        modules[s-9][i] = parseInt(bitstring[pos++]);
-    }
-
-    for (let i = 0; i < 6; i++) {
-        modules[s-10][i] = parseInt(bitstring[pos++]);
-        modules[s-11][i] = parseInt(bitstring[pos++]);
-    }
-    for (let i = 0; i < 14; i++) {
-        modules[s-10][s-(13-i)] = parseInt(bitstring[pos++]);
-        modules[s-11][s-(13-i)] = parseInt(bitstring[pos++]);
-    }
-
-    for (let i = 0; i < 4; i++) {
-        modules[8][s-i-8] = parseInt(bitstring[pos++]);
-        modules[7][s-i-8] = parseInt(bitstring[pos++]);
-    }
-
-    for (let i = 0; i < 4; i++) {
-        modules[5][i+8] = parseInt(bitstring[pos++]);
-        modules[4][i+8] = parseInt(bitstring[pos++]);
-    }
-
-    for (let i = 0; i < 4; i++) {
-        modules[3][s-i-8] = parseInt(bitstring[pos++]);
-        modules[2][s-i-8] = parseInt(bitstring[pos++]);
-    }
-
-    for (let i = 0; i < 4; i++) {
-        modules[1][i+8] = parseInt(bitstring[pos++]);
-        modules[0][i+8] = parseInt(bitstring[pos++]);
+    for (let i = 0; i < bitstring.length; i++) {
+        let outData = getNextValidLocation(s, prevPos, dir, hitTimingPattern);
+        modules[outData[0]][outData[1]] = parseInt(bitstring[i]);
+        prevPos = [outData[0], outData[1]];
+        dir = outData[2];
+        hitTimingPattern = outData[3];
     }
 
     let scores = [];
@@ -1129,6 +1210,8 @@ function eqrcode(code) {
     scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[7])));
 
     let bestMask = scores.indexOf(Math.min(...scores));
+
+    bestMask = 0;
 
     modules = applyMask(modules, QRCODE_MASKS[bestMask]);
 
