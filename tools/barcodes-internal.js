@@ -429,6 +429,49 @@ const QRCODE_ALIGNMENT_LOCATIONS = {
     40: [6, 30, 58, 86, 114, 142, 170], 
 }
 
+const QRCODE_REMAINDER_BITS = {
+    1: 0, 
+    2: 7, 
+    3: 7, 
+    4: 7, 
+    5: 7, 
+    6: 7, 
+    7: 0, 
+    8: 0, 
+    9: 0, 
+    10: 0, 
+    11: 0, 
+    12: 0, 
+    13: 0, 
+    14: 3, 
+    15: 3, 
+    16: 3, 
+    17: 3, 
+    18: 3, 
+    19: 3, 
+    20: 3, 
+    21: 4, 
+    22: 4, 
+    23: 4, 
+    24: 4, 
+    25: 4, 
+    26: 4, 
+    27: 4, 
+    28: 3, 
+    29: 3, 
+    30: 3, 
+    31: 3, 
+    32: 3, 
+    33: 3, 
+    34: 3, 
+    35: 0, 
+    36: 0, 
+    37: 0, 
+    38: 0, 
+    39: 0, 
+    40: 0,
+}
+
 String.prototype.removeCharIfExists = function (char) {
     if (this.charAt(this.length - 1) == char) {
         return this.substr(0, this.length - 1);
@@ -1078,6 +1121,8 @@ function eqrcode(code) {
         }
     }
 
+    //code = "HELLO WORLD 4 PLUS 4 MAKES 8 Y";
+
     // CURRENTLY ONLY ALPHANUMERIC MODE
     let ecl = "Q";  // Error Correction Level
     let V = -1;  // version
@@ -1144,31 +1189,91 @@ function eqrcode(code) {
     // ERROR CORRECTION:
     let ecData = QRCODE_ERROR_CORRECTION[V.toString() + "-" + ecl];
 
-    let g1b1 = bitstring.match(/.{1,8}/g);
-    for (let i = 0; i < g1b1.length; i++) {
-        g1b1[i] = parseInt(g1b1[i], 2);
+    let groups = [];
+
+    let splitData = bitstring.match(/.{1,8}/g);
+    for (let i = 0; i < splitData.length; i++) {
+        splitData[i] = parseInt(splitData[i], 2);
+    }
+    
+    groups.push([]);
+    for (let i = 0; i < ecData[2]; i++) {
+        groups[0].push([]);
+        for (let j = 0; j < ecData[3]; j++) {
+            groups[0][i].push(splitData[j + i * ecData[2]]);
+        }
     }
 
-    for (let i = 0; i < ecData[0]; i++) {
-        let generator = Object.create(QRCODE_GENERATOR_FUNCTIONS[ecData[1]]);
-        
-        let alpha = QRCODE_ANTILOG_TABLE[g1b1[0].toString()];
-        if (alpha == undefined) alpha = 0;
-        for (let j = 0; j < generator.length; j++) {
-            generator[j] = QRCODE_LOG_TABLE[(generator[j] + alpha) % 255];
-        }
+    let originalGroups = JSON.parse(JSON.stringify(groups));
 
-        if (g1b1.length <= ecData[1]) g1b1.push(0);
-        
-        for (let j = 0; j < g1b1.length; j++) {
-            g1b1[j] = generator[j] ^ g1b1[j];
+    for (let gc = 0; gc < groups.length; gc++) {
+        for (let bc = 0; bc < groups[0].length; bc++) {
+            for (let i = 0; i < ecData[3 + 2 * gc]; i++) {
+                let generator = Object.create(QRCODE_GENERATOR_FUNCTIONS[ecData[1]]);
+                
+                let alpha = QRCODE_ANTILOG_TABLE[groups[gc][bc][0].toString()];
+                if (alpha == undefined) alpha = 0;
+                for (let j = 0; j < generator.length; j++) {
+                    generator[j] = QRCODE_LOG_TABLE[(generator[j] + alpha) % 255];
+                }
+
+                while (groups[gc][bc].length <= ecData[1]) groups[gc][bc].push(0);
+                
+                for (let j = 0; j < groups[gc][bc].length; j++) {
+                    groups[gc][bc][j] = generator[j] ^ groups[gc][bc][j];
+                }
+                
+                groups[gc][bc].shift();
+            }
         }
-        
-        g1b1.shift();
     }
 
-    for (let i = 0; i < g1b1.length; i++) {
-        bitstring += g1b1[i].toString(2).padStart(8, "0");
+    if (groups[1] !== undefined) {
+        groups = groups[0] + groups[1];
+    } else {
+        groups = groups[0];
+    }
+
+    if (originalGroups[1] !== undefined) {
+        originalGroups = originalGroups[0] + originalGroups[1];
+    } else {
+        originalGroups = originalGroups[0];
+    }
+
+    bitstring = "";
+
+    console.log(originalGroups);
+
+    // Interweaving
+
+    // for (let i = 0; i < originalGroups.length; i++) {
+    //     for (let j = 0; j < originalGroups[i].length; j++) {
+    //         bitstring += originalGroups[i][j].toString(2).padStart(8, "0");
+    //     }
+    // }
+
+    // for (let i = 0; i < groups.length; i++) {
+    //     for (let j = 0; j < groups[i].length; j++) {
+    //         bitstring += groups[i][j].toString(2).padStart(8, "0");
+    //     }
+    // }
+
+    for (let col = 0; col < originalGroups[originalGroups.length-1].length; col++) {
+        for (let bc = 0; bc < originalGroups.length; bc++) {
+            bitstring += originalGroups[bc][col].toString(2).padStart(8, "0");
+        }
+    }
+
+    for (let col = 0; col < groups[groups.length-1].length; col++) {
+        for (let bc = 0; bc < groups.length; bc++) {
+            bitstring += groups[bc][col].toString(2).padStart(8, "0");
+        }
+    }
+
+    console.log(bitstring.length);
+
+    for (let i = 0; i < QRCODE_REMAINDER_BITS[V]; i++) {
+        bitstring += "0"; 
     }
 
     var modules = [];
@@ -1212,6 +1317,8 @@ function eqrcode(code) {
     let bestMask = scores.indexOf(Math.min(...scores));
 
     bestMask = 0;
+
+    console.log("Mask: " + bestMask);
 
     modules = applyMask(modules, QRCODE_MASKS[bestMask]);
 
