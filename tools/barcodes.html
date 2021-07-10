@@ -107,10 +107,79 @@
                 <input class="form-check-input" type="checkbox" id="qrcode" onclick="autoUpdateHash();">
                 <label class="form-check-label" for="qrcode">QR Code</label>
             </div>
+            <div class="form-check-inline">
+                <label for="qrVersion" class="form-check-label">Version: </label>
+                <select name="qrVersion" id="qrVersion" onchange="updateSettings();">
+                    <option value="0">Auto</option>
+                    <option value="1">V1 (21x21)</option>
+                    <option value="2">V2 (25x25)</option>
+                    <option value="3">V3 (29x29)</option>
+                    <option value="4">V4 (33x33)</option>
+                    <option value="5">V5 (37x37)</option>
+                    <option value="6">V6 (41x41)</option>
+                    <option value="7">V7 (45x45)</option>
+                    <option value="8">V8 (49x49)</option>
+                    <option value="9">V9 (53x53)</option>
+                    <option value="10">V10 (57x57)</option>
+                    <option value="11">V11 (61x61)</option>
+                    <option value="12">V12 (65x65)</option>
+                    <option value="13">V13 (69x69)</option>
+                    <option value="14">V14 (73x73)</option>
+                    <option value="15">V15 (77x77)</option>
+                    <option value="16">V16 (81x81)</option>
+                    <option value="17">V17 (85x85)</option>
+                    <option value="18">V18 (89x89)</option>
+                    <option value="19">V19 (93x93)</option>
+                    <option value="20">V20 (97x97)</option>
+                    <option value="21">V21 (101x101)</option>
+                    <option value="22">V22 (105x105)</option>
+                    <option value="23">V23 (109x109)</option>
+                    <option value="24">V24 (113x113)</option>
+                    <option value="25">V25 (117x117)</option>
+                    <option value="26">V26 (121x121)</option>
+                    <option value="27">V27 (125x125)</option>
+                    <option value="28">V28 (129x129)</option>
+                    <option value="29">V29 (133x133)</option>
+                    <option value="30">V30 (137x137)</option>
+                    <option value="31">V31 (141x141)</option>
+                    <option value="32">V32 (145x145)</option>
+                    <option value="33">V33 (149x149)</option>
+                    <option value="34">V34 (153x153)</option>
+                    <option value="35">V35 (157x157)</option>
+                    <option value="36">V36 (161x161)</option>
+                    <option value="37">V37 (165x165)</option>
+                    <option value="38">V38 (169x169)</option>
+                    <option value="39">V39 (173x173)</option>
+                    <option value="40">V40 (177x177)</option>
+                </select>
+            </div>
+            <div>
+                <label for="qrErrorCorrection">Error Correction Level: </label>
+                <select name="qrErrorCorrection" id="qrErrorCorrection" onchange="updateSettings();">
+                    <option value="L">Low (7%)</option>
+                    <option value="M">Medium (15%)</option>
+                    <option value="Q" selected>Quartile (25%)</option>
+                    <option value="H">High (30%)</option>
+                </select>
+            </div>
+            <div class="form-check-inline">
+                <label for="qrMask" class="form-check-label">Mask: </label>
+                <select name="qrMask" id="qrMask" onchange="updateSettings();">
+                    <option value="-1">Auto</option>
+                    <option value="0">Mask 0</option>
+                    <option value="1">Mask 1</option>
+                    <option value="2">Mask 2</option>
+                    <option value="3">Mask 3</option>
+                    <option value="4">Mask 4</option>
+                    <option value="5">Mask 5</option>
+                    <option value="6">Mask 6</option>
+                    <option value="7">Mask 7</option>
+                </select>
+            </div>
         </div>
-        <div class="col-sm-2">
+        <!-- <div class="col-sm-2">
             
-        </div>
+        </div> -->
     </div>
   </body>
 </html>

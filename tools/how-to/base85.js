@@ -8,7 +8,7 @@ function ascii85(message) {
         var num = parseInt(current, 16);
         output += String.fromCharCode(Math.floor((num / 52200625) % 85) + 33);
         output += String.fromCharCode(Math.floor((num / 614125) % 85) + 33);
-        output += String.fromCharCode(Math.floor((num / 7225) % 85) + 33);;
+        output += String.fromCharCode(Math.floor((num / 7225) % 85) + 33);
         output += String.fromCharCode(Math.floor((num / 85) % 85) + 33);
         output += String.fromCharCode(((num) % 85) + 33);
         if (currentWithoutPadding.length != current.length && i + 8 > strNum.length) {

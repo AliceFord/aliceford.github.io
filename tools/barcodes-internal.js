@@ -762,7 +762,7 @@ function dqrcode(code) {
 
 }
 
-function eqrcode(code) {
+function eqrcode(code, settings) {
     function arrToBitstring(arr) {
         return arr.join("");
     }
@@ -1121,18 +1121,21 @@ function eqrcode(code) {
         }
     }
 
-    //code = "HELLO WORLD 4 PLUS 4 MAKES 8 Y";
+    //code = "HELLO WORLD";
 
     // CURRENTLY ONLY ALPHANUMERIC MODE
-    let ecl = "Q";  // Error Correction Level
-    let V = -1;  // version
+    let ecl = settings.qrErrorCorrection;  // Error Correction Level
+    let V = settings.qrVersion;  // version
+    let qrmask = settings.qrMask;
 
-    Object.entries(QRCODE_CHARACTER_CAPACITIES).some(element => {
-        if (element[1][ecl][1] >= code.length) {
-            V = element[0];
-            return true;
-        }
-    });
+    if (V === 0) {
+        Object.entries(QRCODE_CHARACTER_CAPACITIES).some(element => {
+            if (element[1][ecl][1] >= code.length) {
+                V = element[0];
+                return true;
+            }
+        });
+    }
 
     console.log("Version: " + V);
 
@@ -1195,16 +1198,30 @@ function eqrcode(code) {
     for (let i = 0; i < splitData.length; i++) {
         splitData[i] = parseInt(splitData[i], 2);
     }
+
+    let pos = 0;
     
     groups.push([]);
     for (let i = 0; i < ecData[2]; i++) {
         groups[0].push([]);
         for (let j = 0; j < ecData[3]; j++) {
-            groups[0][i].push(splitData[j + i * ecData[2]]);
+            groups[0][i].push(splitData[pos++]);
+        }
+    }
+
+    if (ecData[4] !== 0) {
+        groups.push([]);
+        for (let i = 0; i < ecData[4]; i++) {
+            groups[1].push([]);
+            for (let j = 0; j < ecData[5]; j++) {
+                groups[1][i].push(splitData[pos++]);
+            }
         }
     }
 
     let originalGroups = JSON.parse(JSON.stringify(groups));
+
+    console.log(originalGroups);
 
     for (let gc = 0; gc < groups.length; gc++) {
         for (let bc = 0; bc < groups[0].length; bc++) {
@@ -1229,20 +1246,20 @@ function eqrcode(code) {
     }
 
     if (groups[1] !== undefined) {
-        groups = groups[0] + groups[1];
+        groups = [...groups[0], ...groups[1]];
     } else {
         groups = groups[0];
     }
 
     if (originalGroups[1] !== undefined) {
-        originalGroups = originalGroups[0] + originalGroups[1];
+        originalGroups = [...originalGroups[0], ...originalGroups[1]];
     } else {
         originalGroups = originalGroups[0];
     }
 
-    bitstring = "";
-
     console.log(originalGroups);
+
+    bitstring = "";
 
     // Interweaving
 
@@ -1260,9 +1277,14 @@ function eqrcode(code) {
 
     for (let col = 0; col < originalGroups[originalGroups.length-1].length; col++) {
         for (let bc = 0; bc < originalGroups.length; bc++) {
-            bitstring += originalGroups[bc][col].toString(2).padStart(8, "0");
+            let item = originalGroups[bc][col];
+            if (item !== undefined) {
+                bitstring += item.toString(2).padStart(8, "0");
+            }
         }
     }
+
+    console.log(bitstring);
 
     for (let col = 0; col < groups[groups.length-1].length; col++) {
         for (let bc = 0; bc < groups.length; bc++) {
@@ -1271,6 +1293,7 @@ function eqrcode(code) {
     }
 
     console.log(bitstring.length);
+    console.log(bitstring);
 
     for (let i = 0; i < QRCODE_REMAINDER_BITS[V]; i++) {
         bitstring += "0"; 
@@ -1294,8 +1317,6 @@ function eqrcode(code) {
     let dir = 1;  // 1 is up, 0 is down
     let hitTimingPattern = false;
 
-    console.log(bitstring.length);
-
     for (let i = 0; i < bitstring.length; i++) {
         let outData = getNextValidLocation(s, prevPos, dir, hitTimingPattern);
         modules[outData[0]][outData[1]] = parseInt(bitstring[i]);
@@ -1305,18 +1326,21 @@ function eqrcode(code) {
     }
 
     let scores = [];
-    scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[0])));
-    scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[1])));
-    scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[2])));
-    scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[3])));
-    scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[4])));
-    scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[5])));
-    scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[6])));
-    scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[7])));
+    let bestMask;
+    if (qrmask === -1) {
+        scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[0])));
+        scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[1])));
+        scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[2])));
+        scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[3])));
+        scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[4])));
+        scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[5])));
+        scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[6])));
+        scores.push(determineMaskPenalty(applyMask(modules, QRCODE_MASKS[7])));
 
-    let bestMask = scores.indexOf(Math.min(...scores));
-
-    bestMask = 0;
+        bestMask = scores.indexOf(Math.min(...scores));
+    } else {
+        bestMask = qrmask;
+    }
 
     console.log("Mask: " + bestMask);
 

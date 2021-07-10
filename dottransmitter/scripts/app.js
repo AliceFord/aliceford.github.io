@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    var lines = []
-    var trainTimers = []
+    var lines = [];
+    var trainTimers = [];
     var trainIterators = [];
-    var currentSelectedStation = null
+    var currentSelectedStation = null;
     var flag = false;
     var paper = Raphael(0, 0, window.innerWidth, window.innerHeight);
     var gameSpeed = 0.25;
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function* driveTrain(train) {
         if (parseInt(lines[train][1].textContent) > 0) {
-            console.log(`Train ${train} now starting.`)
+            console.log(`Train ${train} now starting.`);
             let line = lines[train][0];
             lines[train][1].textContent = parseInt(lines[train][1].textContent) - 1;
             if (stripPx(lines[train][1].style.height) != window.innerHeight) {
@@ -23,12 +23,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             var circle = paper.circle(line[0][1], line[0][0], 10);
-            var text = paper.text(line[0][1], line[0][0], "1")
+            var text = paper.text(line[0][1], line[0][0], "1");
             var pointTransmitter = paper.set();
             
             circle.attr('fill', '#f00');
             circle.attr('stroke', '#fff');
-            pointTransmitter.push(text, circle)
+            pointTransmitter.push(text, circle);
             for (let i=0;i<line.length;i+=gameSpeed) {
                 pointTransmitter.animate({x:line[Math.floor(i)][1]+11, y:line[Math.floor(i)][0]+11, cx:line[Math.floor(i)][1]+11, cy:line[Math.floor(i)][0]+11}, 0);
                 yield -2;
