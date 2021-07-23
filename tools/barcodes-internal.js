@@ -472,6 +472,10 @@ const QRCODE_REMAINDER_BITS = {
     40: 0,
 }
 
+const QRCODE_VERSION_TABLE = {
+    7: "000111110010010100", 8: "001000010110111100", 9: "001001101010011001", 10: "001010010011010011", 11: "001011101111110110", 12: "001100011101100010", 13: "001101100001000111", 14: "001110011000001101", 15: "001111100100101000", 16: "010000101101111000", 17: "010001010001011101", 18: "010010101000010111", 19: "010011010100110010", 20: "010100100110100110", 21: "010101011010000011", 22: "010110100011001001", 23: "010111011111101100", 24: "011000111011000100", 25: "011001000111100001", 26: "011010111110101011", 27: "011011000010001110", 28: "011100110000011010", 29: "011101001100111111", 30: "011110110101110101", 31: "011111001001010000", 32: "100000100111010101", 33: "100001011011110000", 34: "100010100010111010", 35: "100011011110011111", 36: "100100101100001011", 37: "100101010000101110", 38: "100110101001100100", 39: "100111010101000001", 40: "101000110001101001"
+}
+
 String.prototype.removeCharIfExists = function (char) {
     if (this.charAt(this.length - 1) == char) {
         return this.substr(0, this.length - 1);
@@ -823,7 +827,7 @@ function eqrcode(code, settings) {
                     }
                 }
             }
-            console.log(validLocations);
+            console.log("Alignment Locations: ", validLocations);
             validLocations.forEach((value) => {
                 _modules[value[0]][value[1]] = 1;
                 for (let i = -2; i < 3; i++) {
@@ -853,6 +857,15 @@ function eqrcode(code, settings) {
         }
         
         _modules[8][size - 7] = 1;
+
+        if (V >= 7) {
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 6; j++) {
+                    invalidLocations.push([size - 8 - i, j]);
+                    invalidLocations.push([j, size - 8 - i]);
+                }
+            }
+        }
         
         return [_modules, invalidLocations];
     }
@@ -1006,6 +1019,18 @@ function eqrcode(code, settings) {
             _modules[8][5 - i] = parseInt(format[pos++]);
         }
 
+        if (V >= 7) {
+            let versionInfo = QRCODE_VERSION_TABLE[V];
+
+            pos = 0;
+            for (let i = 0; i < 6; i++) {
+                for (let j = 0; j < 3; j++) {
+                    _modules[size - 8 - j][5 - i] = versionInfo[j + i * 3];
+                    _modules[5 - i][size - 8 - j] = versionInfo[j + i * 3];
+                }
+            }
+        }
+
         return _modules;
     }
 
@@ -1019,8 +1044,12 @@ function eqrcode(code, settings) {
                     if (_pos[0] % 2 == 1) {
                         return [_pos[0] - 1, _pos[1], _dir, _hitTiming];
                     } else {
-                        if (isIncludedArr(disallowedLocations, [_pos[0] + 1, _pos[1] - 1])) {
-                            return [_pos[0] - 1, _pos[1], 0, _hitTiming];
+                        if (isIncludedArr(disallowedLocations, [_pos[0] + 1, _pos[1] - 1])) {  // is the next square up invalid?
+                            if (!isIncludedArr(disallowedLocations, [_pos[0], _pos[1] - 6])) { // is it an alignment pattern?
+                                return [_pos[0] - 1, _pos[1] - 6, 0, _hitTiming];
+                            } else {
+                                return [_pos[0] - 1, _pos[1], 0, _hitTiming];
+                            }
                         } else {
                             return [_pos[0] + 1, _pos[1] - 1, _dir, _hitTiming];
                         }
@@ -1029,18 +1058,22 @@ function eqrcode(code, settings) {
                     if (_pos[0] % 2 == 1) {
                         return [_pos[0] - 1, _pos[1], _dir, _hitTiming];
                     } else {
-                        if (isIncludedArr(disallowedLocations, [_pos[0] + 1, _pos[1] + 1])) {
-                            return [_pos[0] - 1, _pos[1], 1, _hitTiming];
+                        if (isIncludedArr(disallowedLocations, [_pos[0] + 1, _pos[1] + 1])) {  // is the next square down invalid?
+                            if (!isIncludedArr(disallowedLocations, [_pos[0], _pos[1] + 6])) { // is it an alignment pattern?
+                                return [_pos[0] - 1, _pos[1] + 6, 0, _hitTiming];
+                            } else {
+                                return [_pos[0] - 1, _pos[1], 0, _hitTiming];
+                            }
                         } else {
                             return [_pos[0] + 1, _pos[1] + 1, _dir, _hitTiming];
                         }
                     }
                 }
             } else {
-                if (_dir == 1) {
-                    if (_pos[0] % 2 == 0) {
-                        return [_pos[0] - 1, _pos[1], _dir, _hitTiming];
-                    } else {
+                if (_dir == 1) {  // are we going up?
+                    if (_pos[0] % 2 == 0) {  // are we on the right hand side?
+                        return [_pos[0] - 1, _pos[1], _dir, _hitTiming]; // go left
+                    } else { // otherwise...
                         if (isIncludedArr(disallowedLocations, [_pos[0] + 1, _pos[1] - 1])) {
                             return [_pos[0] - 2, _pos[1], 0, true];
                         } else {
@@ -1121,7 +1154,7 @@ function eqrcode(code, settings) {
         }
     }
 
-    //code = "HELLO WORLD";
+    code = "HELLO WORLD";
 
     // CURRENTLY ONLY ALPHANUMERIC MODE
     let ecl = settings.qrErrorCorrection;  // Error Correction Level
@@ -1221,12 +1254,14 @@ function eqrcode(code, settings) {
 
     let originalGroups = JSON.parse(JSON.stringify(groups));
 
-    console.log(originalGroups);
+    console.log("Original Data: ", originalGroups);
 
     for (let gc = 0; gc < groups.length; gc++) {
         for (let bc = 0; bc < groups[0].length; bc++) {
             for (let i = 0; i < ecData[3 + 2 * gc]; i++) {
                 let generator = Object.create(QRCODE_GENERATOR_FUNCTIONS[ecData[1]]);
+
+                if (groups[gc][bc] === undefined) continue;
                 
                 let alpha = QRCODE_ANTILOG_TABLE[groups[gc][bc][0].toString()];
                 if (alpha == undefined) alpha = 0;
@@ -1257,7 +1292,7 @@ function eqrcode(code, settings) {
         originalGroups = originalGroups[0];
     }
 
-    console.log(originalGroups);
+    console.log("Original data after flattening: ", originalGroups);
 
     bitstring = "";
 
@@ -1284,7 +1319,7 @@ function eqrcode(code, settings) {
         }
     }
 
-    console.log(bitstring);
+    console.log("Bitstring with just data: " + bitstring);
 
     for (let col = 0; col < groups[groups.length-1].length; col++) {
         for (let bc = 0; bc < groups.length; bc++) {
@@ -1292,8 +1327,8 @@ function eqrcode(code, settings) {
         }
     }
 
-    console.log(bitstring.length);
-    console.log(bitstring);
+    console.log("Bitstring length: " + bitstring.length);
+    console.log("Bitstring with data and ec bits: " + bitstring);
 
     for (let i = 0; i < QRCODE_REMAINDER_BITS[V]; i++) {
         bitstring += "0"; 
@@ -1319,7 +1354,8 @@ function eqrcode(code, settings) {
 
     for (let i = 0; i < bitstring.length; i++) {
         let outData = getNextValidLocation(s, prevPos, dir, hitTimingPattern);
-        modules[outData[0]][outData[1]] = parseInt(bitstring[i]);
+        if (modules[outData[0]] === undefined) break;
+        modules[outData[0]][outData[1]] = 1//parseInt(bitstring[i]);
         prevPos = [outData[0], outData[1]];
         dir = outData[2];
         hitTimingPattern = outData[3];
@@ -1339,40 +1375,50 @@ function eqrcode(code, settings) {
 
         bestMask = scores.indexOf(Math.min(...scores));
     } else {
-        bestMask = qrmask;
+        if (qrmask !== 8) {
+            bestMask = qrmask;
+        } else {
+            bestMask = -1;
+        }
     }
 
     console.log("Mask: " + bestMask);
 
-    modules = applyMask(modules, QRCODE_MASKS[bestMask]);
+    if (bestMask !== -1)
+        modules = applyMask(modules, QRCODE_MASKS[bestMask]);
 
-    let originalFormat = QRCODE_ECL_TABLE[ecl] + bestMask.toString(2).padStart(3, "0");
+    
 
-    let formatString = originalFormat + "0000000000";
+    if (bestMask !== -1) {
 
-    formatString = formatString.removeFromStart("0");
+        let originalFormat = QRCODE_ECL_TABLE[ecl] + bestMask.toString(2).padStart(3, "0");
 
-    while (formatString.length > 10) {
-        let generator = "10100110111";
-        generator = generator.padEnd(formatString.length, "0");
-        let newString = "";
-        for (let i = 0; i < formatString.length; i++) {
-            newString += (parseInt(generator[i]) ^ parseInt(formatString[i])).toString();
+        let formatString = originalFormat + "0000000000";
+
+        formatString = formatString.removeFromStart("0");
+
+        while (formatString.length > 10) {
+            let generator = "10100110111";
+            generator = generator.padEnd(formatString.length, "0");
+            let newString = "";
+            for (let i = 0; i < formatString.length; i++) {
+                newString += (parseInt(generator[i]) ^ parseInt(formatString[i])).toString();
+            }
+
+            formatString = newString;
+            formatString = formatString.removeFromStart("0");
         }
 
-        formatString = newString;
-        formatString = formatString.removeFromStart("0");
+        formatString = originalFormat + formatString.padStart(10, "0");
+
+        let finalFormatString = "";
+        let mask = "101010000010010";
+        for (let i = 0; i < formatString.length; i++) {
+            finalFormatString += (parseInt(formatString[i]) ^ parseInt(mask[i])).toString();
+        }
+
+        modules = fillFormatString(modules, finalFormatString);
     }
-
-    formatString = originalFormat + formatString.padStart(10, "0");
-
-    let finalFormatString = "";
-    let mask = "101010000010010";
-    for (let i = 0; i < formatString.length; i++) {
-        finalFormatString += (parseInt(formatString[i]) ^ parseInt(mask[i])).toString();
-    }
-
-    modules = fillFormatString(modules, finalFormatString);
 
     return generatePNGFromBitArray(modules);
 }
