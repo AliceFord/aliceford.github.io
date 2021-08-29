@@ -11,6 +11,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="index.js"></script>
     <script src="hashes.js"></script>
+    <link href="sorting.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="main.css" rel="stylesheet">
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -49,87 +50,98 @@
           <thead>
             <tr>
               <th></th>
-              <th colspan="4" style="text-align: center;">Sorts per second by starting array</th>
+              <th colspan="4" style="text-align: center;">Sorts per second / array operations per second by starting array</th>
             </tr>
             <tr>
               <th>Sorting function</th>
+              <th>Sorted</th>
               <th>Random</th>
-              <th>Nearly Sorted</th>
               <th>Reversed</th>
+              <th>Nearly Sorted</th>
               <th>Few Unique</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>Bubble Sort</td>
-              <td style="background:#fdd;">1</td>
-              <td style="background:#fdd;">5</td>
-              <td style="background:#fdd;">1</td>
-              <td style="background:#fdd;">5</td>
-      </tr>
-      <tr>
+              <td style="background:#fdd;">1 <a class="data">(24968559)</a></td>
+              <td style="background:#fdd;">5 <a class="data">(10302)</a></td>
+              <td style="background:#fdd;">1 <a class="data">(49995000)</a></td>
+              <td style="background:#fdd;">1 <a class="data">(25002255)</a></td>
+              <td style="background:#fdd;">5 <a class="data">(0)</a></td>
+            </tr>
+            <tr>
               <td>Cocktail Shaker Sort</td>
-              <td style="background:#fdd;">1</td>
-              <td style="background:#ffd;">3063</td>
-              <td style="background:#fdd;">1</td>
-              <td style="background:#dfd;">20686</td>
-      </tr>
-      <tr>
+              <td style="background:#fdd;">1 <a class="data">(25079182)</a></td>
+              <td style="background:#ffd;">2189 <a class="data">(4453287)</a></td>
+              <td style="background:#fdd;">1 <a class="data">(49995000)</a></td>
+              <td style="background:#fdd;">1 <a class="data">(25037199)</a></td>
+              <td style="background:#dfd;">6073 <a class="data">(0)</a></td>
+            </tr>
+            <tr>
               <td>Comb Sort</td>
-              <td style="background:#dfd;">228</td>
-              <td style="background:#ffd;">695</td>
-              <td style="background:#dfd;">485</td>
-              <td style="background:#ffd;">769</td>
-      </tr>
-      <tr>
+              <td style="background:#dfd;">211 <a class="data">(13460745)</a></td>
+              <td style="background:#ffd;">613 <a class="data">(1216856)</a></td>
+              <td style="background:#dfd;">435 <a class="data">(8740622)</a></td>
+              <td style="background:#dfd;">254 <a class="data">(12380928)</a></td>
+              <td style="background:#ffd;">669 <a class="data">(0)</a></td>
+            </tr>
+            <tr>
               <td>Cycle Sort</td>
-              <td style="background:#ffd;">2</td>
-              <td style="background:#fdd;">5</td>
-              <td style="background:#dfd;">4</td>
-              <td style="background:#fdd;">6</td>
-      </tr>
-      <tr>
+              <td style="background:#ffd;">2 <a class="data">(19999)</a></td>
+              <td style="background:#fdd;">7 <a class="data">(24954)</a></td>
+              <td style="background:#dfd;">5 <a class="data">(50000)</a></td>
+              <td style="background:#ffd;">2 <a class="data">(19980)</a></td>
+              <td style="background:#fdd;">8 <a class="data">(0)</a></td>
+            </tr>
+            <tr>
               <td>Gnome Sort</td>
-              <td style="background:#ffd;">2</td>
-              <td style="background:#dfd;">6438</td>
-              <td style="background:#fdd;">1</td>
-              <td style="background:#dfd;">20235</td>
-      </tr>
-      <tr>
+              <td style="background:#fdd;">1 <a class="data">(25205468)</a></td>
+              <td style="background:#dfd;">3226 <a class="data">(6645538)</a></td>
+              <td style="background:#fdd;">1 <a class="data">(49995000)</a></td>
+              <td style="background:#fdd;">1 <a class="data">(25021693)</a></td>
+              <td style="background:#dfd;">6068 <a class="data">(0)</a></td>
+            </tr>
+            <tr>
               <td>Insertion Sort</td>
-              <td style="background:#ffd;">6</td>
-              <td style="background:#dfd;">7283</td>
-              <td style="background:#ffd;">3</td>
-              <td style="background:#ffd;">13297</td>
-      </tr>
-      <tr>
+              <td style="background:#ffd;">6 <a class="data">(150514785)</a></td>
+              <td style="background:#dfd;">4048 <a class="data">(48818861)</a></td>
+              <td style="background:#ffd;">3 <a class="data">(150014997)</a></td>
+              <td style="background:#ffd;">6 <a class="data">(149672724)</a></td>
+              <td style="background:#ffd;">5061 <a class="data">(50608272)</a></td>
+            </tr>
+            <tr>
               <td>Odd-Even Sort</td>
-              <td style="background:#fdd;">1</td>
-              <td style="background:#dfd;">4029</td>
-              <td style="background:#fdd;">1</td>
-              <td style="background:#dfd;">21340</td>
-      </tr>
-      <tr>
+              <td style="background:#fdd;">1 <a class="data">(25105753)</a></td>
+              <td style="background:#dfd;">2432 <a class="data">(5009916)</a></td>
+              <td style="background:#fdd;">1 <a class="data">(49995000)</a></td>
+              <td style="background:#fdd;">1 <a class="data">(24941535)</a></td>
+              <td style="background:#dfd;">6064 <a class="data">(0)</a></td>
+            </tr>
+            <tr>
               <td>STL Sort (Introsort + Insertion sort)</td>
-              <td style="background:#dfd;">422</td>
-              <td style="background:#ffd;">744</td>
-              <td style="background:#dfd;">886</td>
-              <td style="background:#ffd;">888</td>
-      </tr>
-      <tr>
+              <td style="background:#dfd;">379 <a class="data">(0)</a></td>
+              <td style="background:#ffd;">634 <a class="data">(0)</a></td>
+              <td style="background:#dfd;">768 <a class="data">(0)</a></td>
+              <td style="background:#dfd;">408 <a class="data">(0)</a></td>
+              <td style="background:#ffd;">632 <a class="data">(0)</a></td>
+            </tr>
+            <tr>
               <td>Selection Sort</td>
-              <td style="background:#ffd;">5</td>
-              <td style="background:#fdd;">5</td>
-              <td style="background:#dfd;">4</td>
-              <td style="background:#fdd;">5</td>
-      </tr>
-      <tr>
+              <td style="background:#ffd;">5 <a class="data">(49995)</a></td>
+              <td style="background:#fdd;">5 <a class="data">(49995)</a></td>
+              <td style="background:#dfd;">5 <a class="data">(49995)</a></td>
+              <td style="background:#ffd;">4 <a class="data">(43329)</a></td>
+              <td style="background:#fdd;">5 <a class="data">(49995)</a></td>
+            </tr>
+            <tr>
               <td>Strand Sort</td>
-              <td style="background:#dfd;">11</td>
-              <td style="background:#ffd;">21</td>
-              <td style="background:#dfd;">4</td>
-              <td style="background:#ffd;">8</td>
-      </tr>
+              <td style="background:#dfd;">11 <a class="data">(439879)</a></td>
+              <td style="background:#ffd;">20 <a class="data">(636589)</a></td>
+              <td style="background:#ffd;">4 <a class="data">(159996)</a></td>
+              <td style="background:#dfd;">11 <a class="data">(439934)</a></td>
+              <td style="background:#ffd;">161 <a class="data">(4850000)</a></td>
+            </tr>
           </tbody>
         </table>
     </div>

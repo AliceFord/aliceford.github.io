@@ -1,0 +1,18 @@
+span {
+    display: block;
+    padding: 0.1em;
+}
+span.bottom {
+    border-top: thin solid black;
+}
+span.symbol {
+    display: none;
+} 
+
+td.data {
+    text-align: right;
+}
+
+a:not([href]):not([tabindex]).data {
+    color:rgb(151, 151, 151);
+}

@@ -1154,7 +1154,7 @@ function eqrcode(code, settings) {
         }
     }
 
-    code = "HELLO WORLD";
+    //code = "HELLO WORLD";
 
     // CURRENTLY ONLY ALPHANUMERIC MODE
     let ecl = settings.qrErrorCorrection;  // Error Correction Level
