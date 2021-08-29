@@ -1355,7 +1355,7 @@ function eqrcode(code, settings) {
     for (let i = 0; i < bitstring.length; i++) {
         let outData = getNextValidLocation(s, prevPos, dir, hitTimingPattern);
         if (modules[outData[0]] === undefined) break;
-        modules[outData[0]][outData[1]] = 1//parseInt(bitstring[i]);
+        modules[outData[0]][outData[1]] = parseInt(bitstring[i]);
         prevPos = [outData[0], outData[1]];
         dir = outData[2];
         hitTimingPattern = outData[3];
@@ -1386,7 +1386,6 @@ function eqrcode(code, settings) {
 
     if (bestMask !== -1)
         modules = applyMask(modules, QRCODE_MASKS[bestMask]);
-
     
 
     if (bestMask !== -1) {
