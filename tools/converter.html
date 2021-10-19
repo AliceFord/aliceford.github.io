@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Tools</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="converter.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="main.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div style="overflow-y: visible; padding-top: 200px" class="container row"  id="mainBox">
+        <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #f5f5f5;">
+            <a class="navbar-brand" href="#">TechieTools</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="index.html">Encoding and Hashing</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="converter.html">File Converter</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="how-to.html">How-To</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="sorting-comparisons.html">Sorting Comparisons</a>
+                </li>
+              </ul>
+            </div>
+        </nav>
+        <div style="align-content: center; width: 850px; max-width: 100%;" class="col-sm-8" id="inputDiv">
+            <input type="file" id="dataEntry" oninput="updateFile();">
+
+            <div>
+                <p id="fileType">File Type: </p>
+            </div>
+
+            <div class="table-responsive table-body table-sm">
+
+                <table class="table table-hover" id="outputTable">
+                    <tbody>
+                        <tr id="tableHeaderBox">
+                            <th>Convert Type</th>
+                            <th class="tableHeader">Download Link</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <p style="font-size: small;">P.S. If a button is greyed out, then it's WIP.</p>
+            <label><b>Cyclic Redundancy Checks</b></label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="crc8" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="crc8">CRC-8</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="crc16" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="crc16">CRC-16</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="crc32" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="crc32">CRC-32</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="crc64" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="crc64">CRC-64</label>
+            </div>
+            <label><b>Checksums</b></label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="bsd" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="bsd">BSD</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="sysv" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="sysv">SYSV</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="fletcher8" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="fletcher8">Fletcher-8</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="fletcher16" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="fletcher16">Fletcher-16</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="fletcher32" onclick="autoUpdateHash();" disabled>
+                <label class="form-check-label" for="fletcher32">Fletcher-32</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="fletcher64" onclick="autoUpdateHash();" disabled>
+                <label class="form-check-label" for="fletcher64">Fletcher-64</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="alder32" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="alder32">Alder-32</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="lrc" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="lrc">Longitudinal Redundancy Check</label>
+            </div>
+            <label><b>Non-Cryptographic Hash Functions</b></label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="one-at-a-time" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="one-at-a-time">Jenkins One at a Time</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="djb2" onclick="autoUpdateHash();" disabled>
+                <label class="form-check-label" for="djb2">djb2</label>
+            </div>
+            <label><b>Unkeyed Cryptographic Hash Functions</b></label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="md2" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="md2">MD2</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="md4" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="md4">MD4</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="md5" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="md5">MD5</label>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label><b>Encoding</b></label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="b64" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="b64">Base64</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="b64url" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="b64url">Base64URL</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="a85" onclick="autoUpdateHash();">
+                <label class="form-check-label" for="a85">Ascii85</label>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>
