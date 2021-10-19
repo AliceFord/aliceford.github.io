@@ -2,11 +2,11 @@
 <html lang="en"><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="An advanced speedcubing timer.">
+    <meta name="author" content="TechieHelper">
 
     <title>Tools</title>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="timer.js"></script>
@@ -15,11 +15,79 @@
   </head>
 
   <body>
-    <div class="col-sm-2">
-
+    <!-- Settings Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form onchange="updateSettings();">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="dark-mode-check">
+                <label class="form-check-label" for="dark-mode-check">Dark Mode</label>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-sm-10">
-        <span id="timer" style="font-size: 200px;"></span>
+
+
+    <div class="container h-100 d-flex">
+      <div id="left-navbar" class="d-flex flex-column">
+        <div class="row p-2">
+          <button id="settings-btn" class="btn" type="button" data-target="#settingsModal" data-toggle="modal">
+            Settings
+          </button>
+        </div>
+        <div class="row p-2">
+          <div id="times" class="card">
+            <div class="card-title text-center" style="padding-top: 10px;">
+              Times
+            </div>
+            <div id="times-table" class="card-body text-lg-center">
+              <table class="table">
+                <thead>
+                  <th>Time</th>
+                  <th>a05</th>
+                  <th>a12</th>
+                </thead>
+                <tbody>
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="timer-and-scramble" class="d-flex flex-column">
+        <div class="row p-2 mb-auto">
+          <span id="timer">0:00.00</span>
+        </div>
+        <div class="row p-2">
+          <div id="scramble" class="card">
+            <div class="card-title text-center" style="padding-top: 10px;">
+              <select id="scrambler">
+                <option value="333">3x3x3</option>
+                <option value="222">2x2x2</option>
+              </select>
+            </div>
+            <div id="scrambleText" class="card-body text-lg-center">
+              <h4>
+                F' U R2 D R2 B2 D' R2 F2 R2 D R2 D2 B U2 R' B2 R2 F' L'
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
