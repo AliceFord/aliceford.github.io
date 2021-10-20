@@ -47,11 +47,34 @@ function updateSettings() {
     }
 }
 
-function timerFinished(finalTime) {
+function addTime(time) {
     let table = document.getElementById("times-table");
     let row = table.insertRow(-1);
     let timeCell = row.insertCell(0);
-    timeCell.innerHTML = formatTime(finalTime);
+    timeCell.innerHTML = formatTime(time);
+}
+
+function removeAllTimes() {
+    clear();
+    $('#times-table').find('tr:not(:first)').remove();
+}
+
+async function timerFinished(finalTime) {
+    addTime(finalTime);
+
+    let storedData = await get("times");
+    if (storedData !== undefined) {
+        storedData["times"].push({
+            "scr": document.getElementById("scrambleText").innerHTML,
+            "time": finalTime
+        });
+        set("times", storedData);
+    } else {
+        set("times", {"times": [{
+            "scr": document.getElementById("scrambleText").innerHTML,
+            "time": finalTime
+        }]});
+    }
 
     generateCorrectScramble();
 }
@@ -69,13 +92,45 @@ var timerFunction = function() {
     document.getElementById("timer").innerHTML = formatTime(elapsedTime);
 };
 
-function setup() {
+var store;
+var dbPromise;
+
+async function setup() {
     document.getElementById("scrambleText").innerHTML = generate333();
 
     if (localStorage.getItem("colorPref") == "dark") {
         setDarkMode();
         document.getElementById("dark-mode-check").checked = true;
     }
+
+    dbPromise = await idb.openDB("keyval", 1, {
+        upgrade(db) {
+            db.createObjectStore('keyval');
+        },
+    });
+
+    let storedTimes = await get("times");
+    if (storedTimes !== undefined) {
+        storedTimes["times"].forEach((item, index) => {
+            addTime(item["time"]);
+        });
+    }
+}
+
+async function get(key) {
+    return (await dbPromise).get('keyval', key);
+}
+async function set(key, val) {
+    return (await dbPromise).put('keyval', val, key);
+}
+async function del(key) {
+    return (await dbPromise).delete('keyval', key);
+}
+async function clear() {
+    return (await dbPromise).clear('keyval');
+}
+async function keys() {
+    return (await dbPromise).getAllKeys('keyval');
 }
 
 var intervalID = 0;
