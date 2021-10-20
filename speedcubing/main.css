@@ -66,6 +66,10 @@ body {
   background-color: var(--bg-box-color);
 }
 
+#scrambleText {
+  font-size: 20px;
+}
+
 .row {
   flex-direction: column;
 }

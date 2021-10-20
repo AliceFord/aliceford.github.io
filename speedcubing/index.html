@@ -67,19 +67,19 @@
           </div>
         </div>
       </div>
-      <div id="timer-and-scramble" class="d-flex flex-column">
+      <div id="timer-and-scramble" class="d-flex flex-column w-100">
         <div class="row p-2 mb-auto">
           <span id="timer">0.00</span>
         </div>
         <div class="row p-2">
           <div id="scramble" class="card">
             <div class="card-title text-center" style="padding-top: 10px;">
-              <select id="scrambler-main">
+              <select id="scrambler-main" onchange="generateCorrectScramble();">
                 <option value="333">3x3x3</option>
                 <option value="222">2x2x2</option>
               </select>
-              <select id="scrambler-sub">
-                <option value="333">Random</option>
+              <select id="scrambler-sub" onchange="generateCorrectScramble();">
+                <option value="random">Random</option>
               </select>
             </div>
             <div id="scrambleText" class="card-body text-lg-center">

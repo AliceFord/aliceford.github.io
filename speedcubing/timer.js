@@ -4,7 +4,17 @@ var running = false;
 const sheet = new CSSStyleSheet();
 document.adoptedStyleSheets = [sheet];
 
+const scrambleLookupTable = {
+    "333": {
+        "random": generate333
+    },
+    "222": {
+        "random": generate222
+    }
+}
+
 function setDarkMode() {
+    localStorage.setItem("colorPref", "dark");
     sheet.replaceSync(`body {
         --text-color: #f0f0f0;
         --bg-color: #171717;
@@ -15,6 +25,7 @@ function setDarkMode() {
 }
 
 function unsetDarkMode() {
+    localStorage.setItem("colorPref", "light");
     sheet.replaceSync(`body {
         --text-color: #212529;
         --bg-color: #f5f5f5;
@@ -22,6 +33,10 @@ function unsetDarkMode() {
         --border-color: rgba(0,0,0,.125);
         --modal-bg-color: #fff;
     }`);
+}
+
+function generateCorrectScramble() {
+    document.getElementById("scrambleText").innerHTML = scrambleLookupTable[document.getElementById("scrambler-main").value][document.getElementById("scrambler-sub").value]();
 }
 
 function updateSettings() {
@@ -38,7 +53,7 @@ function timerFinished(finalTime) {
     let timeCell = row.insertCell(0);
     timeCell.innerHTML = formatTime(finalTime);
 
-    document.getElementById("scrambleText").innerHTML = generate333();
+    generateCorrectScramble();
 }
 
 function formatTime(time) {
@@ -54,12 +69,21 @@ var timerFunction = function() {
     document.getElementById("timer").innerHTML = formatTime(elapsedTime);
 };
 
+function setup() {
+    document.getElementById("scrambleText").innerHTML = generate333();
+
+    if (localStorage.getItem("colorPref") == "dark") {
+        setDarkMode();
+        document.getElementById("dark-mode-check").checked = true;
+    }
+}
+
 var intervalID = 0;
 var spaceStartTime = Date.now();
 var currentlyDown = false;
 var endingSpace = false;
 
-document.getElementById("scrambleText").innerHTML = generate333(); // Setup
+setup();
 
 $(document).on("keydown", function(e) {
     if (e.which == 32) {
