@@ -9,7 +9,6 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="timer.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="main.css" rel="stylesheet">
   </head>
@@ -53,8 +52,8 @@
             <div class="card-title text-center" style="padding-top: 10px;">
               Times
             </div>
-            <div id="times-table" class="card-body text-lg-center">
-              <table class="table">
+            <div class="card-body text-lg-center">
+              <table class="table" id="times-table">
                 <thead>
                   <th>Time</th>
                   <th>a05</th>
@@ -70,14 +69,17 @@
       </div>
       <div id="timer-and-scramble" class="d-flex flex-column">
         <div class="row p-2 mb-auto">
-          <span id="timer">0:00.00</span>
+          <span id="timer">0.00</span>
         </div>
         <div class="row p-2">
           <div id="scramble" class="card">
             <div class="card-title text-center" style="padding-top: 10px;">
-              <select id="scrambler">
+              <select id="scrambler-main">
                 <option value="333">3x3x3</option>
                 <option value="222">2x2x2</option>
+              </select>
+              <select id="scrambler-sub">
+                <option value="333">Random</option>
               </select>
             </div>
             <div id="scrambleText" class="card-body text-lg-center">
@@ -89,5 +91,8 @@
         </div>
       </div>
     </div>
+
+    <script src="scramble-generator.js"></script>
+    <script src="timer.js"></script>
   </body>
 </html>
