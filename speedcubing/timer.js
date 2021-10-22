@@ -39,7 +39,7 @@ function generateCorrectScramble() {
     document.getElementById("scrambleText").innerHTML = scrambleLookupTable[document.getElementById("scrambler-main").value][document.getElementById("scrambler-sub").value]();
 }
 
-function updateSettings() {
+function updateDarkMode() {
     if (document.getElementById("dark-mode-check").checked) {
         setDarkMode();
     } else {
@@ -47,11 +47,64 @@ function updateSettings() {
     }
 }
 
-function addTime(time) {
+function updateToolBox() {
+    if (document.getElementById("tool-box-check").checked) {
+
+    }
+}
+
+function aoLastN(times, n) {
+    let lastTimes = [];
+    times.reverse().some((item, index) => {
+        lastTimes.push(item);
+        if (index + 1 >= n) {
+            return true;
+        }
+    });
+
+    lastTimes.sort((a, b) => a - b); // ascending
+
+    for (let i = 0; i < Math.ceil(0.05 * lastTimes.length); i++) {
+        lastTimes.pop();
+    }
+
+    lastTimes.sort((a, b) => b - a); // descending
+
+    for (let i = 0; i < Math.ceil(0.05 * lastTimes.length); i++) {
+        lastTimes.pop();
+    }
+
+    return (lastTimes.reduce((a, b) => a + b, 0) / lastTimes.length) || 0;
+}
+
+function addTime(time, prevTimes) { // prevTimes should include current time, should be sorted with most recent at start
     let table = document.getElementById("times-table");
     let row = table.insertRow(-1);
-    let timeCell = row.insertCell(0);
+
+    let noCell = document.createElement("th");
+    noCell.innerHTML = $('#times-table tr').length - 1;
+    row.appendChild(noCell);
+
+    let timeCell = row.insertCell(1);
     timeCell.innerHTML = formatTime(time);
+
+    let currentPrevTimes = JSON.parse(JSON.stringify(prevTimes));
+
+    let ao5Cell = row.insertCell(2);
+    if (currentPrevTimes.length >= 5) {
+        ao5Cell.innerHTML = formatTime(aoLastN(currentPrevTimes, 5));
+    } else {
+        ao5Cell.innerHTML = "-";
+    }
+
+    currentPrevTimes = JSON.parse(JSON.stringify(prevTimes));
+
+    let ao12Cell = row.insertCell(3);
+    if (currentPrevTimes.length >= 12) {
+        ao12Cell.innerHTML = formatTime(aoLastN(currentPrevTimes, 12));
+    } else {
+        ao12Cell.innerHTML = "-";
+    }
 }
 
 function removeAllTimes() {
@@ -60,21 +113,32 @@ function removeAllTimes() {
 }
 
 async function timerFinished(finalTime) {
-    addTime(finalTime);
-
     let storedData = await get("times");
     if (storedData !== undefined) {
         storedData["times"].push({
             "scr": document.getElementById("scrambleText").innerHTML,
-            "time": finalTime
+            "time": finalTime,
+            "date": Math.floor(new Date().getTime() / 1000)
         });
-        set("times", storedData);
+        await set("times", storedData);
     } else {
-        set("times", {"times": [{
+        await set("times", {"times": [{
             "scr": document.getElementById("scrambleText").innerHTML,
-            "time": finalTime
+            "time": finalTime,
+            "date": Math.floor(new Date().getTime() / 1000)
         }]});
     }
+
+    storedData = [];
+    storedData = (await get("times"))["times"];
+    storedData.sort((a, b) => a["date"] - b["date"]);
+    let prevTimes = [];
+
+    storedData.forEach((item, index) => {
+        prevTimes.push(item["time"]);
+    });
+
+    addTime(finalTime, prevTimes);
 
     generateCorrectScramble();
 }
@@ -110,9 +174,13 @@ async function setup() {
     });
 
     let storedTimes = await get("times");
+    let prevTimes = [];
     if (storedTimes !== undefined) {
-        storedTimes["times"].forEach((item, index) => {
-            addTime(item["time"]);
+        let currentTimes = storedTimes["times"];
+        currentTimes.sort((a, b) => a["date"] - b["date"]);
+        currentTimes.forEach((item, index) => {
+            prevTimes.push(item["time"]);
+            addTime(item["time"], prevTimes);
         });
     }
 }
