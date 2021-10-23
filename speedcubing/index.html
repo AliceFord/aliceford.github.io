@@ -31,10 +31,12 @@
                 <input type="checkbox" class="form-check-input" id="dark-mode-check" onchange="updateDarkMode();">
                 <label class="form-check-label" for="dark-mode-check">Dark Mode</label>
               </div>
+              <hr>
               <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="tool-box-check" onchange="updateToolBox();">
-                <label class="form-check-label" for="tool-box-check">Tool Box</label>
+                <input type="checkbox" class="form-check-input" id="drawn-scramble-check" onchange="updateDrawnScramble();">
+                <label class="form-check-label" for="drawn-scramble-check">Drawn Scramble</label>
               </div>
+              <hr>
               <button class="btn btn-danger m-2" type="button" onclick="$('#deleteDataModal').modal()">Delete Stored Data</button>
             </form>
           </div>
@@ -70,7 +72,7 @@
 
 
     <div class="container custom-container h-100 d-flex">
-      <div id="left-navbar" class="d-flex flex-column">
+      <div id="left-navbar" class="d-flex flex-column hide-on-solve">
         <div class="row p-2">
           <button id="settings-btn" class="btn" type="button" data-target="#settingsModal" data-toggle="modal">
             Settings
@@ -101,7 +103,7 @@
         <div class="row p-2 mb-auto">
           <span id="timer">0.00</span>
         </div>
-        <div class="row p-2">
+        <div class="row p-2 hide-on-solve">
           <div id="scramble" class="card">
             <div class="card-title text-center" style="padding-top: 10px;">
               <select id="scrambler-main" onchange="generateCorrectScramble();">

@@ -47,7 +47,7 @@ function updateDarkMode() {
     }
 }
 
-function updateToolBox() {
+function updateDrawnScramble() {
     if (document.getElementById("tool-box-check").checked) {
 
     }
@@ -156,6 +156,12 @@ var timerFunction = function() {
     document.getElementById("timer").innerHTML = formatTime(elapsedTime);
 };
 
+var greenTimerFunction = function() {
+    hideWhileRunning();
+    
+    document.getElementById("timer").style.color = "var(--green)";
+}
+
 var store;
 var dbPromise;
 var isMobile = false;
@@ -207,6 +213,7 @@ async function keys() {
     return (await dbPromise).getAllKeys('keyval');
 }
 
+var greenColourID = 0;
 var intervalID = 0;
 var spaceStartTime = Date.now();
 var currentlyDown = false;
@@ -214,11 +221,21 @@ var endingSpace = false;
 
 setup();
 
+function hideWhileRunning() {
+    $('.hide-on-solve').attr('style', 'display:none !important;');
+}
+
+function showAfterRunning() {
+    $('.hide-on-solve').attr('style', '');
+}
+
 function keydownFunction() {
     if (!running) {
         if (!currentlyDown) {
             spaceStartTime = Date.now();
             currentlyDown = true;
+            greenColourID = setTimeout(greenTimerFunction, 500);
+            document.getElementById("timer").style.color = "var(--red)";
         }
     } else { // Stop as soon as possible, on keydown
         let finalTime = Date.now() - startTime;
@@ -227,6 +244,7 @@ function keydownFunction() {
 
         timerFinished(finalTime);
         running = false;
+        showAfterRunning();
         endingSpace = true;
     }
 }
@@ -243,9 +261,13 @@ function keyupFunction() {
             startTime = Date.now();
             intervalID = setInterval(timerFunction, 16);
             running = true;
+
+            document.getElementById("timer").style.color = "";
         } else {
             spaceStartTime = Infinity;
             console.log("Released too early.");
+            clearTimeout(greenColourID);
+            document.getElementById("timer").style.color = "";
         }
     }
 }
