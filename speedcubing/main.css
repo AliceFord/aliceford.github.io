@@ -50,8 +50,10 @@ body {
 
 #timer {
   font-size: 10rem;
-  padding-top: 5rem;
-  padding-left: 1.5rem;
+  position: absolute;
+  top: 40%;
+  left: 60%;
+  transform: translateY(-50%) translateX(-50%);
 }
 
 #settings-btn {
@@ -62,7 +64,7 @@ body {
   color: var(--text-color);
 }
 
-#scramble, #times {
+#scramble, #times, #drawn-scramble {
   background-color: var(--bg-box-color);
 }
 
@@ -86,7 +88,7 @@ body {
 
 .pre-scrollable {
   scrollbar-gutter: stable;
-  max-height: 30rem;
+  max-height: 23rem;
 }
 
 .table thead th {
@@ -103,4 +105,8 @@ body {
 
 .pre-scrollable::-webkit-scrollbar-thumb {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+#drawn-scramble-card-body {
+  padding: .3rem;
 }
