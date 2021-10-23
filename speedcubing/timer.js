@@ -123,6 +123,29 @@ function updateDrawnScramble() {
     }
 }
 
+function updateInspectionTimer() {
+    if (document.getElementById("inspection-timer-check").checked) {
+        localStorage.setItem("inspectionTimer", "1");
+        document.getElementById("inspection-callouts-check").disabled = false;
+        inspectionTimer = true;
+    } else {
+        localStorage.setItem("inspectionTimer", "0");
+        document.getElementById("inspection-callouts-check").checked = false;
+        document.getElementById("inspection-callouts-check").disabled = true;
+        inspectionTimer = false;
+    }
+}
+
+function updateCalloutsCheck() {
+    if (document.getElementById("inspection-callouts-check").checked) {
+        localStorage.setItem("inspectionCallouts", "1");
+        inspectionCallouts = true;
+    } else {
+        localStorage.setItem("inspectionCallouts", "0");
+        inspectionCallouts = false;
+    }
+}
+
 function aoLastN(times, n) {
     let lastTimes = [];
     times.reverse().some((item, index) => {
@@ -232,10 +255,41 @@ var greenTimerFunction = function() {
     document.getElementById("timer").style.color = "var(--green)";
 }
 
+var inspectionFunction = function() {
+    document.getElementById("timer").innerHTML = currentInspectionTime;
+
+    if (currentInspectionTime == 7) {
+        document.getElementById("timer").style.color = "var(--orange)";
+        if (inspectionCallouts) {
+            const eightSecs = new Audio("8s.mp3");
+            eightSecs.play();
+        }
+    }
+    if (currentInspectionTime == 3) {
+        document.getElementById("timer").style.color = "var(--red)";
+        if (inspectionCallouts) {
+            const twelveSecs = new Audio("12s.mp3");
+            twelveSecs.play();
+        }
+    }
+    if (currentInspectionTime == 0) {
+        if (inspectionCallouts) {
+            const fifteenSecs = new Audio("15s.mp3");
+            fifteenSecs.play();
+        }
+    }
+
+    currentInspectionTime--;
+}
+
 var store;
 var dbPromise;
 var isMobile = false;
 var currentCubeScramble = Cube.Empty();
+var inspectionTimer = false;
+var inspectionCallouts = false;
+var currentInspectionTime = 15;
+var inspectionTimerID = 0;
 
 async function setup() {
     let a = navigator.userAgent||navigator.vendor||window.opera;
@@ -250,6 +304,17 @@ async function setup() {
         document.getElementById("drawn-scramble-check").checked = true;
     } else {
         $("#drawn-scramble").hide();
+    }
+
+    if (localStorage.getItem("inspectionTimer") == "1") {
+        inspectionTimer = true;
+        document.getElementById("inspection-timer-check").checked = true;
+        document.getElementById("inspection-callouts-check").disabled = false;
+
+        if (localStorage.getItem("inspectionCallouts") == "1") {
+            inspectionCallouts = true;
+            document.getElementById("inspection-callouts-check").checked = true;
+        }
     }
 
     dbPromise = await idb.openDB("keyval", 1, {
@@ -299,6 +364,7 @@ var intervalID = 0;
 var spaceStartTime = Date.now();
 var currentlyDown = false;
 var endingSpace = false;
+var inspectionStarted = false;
 
 setup();
 
@@ -311,39 +377,58 @@ function showAfterRunning() {
 }
 
 function keydownFunction() {
-    if (!running) {
-        if (!currentlyDown) {
-            spaceStartTime = Date.now();
-            currentlyDown = true;
-            greenColourID = setTimeout(greenTimerFunction, 500);
-            document.getElementById("timer").style.color = "var(--red)";
-        }
-    } else { // Stop as soon as possible, on keydown
-        let finalTime = Date.now() - startTime;
-        clearInterval(intervalID);
-        document.getElementById("timer").innerHTML = formatTime(finalTime); // In case .01 difference occurs due to timer stop time
+    if (!inspectionStarted) {
+        if (!running) {
+            if (!currentlyDown) {
+                spaceStartTime = Date.now();
+                currentlyDown = true;
+                greenColourID = setTimeout(greenTimerFunction, 500);
+                document.getElementById("timer").style.color = "var(--red)";
+            }
+        } else { // Stop as soon as possible, on keydown
+            let finalTime = Date.now() - startTime;
+            clearInterval(intervalID);
+            document.getElementById("timer").innerHTML = formatTime(finalTime); // In case .01 difference occurs due to timer stop time
 
-        timerFinished(finalTime);
-        running = false;
-        showAfterRunning();
-        endingSpace = true;
+            timerFinished(finalTime);
+            running = false;
+            showAfterRunning();
+            endingSpace = true;
+        }
     }
 }
-
+// TODO: implement escape key and other keys to stop.
 function keyupFunction() {
     currentlyDown = false;
     if (endingSpace) {
         endingSpace = false;
         return;
     }
+    if (inspectionStarted) {
+        clearInterval(inspectionTimerID);
+        ready = false;
+        startTime = Date.now();
+        intervalID = setInterval(timerFunction, 16);
+        running = true;
+
+        document.getElementById("timer").style.color = "";
+        inspectionStarted = false;
+        currentInspectionTime = 15;
+    }
     if (!running) {
         if (Date.now() - spaceStartTime > 500) {
-            ready = false;
-            startTime = Date.now();
-            intervalID = setInterval(timerFunction, 16);
-            running = true;
+            if (!inspectionTimer) {
+                ready = false;
+                startTime = Date.now();
+                intervalID = setInterval(timerFunction, 16);
+                running = true;
 
-            document.getElementById("timer").style.color = "";
+                document.getElementById("timer").style.color = "";
+            } else {
+                inspectionStarted = true;
+                inspectionFunction();
+                inspectionTimerID = setInterval(inspectionFunction, 1000);
+            }
         } else {
             spaceStartTime = Infinity;
             console.info("Released too early.");
