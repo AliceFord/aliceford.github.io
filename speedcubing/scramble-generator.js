@@ -70,6 +70,10 @@ function generate333L4E() {
         scramble += "U2 ";
     }
 
+    if (((scramble.match(/M2/g) || []).length * 2 + (scramble.match(/M /g) || []).length - (scramble.match(/M'/g) || []).length) % 2 == 1) {
+        scramble += "M ";
+    }
+    
     return scramble;
 }
 

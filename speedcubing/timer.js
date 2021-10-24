@@ -161,19 +161,37 @@ function updateCalloutsCheck() {
 }
 
 function aoLastN(times, n) {
+    times.reverse();
+
     let lastTimes = [];
-    times.reverse().some((item, index) => {
+    times.some((item, index) => {
         lastTimes.push(item);
         if (index + 1 >= n) {
             return true;
         }
     });
 
-    lastTimes.sort((a, b) => a - b); // ascending
+    lastTimes.sort((a, b) => {
+        if (typeof a == "string") {
+            if (typeof b == "string") {
+                return 0;
+            }
+
+            return 1;
+        } else {
+            if (typeof b == "string") {
+                return -1;
+            } else {
+                return a - b;
+            }
+        }
+    }); // ascending
 
     for (let i = 0; i < Math.ceil(0.05 * lastTimes.length); i++) {
         lastTimes.pop();
     }
+
+    if (lastTimes.includes("DNF")) return "DNF";
 
     lastTimes.sort((a, b) => b - a); // descending
 
@@ -269,14 +287,16 @@ async function timerFinished(finalTime) {
         storedData["times"].push({
             "scr": document.getElementById("scrambleText").innerHTML,
             "time": finalTime,
-            "date": Math.floor(new Date().getTime() / 1000)
+            "date": Math.floor(new Date().getTime() / 1000),
+            "n": $('#times-table tr').length - 1
         });
         await set("times", storedData);
     } else {
         await set("times", {"times": [{
             "scr": document.getElementById("scrambleText").innerHTML,
             "time": finalTime,
-            "date": Math.floor(new Date().getTime() / 1000)
+            "date": Math.floor(new Date().getTime() / 1000),
+            "n": $('#times-table tr').length - 1
         }]});
     }
 
@@ -295,6 +315,7 @@ async function timerFinished(finalTime) {
 }
 
 function formatTime(time) {
+    if (time == "DNF") return "DNF";
     if (Math.floor((time / 1000) / 60) > 0) {
         return Math.floor((time / 1000) / 60) + ":" + ((time / 1000) % 60).toFixed(2);
     } else {
@@ -444,6 +465,32 @@ function showAfterRunning() {
     $('.hide-on-solve').attr('style', '');
 }
 
+function cancelTimer() {
+    if (inspectionStarted) {
+        clearInterval(inspectionTimerID);
+        document.getElementById("timer").innerHTML = formatTime(0); 
+
+        timerFinished("DNF");
+        running = false;
+        showAfterRunning();
+        endingSpace = true;
+        inspectionStarted = false;
+        currentInspectionTime = 15;
+        return;
+    }
+    if (running) {
+        clearInterval(intervalID);
+
+        timerFinished("DNF");
+        running = false;
+        showAfterRunning();
+        endingSpace = true;
+        inspectionStarted = false;
+        currentInspectionTime = 15;
+        return;
+    }
+}
+
 function keydownFunction() {
     if (!inspectionStarted) {
         if (!running) {
@@ -518,6 +565,8 @@ if (isMobile) {
     $(document).on("keydown", function(e) {
         if (e.which == 32) {
             keydownFunction();
+        } else if (e.which == 27) {
+            cancelTimer();
         }
     });
 
