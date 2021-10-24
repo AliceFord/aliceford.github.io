@@ -56,6 +56,33 @@ function getRandomFromArr(prev, arr) { // returns move
     return move
 }
 
+function generate333L10P() {
+    function getRandomCornerShuffle() {
+        const cornerShuffles = ["R U2 R' U' R U' R'", "R' U2 R U R' U R", "L' U2 L U L' U L", "L U2 L' U' L U' L'",
+                                "R U R' U R U2 R'", "R' U' R U' R' U2 R", "L U L' U L U2 L'", "L' U' L U' L' U2 L"
+            ];
+        return cornerShuffles[Math.floor(Math.random() * cornerShuffles.length)] + " ";
+    }
+
+    var scramble = "";
+    let prevMove = "";
+    let newMove;
+    let pos1 = Math.floor(Math.random() * 6);
+    let pos2 = Math.floor(Math.random() * 6);
+    while (pos2 == pos1) pos2 = Math.floor(Math.random() * 6);
+
+    for (let i = 0; i < 6; i++) {
+        if (i == pos1 || i == pos2) {
+            scramble += getRandomCornerShuffle();
+            prevMove = "";
+        }
+        [newMove, prevMove] = getRandomWith2AndPrime(prevMove, valid333LSEMoves);
+        scramble += newMove;
+    }
+
+    return scramble;
+}
+
 function generate333L4E() {
     var scramble = "";
     let prevMove = "";
@@ -73,7 +100,7 @@ function generate333L4E() {
     if (((scramble.match(/M2/g) || []).length * 2 + (scramble.match(/M /g) || []).length - (scramble.match(/M'/g) || []).length) % 2 == 1) {
         scramble += "M ";
     }
-    
+
     return scramble;
 }
 

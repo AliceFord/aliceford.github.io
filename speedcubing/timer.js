@@ -7,6 +7,7 @@ document.adoptedStyleSheets = [sheet];
 const scrambleLookupTable = {
     "333": {
         "random": generate333,
+        "l10p": generate333L10P,
         "lse": generate333LSE,
         "l4e": generate333L4E
     },
