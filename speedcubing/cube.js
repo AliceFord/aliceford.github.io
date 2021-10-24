@@ -56,6 +56,10 @@ class Cube {
             for (let i = 0; i < notationToRot[move[1]]; i++)
                 this.actuallyApply(0, 2, 1, 4,  0, 1, 2,  6, 3, 0,  8, 7, 6,  2, 5, 8,  5)
             break;
+        case "M":
+            for (let i = 0; i < notationToRot[move[1]]; i++)
+                this.actuallyApply(0, 3, 1, 5,  1, 4, 7,  1, 4, 7,  1, 4, 7,  7, 4, 1,  -1)
+            break;
         }
     }
 

@@ -1,4 +1,5 @@
 const valid333Moves = ["U", "D", "L", "R", "F", "B"];
+const valid333LSEMoves = ["U", "M"];
 const valid222Moves = ["U", "F", "R"];
 
 function shuffle(array) { // Fisher-Yates
@@ -46,6 +47,18 @@ function getRandomWith2AndPrime(prev, arr) { // returns [move,newPrev]
     return [move,originalMove]
 }
 
+
+function generate333LSE() {
+    var scramble = "";
+    let prevMove = "";
+    let newMove;
+    for (let i = 0; i < 10; i++) {
+        [newMove, prevMove] = getRandomWith2AndPrime(prevMove, valid333LSEMoves);
+        scramble += newMove;
+    }
+
+    return scramble;
+}
 
 function generate333() {
     var scramble = "";
