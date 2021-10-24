@@ -207,10 +207,15 @@ function addTime(time, prevTimes) { // prevTimes should include current time, sh
     let row = table.insertRow(1);
 
     let noCell = document.createElement("th");
+    noCell.classList.add("cell-time");
     noCell.innerHTML = $('#times-table tr').length - 1;
+    noCell.addEventListener("click", () => {
+        removeTime($('#times-table tr').length - 1);
+    });
     row.appendChild(noCell);
 
     let timeCell = row.insertCell(1);
+    timeCell.classList.add("cell-time");
     timeCell.innerHTML = formatTime(time);
 
     let currentPrevTimes = JSON.parse(JSON.stringify(prevTimes));
@@ -221,6 +226,7 @@ function addTime(time, prevTimes) { // prevTimes should include current time, sh
     if (currentPrevTimes.length >= 5) {
         currentAo5 = aoLastN(currentPrevTimes, 5);
         ao5Cell.innerHTML = formatTime(currentAo5);
+        ao5Cell.classList.add("cell-time");
     } else {
         ao5Cell.innerHTML = "-";
     }
@@ -233,6 +239,7 @@ function addTime(time, prevTimes) { // prevTimes should include current time, sh
     if (currentPrevTimes.length >= 12) {
         currentAo12 = aoLastN(currentPrevTimes, 12);
         ao12Cell.innerHTML = formatTime(currentAo12);
+        ao12Cell.classList.add("cell-time");
     } else {
         ao12Cell.innerHTML = "-";
     }
@@ -279,6 +286,29 @@ function addTime(time, prevTimes) { // prevTimes should include current time, sh
 function removeAllTimes() {
     clear();
     $('#times-table').find('tr:not(:first)').remove();
+}
+
+function resetTables() {
+    document.getElementById("current-time").innerHTML = "-";
+    document.getElementById("best-time").innerHTML = "-";
+    document.getElementById("current-ao5").innerHTML = "-";
+    document.getElementById("best-ao5").innerHTML = "-";
+    document.getElementById("current-ao12").innerHTML = "-";
+    document.getElementById("best-ao12").innerHTML = "-";
+    $('#times-table').find('tr:not(:first)').remove();
+
+    bestTime = Infinity;
+    bestAo5 = Infinity;
+    bestAo12 = Infinity;
+}
+
+async function removeTime(n) {
+    let data = await (get("times"));
+    data["times"].splice(n - 1, 1);
+    await set("times", data);
+
+    resetTables();
+    setup();
 }
 
 async function timerFinished(finalTime) {

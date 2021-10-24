@@ -8,6 +8,7 @@ body {
   --bg-box-color: #f0f0f0;
   --border-color: rgba(0,0,0,.125);
   --modal-bg-color: #fff;
+  --bg-box-hover-color: #dfdfdf;
 }
 
 @media (prefers-color-theme: dark) {
@@ -72,6 +73,10 @@ body {
   padding: 0.75rem;
 }
 
+.cell-time:hover {
+  background-color: var(--bg-box-hover-color);
+}
+
 body {
   padding-top: 20px;
 }
@@ -99,7 +104,7 @@ body {
   max-height: 15rem;
 }
 
-.table thead th {
+.table thead th.cell-time {
   border-bottom: 1px solid #dee2e6;
 }
 
