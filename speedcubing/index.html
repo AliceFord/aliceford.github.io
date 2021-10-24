@@ -88,10 +88,37 @@
           </button>
         </div>
         <div class="row p-2">
-          <div id="times" class="card">
-            <div class="card-title text-center" style="padding-top: 10px;">
-              Times
+          <div id="times-summary" class="card">
+            <div class="card-body text-lg-center">
+              <table class="table table-bordered table-sm" id="times-summary-table">
+                <thead>
+                  <th></th>
+                  <th>Current</th>
+                  <th>Best</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Time</th>
+                    <td id="current-time"></td>
+                    <td id="best-time"></td>
+                  </tr>
+                  <tr>
+                    <th>Ao5</th>
+                    <td id="current-ao5"></td>
+                    <td id="best-ao5"></td>
+                  </tr>
+                  <tr>
+                    <th>Ao12</th>
+                    <td id="current-ao12"></td>
+                    <td id="best-ao12"></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+          </div>
+        </div>
+        <div class="row p-2 mb-auto">
+          <div id="times" class="card">
             <div class="card-body text-lg-center pre-scrollable">
               <table class="table table-bordered table-sm" id="times-table">
                 <thead>

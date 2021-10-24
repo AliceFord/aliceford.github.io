@@ -172,7 +172,7 @@ function aoLastN(times, n) {
 
 function addTime(time, prevTimes) { // prevTimes should include current time, should be sorted with most recent at start
     let table = document.getElementById("times-table");
-    let row = table.insertRow(-1);
+    let row = table.insertRow(1);
 
     let noCell = document.createElement("th");
     noCell.innerHTML = $('#times-table tr').length - 1;
@@ -183,20 +183,64 @@ function addTime(time, prevTimes) { // prevTimes should include current time, sh
 
     let currentPrevTimes = JSON.parse(JSON.stringify(prevTimes));
 
+    let currentAo5 = Infinity;
+
     let ao5Cell = row.insertCell(2);
     if (currentPrevTimes.length >= 5) {
-        ao5Cell.innerHTML = formatTime(aoLastN(currentPrevTimes, 5));
+        currentAo5 = aoLastN(currentPrevTimes, 5);
+        ao5Cell.innerHTML = formatTime(currentAo5);
     } else {
         ao5Cell.innerHTML = "-";
     }
 
     currentPrevTimes = JSON.parse(JSON.stringify(prevTimes));
 
+    let currentAo12 = Infinity;
+
     let ao12Cell = row.insertCell(3);
     if (currentPrevTimes.length >= 12) {
-        ao12Cell.innerHTML = formatTime(aoLastN(currentPrevTimes, 12));
+        currentAo12 = aoLastN(currentPrevTimes, 12);
+        ao12Cell.innerHTML = formatTime(currentAo12);
     } else {
         ao12Cell.innerHTML = "-";
+    }
+
+    let currentTimeCell = document.getElementById("current-time");
+    currentTimeCell.innerHTML = formatTime(time);
+    if (time < bestTime) {
+        let bestTimeCell = document.getElementById("best-time");
+        bestTimeCell.innerHTML = formatTime(time);
+        bestTime = time;
+    }
+
+    if (currentPrevTimes.length >= 5) {
+        let currentAo5Cell = document.getElementById("current-ao5");
+        currentAo5Cell.innerHTML = formatTime(currentAo5);
+        if (currentAo5 < bestAo5) {
+            let bestAo5Cell = document.getElementById("best-ao5");
+            bestAo5Cell.innerHTML = formatTime(currentAo5);
+            bestAo5 = currentAo5;
+        }
+    } else {
+        let currentAo5Cell = document.getElementById("current-ao5");
+        currentAo5Cell.innerHTML = "-";
+        let bestAo5Cell = document.getElementById("best-ao5");
+        bestAo5Cell.innerHTML = "-";
+    }
+
+    if (currentPrevTimes.length >= 12) {
+        let currentAo12Cell = document.getElementById("current-ao12");
+        currentAo12Cell.innerHTML = formatTime(currentAo12);
+        if (currentAo12 < bestAo12) {
+            let bestAo12Cell = document.getElementById("best-ao12");
+            bestAo12Cell.innerHTML = formatTime(currentAo12);
+            bestAo12 = currentAo12;
+        }
+    } else {
+        let currentAo12Cell = document.getElementById("current-ao12");
+        currentAo12Cell.innerHTML = "-";
+        let bestAo12Cell = document.getElementById("best-ao12");
+        bestAo12Cell.innerHTML = "-";
     }
 }
 
@@ -290,6 +334,9 @@ var inspectionTimer = false;
 var inspectionCallouts = false;
 var currentInspectionTime = 15;
 var inspectionTimerID = 0;
+var bestTime = Infinity;
+var bestAo5 = Infinity;
+var bestAo12 = Infinity;
 
 async function setup() {
     let a = navigator.userAgent||navigator.vendor||window.opera;
@@ -397,7 +444,7 @@ function keydownFunction() {
         }
     }
 }
-// TODO: implement escape key and other keys to stop.
+
 function keyupFunction() {
     currentlyDown = false;
     if (endingSpace) {
