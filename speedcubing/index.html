@@ -158,9 +158,13 @@
               </select>
               <select id="scrambler-sub" onchange="generateCorrectScramble();">
                 <option value="random">Random</option>
-                <option>--Roux--</option>
+                <option value="invalid">--Roux--</option>
                 <option value="lse">LSE</option>
+                <option value="l4e">L4E</option>
               </select>
+              <a href="javascript:void(0)" onclick="generateCorrectScramble();">
+                Generate
+              </a>
             </div>
             <div id="scrambleText" class="card-body text-lg-center">
               <h4>

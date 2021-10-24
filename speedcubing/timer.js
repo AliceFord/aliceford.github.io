@@ -7,7 +7,8 @@ document.adoptedStyleSheets = [sheet];
 const scrambleLookupTable = {
     "333": {
         "random": generate333,
-        "lse": generate333LSE
+        "lse": generate333LSE,
+        "l4e": generate333L4E
     },
     "222": {
         "random": generate222
@@ -90,7 +91,19 @@ function drawScramble(scrambleData) {
 }
 
 function generateCorrectScramble() {
-    let scramble = scrambleLookupTable[document.getElementById("scrambler-main").value][document.getElementById("scrambler-sub").value]();
+    let mainOption = document.getElementById("scrambler-main").value;
+    let subOption = document.getElementById("scrambler-sub").value;
+    if (subOption == "invalid") {
+        document.getElementById("scrambleText").innerHTML = "Invalid Options";
+        currentCubeScramble = Cube.Empty();
+        drawScramble(currentCubeScramble.cubeData);
+        return;
+    }
+    let scramble = scrambleLookupTable[mainOption][subOption]();
+    
+    localStorage.setItem("main-scramble-option", mainOption);
+    localStorage.setItem("sub-scramble-option", subOption);
+    
     if (document.getElementById("drawn-scramble-check").checked) {
         currentCubeScramble = Cube.Empty();
         currentCubeScramble.applyMoves(scramble.split(" "));
@@ -363,6 +376,13 @@ async function setup() {
             inspectionCallouts = true;
             document.getElementById("inspection-callouts-check").checked = true;
         }
+    }
+
+    let mainScrambleOption = localStorage.getItem("main-scramble-option");
+    let subScrambleOption = localStorage.getItem("sub-scramble-option");
+    if (mainScrambleOption != null && subScrambleOption != null) {
+        document.getElementById("scrambler-main").value = mainScrambleOption;
+        document.getElementById("scrambler-sub").value = subScrambleOption;
     }
 
     dbPromise = await idb.openDB("keyval", 1, {
