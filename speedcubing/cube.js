@@ -1,6 +1,6 @@
 const notationToRot = {"'": 3, undefined: 1, "2": 2}
 
-class Cube {
+class CustomCube {
     constructor(cubeInstructions) { // wyogrb
         this.cubeData = [];
         for (let i = 0; i < 6; i++) {
@@ -70,6 +70,6 @@ class Cube {
     }
 
     static Empty() {
-        return new Cube("wwwwwwwwwyyyyyyyyyooooooooogggggggggrrrrrrrrrbbbbbbbbb");
+        return new CustomCube("wwwwwwwwwyyyyyyyyyooooooooogggggggggrrrrrrrrrbbbbbbbbb");
     }
 }
