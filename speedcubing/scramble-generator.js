@@ -83,6 +83,11 @@ function generate333L10P() {
     return scramble;
 }
 
+function generate333CrossComplete(cube) {
+    let edges = ["UBL", "UBR", "UFR", "UFL"];
+    edges = shuffle(edges);
+}
+
 function generate333L4E() {
     var scramble = "";
     let prevMove = "";

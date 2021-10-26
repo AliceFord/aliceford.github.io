@@ -7,6 +7,7 @@ document.adoptedStyleSheets = [sheet];
 const scrambleLookupTable = {
     "333": {
         "random": generate333,
+        "cross-complete": generate333CrossComplete,
         "l10p": generate333L10P,
         "lse": generate333LSE,
         "l4e": generate333L4E
@@ -100,7 +101,7 @@ function generateCorrectScramble() {
         drawScramble(currentCubeScramble.cubeData);
         return;
     }
-    let scramble = scrambleLookupTable[mainOption][subOption]();
+    let scramble = scrambleLookupTable[mainOption][subOption](cubejsCube);
     
     localStorage.setItem("main-scramble-option", mainOption);
     localStorage.setItem("sub-scramble-option", subOption);
@@ -210,9 +211,10 @@ function addTime(time, prevTimes) { // prevTimes should include current time, sh
     let noCell = document.createElement("th");
     noCell.classList.add("cell-time");
     noCell.innerHTML = $('#times-table tr').length - 1;
-    noCell.addEventListener("click", () => {
-        removeTime($('#times-table tr').length - 1);
-    });
+    let caller = function (p) {
+        return function() {removeTime(p);};
+    }
+    noCell.addEventListener("click", caller($('#times-table tr').length - 1));
     row.appendChild(noCell);
 
     let timeCell = row.insertCell(1);
@@ -366,7 +368,16 @@ var greenTimerFunction = function() {
 }
 
 var inspectionFunction = function() {
-    document.getElementById("timer").innerHTML = currentInspectionTime;
+    if (currentInspectionTime > 0) {
+        document.getElementById("timer").innerHTML = currentInspectionTime;
+    } else if (currentInspectionTime > -2) {
+        document.getElementById("timer").innerHTML = "+2";
+        penalty = "+2";
+    } else {
+        document.getElementById("timer").innerHTML = "DNF";
+        penalty = "DNF";
+    }
+    
 
     if (currentInspectionTime == 7) {
         document.getElementById("timer").style.color = "var(--orange)";
@@ -404,6 +415,7 @@ var bestTime = Infinity;
 var bestAo5 = Infinity;
 var bestAo12 = Infinity;
 var cubejsCube;
+
 
 async function setup() {
     Cube.asyncInit("/speedcubing/cubejs/worker.js", () => {
@@ -467,11 +479,11 @@ async function setup() {
     }
     generateCorrectScramble();
 
-    $(document.body).on("touchstart", function(e) {
+    window.addEventListener("touchstart", function(e) {
         keydownFunction();
     });
-    
-    $(document).on("touchend", function(e) {
+
+    window.addEventListener("touchend", function(e) {
         keyupFunction();
     });
     
@@ -512,8 +524,9 @@ var spaceStartTime = Date.now();
 var currentlyDown = false;
 var endingSpace = false;
 var inspectionStarted = false;
+var penalty = "";
 
-window.addEventListener("DOMContentLoaded", setup);
+setup();
 
 function hideWhileRunning() {
     $('.hide-on-solve').attr('style', 'display:none !important;');
@@ -526,25 +539,27 @@ function showAfterRunning() {
 function cancelTimer() {
     if (inspectionStarted) {
         clearInterval(inspectionTimerID);
-        document.getElementById("timer").innerHTML = formatTime(0); 
+        document.getElementById("timer").style.color = "";
+        document.getElementById("timer").innerHTML = formatTime(0);
 
         timerFinished("DNF");
         running = false;
         showAfterRunning();
-        endingSpace = true;
         inspectionStarted = false;
         currentInspectionTime = 15;
+        penalty = "";
         return;
     }
     if (running) {
         clearInterval(intervalID);
+        document.getElementById("timer").style.color = "";
 
         timerFinished("DNF");
         running = false;
         showAfterRunning();
-        endingSpace = true;
         inspectionStarted = false;
         currentInspectionTime = 15;
+        penalty = "";
         return;
     }
 }
@@ -561,9 +576,11 @@ function keydownFunction() {
         } else { // Stop as soon as possible, on keydown
             let finalTime = Date.now() - startTime;
             clearInterval(intervalID);
+            if (penalty == "+2") finalTime += 2000
             document.getElementById("timer").innerHTML = formatTime(finalTime); // In case .01 difference occurs due to timer stop time
 
-            timerFinished(finalTime);
+            timerFinished(penalty == "DNF" ? penalty : finalTime);
+            penalty = "";
             running = false;
             showAfterRunning();
             endingSpace = true;

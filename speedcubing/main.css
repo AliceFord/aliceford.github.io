@@ -55,6 +55,8 @@ body {
   top: 40%;
   left: 60%;
   transform: translateY(-50%) translateX(-50%);
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 #settings-btn {
