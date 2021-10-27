@@ -103,7 +103,7 @@ body {
 
 .pre-scrollable {
   scrollbar-gutter: stable;
-  max-height: 15rem;
+  max-height:28vh;
 }
 
 .table thead th.cell-time {

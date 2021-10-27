@@ -286,6 +286,24 @@ function addTime(time, prevTimes) { // prevTimes should include current time, sh
     }
 }
 
+async function modifyLatestResult(data) {
+    if (data == "+2") {
+        let storedData = await (get("times"));
+        storedData["times"][$('#times-table tr').length - 2]["time"] += 2000;
+        await set("times", storedData);
+
+        resetTables();
+        updateTables();
+    } else if (data == "DNF") {
+        let storedData = await (get("times"));
+        storedData["times"][$('#times-table tr').length - 2]["time"] = "DNF";
+        await set("times", storedData);
+
+        resetTables();
+        updateTables();
+    }
+}
+
 function removeAllTimes() {
     clear();
     $('#times-table').find('tr:not(:first)').remove();
@@ -311,7 +329,7 @@ async function removeTime(n) {
     await set("times", data);
 
     resetTables();
-    setup();
+    updateTables();
 }
 
 async function timerFinished(finalTime) {
@@ -415,6 +433,20 @@ var bestTime = Infinity;
 var bestAo5 = Infinity;
 var bestAo12 = Infinity;
 var cubejsCube;
+
+
+async function updateTables() {
+    let storedTimes = await get("times");
+    let prevTimes = [];
+    if (storedTimes !== undefined) {
+        let currentTimes = storedTimes["times"];
+        currentTimes.sort((a, b) => a["date"] - b["date"]);
+        currentTimes.forEach((item, index) => {
+            prevTimes.push(item["time"]);
+            addTime(item["time"], prevTimes);
+        });
+    }
+}
 
 
 async function setup() {
