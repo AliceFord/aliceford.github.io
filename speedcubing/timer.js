@@ -40,7 +40,7 @@ function unsetDarkMode() {
 }
 
 function drawScramble(scrambleData) {
-    const letterToColour = {"w": "white", "y": "yellow", "b": "blue", "g": "green", "r": "red", "o": "orange"}
+    const colourScheme = {"U": "white", "D": "yellow", "B": "blue", "F": "green", "R": "red", "L": "orange"}
     let canvas = document.getElementById("drawn-scramble-canvas");
     let ctx = canvas.getContext("2d");
     ctx.clearRect(-0.5, -0.5, canvas.width, canvas.height);
@@ -49,7 +49,7 @@ function drawScramble(scrambleData) {
     
     for (let i = 0; i < 3 * scaleFactor; i += scaleFactor) { // white face
         for (let j = 0; j < 3 * scaleFactor; j += scaleFactor) {
-            ctx.fillStyle = letterToColour[scrambleData[0][(i / scaleFactor) + (j / scaleFactor) * 3]]
+            ctx.fillStyle = colourScheme[scrambleData[0][(i / scaleFactor) + (j / scaleFactor) * 3]]
             ctx.beginPath();
             ctx.moveTo(i + scaleFactor * 3 + 2, j);
             ctx.lineTo(i + scaleFactor * 3 + scaleFactor + 2, j);
@@ -63,7 +63,7 @@ function drawScramble(scrambleData) {
 
     for (let i = 0; i < 3 * scaleFactor; i += scaleFactor) { // yellow face
         for (let j = 0; j < 3 * scaleFactor; j += scaleFactor) {
-            ctx.fillStyle = letterToColour[scrambleData[1][(i / scaleFactor) + (j / scaleFactor) * 3]]
+            ctx.fillStyle = colourScheme[scrambleData[1][(i / scaleFactor) + (j / scaleFactor) * 3]]
             ctx.beginPath();
             ctx.moveTo(i + scaleFactor * 3 + 2, j + scaleFactor * 6 + 4);
             ctx.lineTo(i + scaleFactor * 3 + scaleFactor + 2, j + scaleFactor * 6 + 4);
@@ -78,7 +78,7 @@ function drawScramble(scrambleData) {
     for (let n = 0; n < 4; n++) { // other sides
         for (let i = 0; i < 3 * scaleFactor; i += scaleFactor) {
             for (let j = 0; j < 3 * scaleFactor; j += scaleFactor) {
-                ctx.fillStyle = letterToColour[scrambleData[n + 2][(i / scaleFactor) + (j / scaleFactor) * 3]]
+                ctx.fillStyle = colourScheme[scrambleData[n + 2][(i / scaleFactor) + (j / scaleFactor) * 3]]
                 ctx.beginPath();
                 ctx.moveTo(i + n * scaleFactor * 3 + 2 * n, j + scaleFactor * 3 + 2);
                 ctx.lineTo(i + scaleFactor + n * scaleFactor * 3 + 2 * n, j + scaleFactor * 3 + 2);

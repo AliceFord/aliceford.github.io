@@ -70,6 +70,29 @@ class CustomCube {
     }
 
     static Empty() {
-        return new CustomCube("wwwwwwwwwyyyyyyyyyooooooooogggggggggrrrrrrrrrbbbbbbbbb");
+        return new CustomCube("UUUUUUUUUDDDDDDDDDLLLLLLLLLFFFFFFFFFRRRRRRRRRBBBBBBBBB"); // "wwwwwwwwwyyyyyyyyyooooooooogggggggggrrrrrrrrrbbbbbbbbb"
+    }
+
+    static customCubeToCubejs(__cubeData) {
+        let outData = [];
+        for (let i = 0; i < 9; i++) {
+            outData.push(__cubeData[i]);
+        }
+        for (let i = 36; i < 45; i++) {
+            outData.push(__cubeData[i]);
+        }
+        for (let i = 27; i < 36; i++) {
+            outData.push(__cubeData[i]);
+        }
+        for (let i = 9; i < 18; i++) {
+            outData.push(__cubeData[i]);
+        }
+        for (let i = 18; i < 27; i++) {
+            outData.push(__cubeData[i]);
+        }
+        for (let i = 45; i < 54; i++) {
+            outData.push(__cubeData[i]);
+        }
+        return outData.join("");
     }
 }
