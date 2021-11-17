@@ -261,8 +261,6 @@ const BOARD_TABLE = [
 ];
 
 const DO_HIGHLIGHT = [
-    "4PM1 01",
-    "4PM1 02",
     "4MA1 1H",
     "4MA1 2H",
     "4CH1 1C",
