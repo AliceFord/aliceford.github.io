@@ -269,6 +269,12 @@ const DO_HIGHLIGHT = [
     "4PH1 2P",
     "4BI1 1B",
     "4BI1 2B",
+    "4FR1 01",
+    "4FR1 02",
+    "4SP1 01",
+    "4SP1 02",
+    "4GN1 01",
+    "4GN1 02",
 ];
 
 const mainTable = document.getElementById("main-table");
