@@ -402,12 +402,19 @@ const AQA_GCSE_DATA = [  // TODO: History
     {"date": "31/05/2022","qualification": "GCSE","examCode": "8582/C","subject": "Physical Education", "title": "Non-exam assessment: Practical performance in physical activity and sport", "amPM": "N/A", "duration": ""},
 ];
 
+const EDUQAS_GCSE_DATA = [  // TODO: Drama
+    {"date": "18/05/2022","qualification": "GCSE","examCode": "C700U10-1","subject": "English Language", "title": "Component 1", "amPM": "AM", "duration": "1h 45m"},
+    {"date": "25/05/2022","qualification": "GCSE","examCode": "C720U10-A","subject": "English Literature", "title": "Component 1", "amPM": "AM", "duration": "2h 00m"},
+    {"date": "08/06/2022","qualification": "GCSE","examCode": "C720U20-A","subject": "English Literature", "title": "Component 2", "amPM": "AM", "duration": "2h 00m"},
+    {"date": "10/06/2022","qualification": "GCSE","examCode": "C700U20-1","subject": "English Language", "title": "Component 2", "amPM": "AM", "duration": "2h 00m"},
+];
+
 const TIED_DATA = [
-    EDEXCEL_IGCSE_DATA, EDEXCEL_GCSE_DATA, OCR_GCSE_DATA, AQA_GCSE_DATA
+    EDEXCEL_IGCSE_DATA, EDEXCEL_GCSE_DATA, OCR_GCSE_DATA, AQA_GCSE_DATA, EDUQAS_GCSE_DATA
 ];
 
 const BOARD_TABLE = [
-    "Edexcel", "Edexcel", "OCR", "AQA"
+    "Edexcel", "Edexcel", "OCR", "AQA", "EDUQAS"
 ];
 
 const DO_HIGHLIGHT = [
