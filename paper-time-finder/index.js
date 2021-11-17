@@ -457,6 +457,10 @@ const DO_HIGHLIGHT = [
     "8582/1",
     "8582/2",
     "8582/C",
+    "C700U10-1",
+    "C720U10-A",
+    "C720U20-A",
+    "C700U20-1",
 ];
 
 const mainTable = document.getElementById("main-table");
