@@ -1,4 +1,4 @@
-const EDEXCEL_DATA = [
+const EDEXCEL_IGCSE_DATA = [
     {"date": "17/05/2022","qualification": "IGCSE","examCode": "4AC1 01","subject": "Accounting","title": "Paper 1: Introduction to Bookkeeping and Accounting","amPM": "PM","duration": "2h 00m"},
 {"date": "14/06/2022","qualification": "IGCSE","examCode": "4AC1 02","subject": "Accounting","title": "Paper 2: Financial Statements","amPM": "AM","duration": "1h 15m"},
 {"date": "31/05/2022","qualification": "IGCSE","examCode": "4AA1 01","subject": "Arabic ","title": "Paper 1: Reading, Summary and Grammar","amPM": "AM","duration": "2h 15m"},    
@@ -75,26 +75,238 @@ const EDEXCEL_DATA = [
 {"date": "10/06/2022","qualification": "IGCSE","examCode": "4TA1 01","subject": "Tamil","title": "Paper 1: Reading, Writing and Translation","amPM": "PM","duration": "2h 30m"}
 ];
 
+const EDEXCEL_GCSE_DATA = [
+    {"date": "24/05/2022","qualification": "GCSE","examCode": "1AA0 1F","subject": "Arabic","title": "Paper 1: Listening and understanding in Arabic Foundation Tier","amPM": "AM","duration": "0h 35m"},
+{"date": "24/05/2022","qualification": "GCSE","examCode": "1AA0 1H","subject": "Arabic","title": "Paper 1: Listening and understanding in Arabic Higher Tier","amPM": "AM","duration": "0h 45m"},
+{"date": "24/05/2022","qualification": "GCSE","examCode": "1AA0 3F","subject": "Arabic","title": "Paper 3: Reading and understanding in Arabic Foundation Tier","amPM": "AM","duration": "0h 50m"},
+{"date": "24/05/2022","qualification": "GCSE","examCode": "1AA0 3H","subject": "Arabic","title": "Paper 3: Reading and understanding in Arabic Higher Tier","amPM": "AM","duration": "1h 05m"},
+{"date": "06/06/2022","qualification": "GCSE","examCode": "1AA0 4F","subject": "Arabic","title": "Paper 4: Writing in Arabic Foundation Tier","amPM": "PM","duration": "1h 20m"},
+{"date": "06/06/2022","qualification": "GCSE","examCode": "1AA0 4H","subject": "Arabic","title": "Paper 4: Writing in Arabic Higher Tier","amPM": "PM","duration": "1h 25m"},
+{"date": "17/06/2022","qualification": "GCSE","examCode": "1AS0 01","subject": "Astronomy","title": "Paper 1: Naked-eye Astronomy","amPM": "PM","duration": "1h 45m"},
+{"date": "28/06/2022","qualification": "GCSE","examCode": "1AS0 02","subject": "Astronomy","title": "Paper 2: Telescopic Astronomy","amPM": "AM","duration": "1h 45m"},
+{"date": "25/05/2022","qualification": "GCSE","examCode": "1BH0 01","subject": "Biblical Hebrew","title": "Component 1: Language","amPM": "PM","duration": "2h 00m"},
+{"date": "16/06/2022","qualification": "GCSE","examCode": "1BH0 02","subject": "Biblical Hebrew","title": "Component 2: Literature","amPM": "PM","duration": "2h 00m"},
+{"date": "17/05/2022","qualification": "GCSE","examCode": "1BI0 1F","subject": "Biology","title": "Paper 1 Foundation Tier","amPM": "AM","duration": "1h 45m"},
+{"date": "17/05/2022","qualification": "GCSE","examCode": "1BI0 1H","subject": "Biology","title": "Paper 1 Higher Tier","amPM": "AM","duration": "1h 45m"},
+{"date": "15/06/2022","qualification": "GCSE","examCode": "1BI0 2F","subject": "Biology","title": "Paper 2 Foundation Tier","amPM": "AM","duration": "1h 45m"},
+{"date": "15/06/2022","qualification": "GCSE","examCode": "1BI0 2H","subject": "Biology","title": "Paper 2 Higher Tier","amPM": "AM","duration": "1h 45m"},
+{"date": "20/05/2022","qualification": "GCSE","examCode": "1BS0 01","subject": "Business","title": "Paper 1: Investigating Small Business","amPM": "PM","duration": "1h 30m"},
+{"date": "13/06/2022","qualification": "GCSE","examCode": "1BS0 02","subject": "Business","title": "Paper 2: Building a Business","amPM": "PM","duration": "1h 30m"},
+{"date": "27/05/2022","qualification": "GCSE","examCode": "1CH0 1F","subject": "Chemistry","title": "Paper 1 Foundation Tier","amPM": "AM","duration": "1h 45m"},
+{"date": "27/05/2022","qualification": "GCSE","examCode": "1CH0 1H","subject": "Chemistry","title": "Paper 1 Higher Tier","amPM": "AM","duration": "1h 45m"},
+{"date": "20/06/2022","qualification": "GCSE","examCode": "1CH0 2F","subject": "Chemistry","title": "Paper 2 Foundation Tier","amPM": "AM","duration": "1h 45m"},
+{"date": "20/06/2022","qualification": "GCSE","examCode": "1CH0 2H","subject": "Chemistry","title": "Paper 2 Higher Tier","amPM": "AM","duration": "1h 45m"},
+{"date": "20/05/2022","qualification": "GCSE","examCode": "1CN0 1F","subject": "Chinese","title": "Paper 1: Listening and understanding in Chinese Foundation Tier","amPM": "PM","duration": "0h 35m"},
+{"date": "20/05/2022","qualification": "GCSE","examCode": "1CN0 1H","subject": "Chinese","title": "Paper 1: Listening and understanding in Chinese Higher Tier","amPM": "PM","duration": "0h 45m"},
+{"date": "20/05/2022","qualification": "GCSE","examCode": "1CN0 3F","subject": "Chinese","title": "Paper 3: Reading and understanding in Chinese Foundation Tier","amPM": "PM","duration": "0h 50m"},
+{"date": "20/05/2022","qualification": "GCSE","examCode": "1CN0 3H","subject": "Chinese","title": "Paper 3: Reading and understanding in Chinese Higher Tier","amPM": "PM","duration": "1h 05m"},
+{"date": "06/06/2022","qualification": "GCSE","examCode": "1CN0 4F","subject": "Chinese","title": "Paper 4: Writing in Chinese Foundation Tier","amPM": "AM","duration": "1h 20m"},
+{"date": "06/06/2022","qualification": "GCSE","examCode": "1CN0 4H","subject": "Chinese","title": "Paper 4: Writing in Chinese Higher Tier","amPM": "AM","duration": "1h 25m"},
+{"date": "23/05/2022","qualification": "GCSE","examCode": "1CS0 01","subject": "Citizenship Studies","title": "Paper 1","amPM": "PM","duration": "1h 45m"},
+{"date": "14/06/2022","qualification": "GCSE","examCode": "1CS0 02","subject": "Citizenship Studies","title": "Paper 2","amPM": "PM","duration": "1h 45m"},
+{"date": "17/05/2022","qualification": "GCSE","examCode": "1SC0 1BF","subject": "Combined Science","title": "Paper 1: Biology 1 Foundation Tier","amPM": "AM","duration": "1h 10m"},
+{"date": "17/05/2022","qualification": "GCSE","examCode": "1SC0 1BH","subject": "Combined Science","title": "Paper 1: Biology 1 Higher Tier","amPM": "AM","duration": "1h 10m"},
+{"date": "27/05/2022","qualification": "GCSE","examCode": "1SC0 1CF","subject": "Combined Science","title": "Paper 2: Chemistry 1 Foundation Tier","amPM": "AM","duration": "1h 10m"},
+{"date": "27/05/2022","qualification": "GCSE","examCode": "1SC0 1CH","subject": "Combined Science","title": "Paper 2: Chemistry 1 Higher Tier","amPM": "AM","duration": "1h 10m"},
+{"date": "09/06/2022","qualification": "GCSE","examCode": "1SC0 1PF","subject": "Combined Science","title": "Paper 3: Physics 1 Foundation Tier","amPM": "PM","duration": "1h 10m"},
+{"date": "09/06/2022","qualification": "GCSE","examCode": "1SC0 1PH","subject": "Combined Science","title": "Paper 3: Physics 1 Higher Tier","amPM": "PM","duration": "1h 10m"},
+{"date": "15/06/2022","qualification": "GCSE","examCode": "1SC0 2BF","subject": "Combined Science","title": "Paper 4: Biology 2 Foundation Tier","amPM": "AM","duration": "1h 10m"},
+{"date": "15/06/2022","qualification": "GCSE","examCode": "1SC0 2BH","subject": "Combined Science","title": "Paper 4: Biology 2 Higher Tier","amPM": "AM","duration": "1h 10m"},
+{"date": "20/06/2022","qualification": "GCSE","examCode": "1SC0 2CF","subject": "Combined Science","title": "Paper 5: Chemistry 2 Foundation Tier","amPM": "AM","duration": "1h 10m"},
+{"date": "20/06/2022","qualification": "GCSE","examCode": "1SC0 2CH","subject": "Combined Science","title": "Paper 5: Chemistry 2 Higher Tier","amPM": "AM","duration": "1h 10m"},
+{"date": "23/06/2022","qualification": "GCSE","examCode": "1SC0 2PF","subject": "Combined Science","title": "Paper 6: Physics 2 Foundation Tier","amPM": "AM","duration": "1h 10m"},
+{"date": "23/06/2022","qualification": "GCSE","examCode": "1SC0 2PH","subject": "Combined Science","title": "Paper 6: Physics 2 Higher Tier","amPM": "AM","duration": "1h 10m"},
+{"date": "16/05/2022","qualification": "GCSE","examCode": "1CP2 01","subject": "Computer Science","title": "Paper 1: Principles of Computer Science","amPM": "PM","duration": "1h 30m"},
+{"date": "27/05/2022","qualification": "GCSE","examCode": "1CP2 02","subject": "Computer Science","title": "Paper 2: Application of Computational Thinking (Onscreen using an Integrated Development Environment (IDE) of choice)","amPM": "PM","duration": "2h 00m"},
+{"date": "15/06/2022","qualification": "GCSE","examCode": "1DT0 1A","subject": "Deisgn And Technology ","title": "Component 1: Metals","amPM": "PM","duration": "1h 45m"},
+{"date": "15/06/2022","qualification": "GCSE","examCode": "1DT0 1B","subject": "Deisgn And Technology ","title": "Component 1: Papers and boards","amPM": "PM","duration": "1h 45m"},
+{"date": "15/06/2022","qualification": "GCSE","examCode": "1DT0 1C","subject": "Deisgn And Technology ","title": "Component 1: Polymers","amPM": "PM","duration": "1h 45m"},
+{"date": "15/06/2022","qualification": "GCSE","examCode": "1DT0 1D","subject": "Deisgn And Technology ","title": "Component 1: Systems","amPM": "PM","duration": "1h 45m"},
+{"date": "15/06/2022","qualification": "GCSE","examCode": "1DT0 1E","subject": "Deisgn And Technology ","title": "Component 1: Textiles","amPM": "PM","duration": "1h 45m"},
+{"date": "15/06/2022","qualification": "GCSE","examCode": "1DT0 1F","subject": "Deisgn And Technology ","title": "Component 1: Timbers","amPM": "PM","duration": "1h 45m"},
+{"date": "19/05/2022","qualification": "GCSE","examCode": "1DR0 03","subject": "Drama","title": "Component 3: Theatre Makers in Practice","amPM": "PM","duration": "1h 45m"},
+{"date": "18/05/2022","qualification": "GCSE","examCode": "1EN0 01","subject": "English Language","title": "Paper 1: Fiction and Imaginative Writing","amPM": "AM","duration": "1h 45m"},
+{"date": "10/06/2022","qualification": "GCSE","examCode": "1EN0 02","subject": "English Language","title": "Paper 2: Non-Fiction and Transactional Writing","amPM": "AM","duration": "2h 05m"},
+{"date": "18/05/2022","qualification": "GCSE","examCode": "1EN2 01","subject": "English Language 2.0","title": "Paper 1: Non-Fiction Texts","amPM": "AM","duration": "1h 55m"},
+{"date": "10/06/2022","qualification": "GCSE","examCode": "1EN2 02","subject": "English Language 2.0","title": "Paper 2: Contemporary Texts","amPM": "AM","duration": "1h 55m"},
+{"date": "25/05/2022","qualification": "GCSE","examCode": "1ET0 01","subject": "English Literature","title": "Paper 1: Shakespeare and Post-1914 Literature","amPM": "AM","duration": "1h 45m"},
+{"date": "08/06/2022","qualification": "GCSE","examCode": "1ET0 02N","subject": "English Literature","title": "Paper 2: 19th Century Novel","amPM": "AM","duration": "1h 20m"},
+{"date": "08/06/2022","qualification": "GCSE","examCode": "1ET0 02P","subject": "English Literature","title": "Paper 2: Poetry since 1789","amPM": "AM","duration": "1h 20m"},
+{"date": "24/05/2022","qualification": "GCSE","examCode": "1FR0 1F","subject": "French","title": "Paper 1: Listening and understanding in French Foundation Tier","amPM": "AM","duration": "0h 35m"},
+{"date": "24/05/2022","qualification": "GCSE","examCode": "1FR0 1H","subject": "French","title": "Paper 1: Listening and understanding in French Higher Tier","amPM": "AM","duration": "0h 45m"},
+{"date": "24/05/2022","qualification": "GCSE","examCode": "1FR0 3F","subject": "French","title": "Paper 3: Reading and understanding in French Foundation Tier","amPM": "AM","duration": "0h 45m"},
+{"date": "24/05/2022","qualification": "GCSE","examCode": "1FR0 3H","subject": "French","title": "Paper 3: Reading and understanding in French Higher Tier","amPM": "AM","duration": "1h 00m"},
+{"date": "16/06/2022","qualification": "GCSE","examCode": "1FR0 4F","subject": "French","title": "Paper 4: Writing in French Foundation Tier","amPM": "PM","duration": "1h 15m"},
+{"date": "16/06/2022","qualification": "GCSE","examCode": "1FR0 4H","subject": "French","title": "Paper 4: Writing in French Higher Tier","amPM": "PM","duration": "1h 20m"},
+{"date": "23/05/2022","qualification": "GCSE","examCode": "1GA0 01","subject": "Geography A","title": "Paper 1: The Physical Environment","amPM": "AM","duration": "1h 30m"},
+{"date": "07/06/2022","qualification": "GCSE","examCode": "1GA0 02","subject": "Geography A","title": "Paper 2: The Human Environment","amPM": "PM","duration": "1h 30m"},
+{"date": "14/06/2022","qualification": "GCSE","examCode": "1GA0 03","subject": "Geography A","title": "Paper 3: Geographical Investigations: Fieldwork and UK Challenges","amPM": "AM","duration": "1h 30m"},
+{"date": "23/05/2022","qualification": "GCSE","examCode": "1GB0 01","subject": "Geography B","title": "Paper 1: Global Geographical Issues","amPM": "AM","duration": "1h 30m"},
+{"date": "07/06/2022","qualification": "GCSE","examCode": "1GB0 02","subject": "Geography B","title": "Paper 2: UK Geographical Issues","amPM": "PM","duration": "1h 30m"},
+{"date": "14/06/2022","qualification": "GCSE","examCode": "1GB0 03","subject": "Geography B","title": "Paper 3: People and Environment Issues – Making Geographical Decisions","amPM": "AM","duration": "1h 30m"},
+{"date": "18/05/2022","qualification": "GCSE","examCode": "1GN0 1F","subject": "German","title": "Paper 1: Listening and understanding in German Foundation Tier","amPM": "PM","duration": "0h 35m"},
+{"date": "18/05/2022","qualification": "GCSE","examCode": "1GN0 1H","subject": "German","title": "Paper 1: Listening and understanding in German Higher Tier","amPM": "PM","duration": "0h 45m"},
+{"date": "18/05/2022","qualification": "GCSE","examCode": "1GN0 3F","subject": "German","title": "Paper 3: Reading and understanding in German Foundation Tier","amPM": "PM","duration": "0h 45m"},
+{"date": "18/05/2022","qualification": "GCSE","examCode": "1GN0 3H","subject": "German","title": "Paper 3: Reading and understanding in German Higher Tier","amPM": "PM","duration": "1h 00m"},
+{"date": "06/06/2022","qualification": "GCSE","examCode": "1GN0 4F","subject": "German","title": "Paper 4: Writing in German Foundation Tier","amPM": "AM","duration": "1h 15m"},
+{"date": "06/06/2022","qualification": "GCSE","examCode": "1GN0 4H","subject": "German","title": "Paper 4: Writing in German Higher Tier","amPM": "AM","duration": "1h 20m"},
+{"date": "25/05/2022","qualification": "GCSE","examCode": "1GK0 1F","subject": "Greek","title": "Paper 1: Listening and understanding in Greek Foundation Tier","amPM": "PM","duration": "0h 35m"},
+{"date": "25/05/2022","qualification": "GCSE","examCode": "1GK0 1H","subject": "Greek","title": "Paper 1: Listening and understanding in Greek Higher Tier","amPM": "PM","duration": "0h 45m"},
+{"date": "25/05/2022","qualification": "GCSE","examCode": "1GK0 3F","subject": "Greek","title": "Paper 3: Reading and understanding in Greek Foundation Tier","amPM": "PM","duration": "0h 50m"},
+{"date": "25/05/2022","qualification": "GCSE","examCode": "1GK0 3H","subject": "Greek","title": "Paper 3: Reading and understanding in Greek Higher Tier","amPM": "PM","duration": "1h 05m"},
+{"date": "13/06/2022","qualification": "GCSE","examCode": "1GK0 4F","subject": "Greek","title": "Paper 4: Writing in Greek Foundation Tier","amPM": "PM","duration": "1h 20m"},
+{"date": "13/06/2022","qualification": "GCSE","examCode": "1GK0 4H","subject": "Greek","title": "Paper 4: Writing in Greek Higher Tier","amPM": "PM","duration": "1h 25m"},
+{"date": "13/06/2022","qualification": "GCSE","examCode": "1GU0 1F","subject": "Gujarati","title": "Paper 1: Listening and understanding in Gujarati Foundation Tier","amPM": "PM","duration": "0h 35m"},
+{"date": "13/06/2022","qualification": "GCSE","examCode": "1GU0 1H","subject": "Gujarati","title": "Paper 1: Listening and understanding in Gujarati Higher Tier","amPM": "PM","duration": "0h 45m"},
+{"date": "13/06/2022","qualification": "GCSE","examCode": "1GU0 3F","subject": "Gujarati","title": "Paper 3: Reading and understanding in Gujarati Foundation Tier","amPM": "PM","duration": "0h 50m"},
+{"date": "13/06/2022","qualification": "GCSE","examCode": "1GU0 3H","subject": "Gujarati","title": "Paper 3: Reading and understanding in Gujarati Higher Tier","amPM": "PM","duration": "1h 05m"},
+{"date": "24/06/2022","qualification": "GCSE","examCode": "1GU0 4F","subject": "Gujarati","title": "Paper 4: Writing in Gujarati Foundation Tier","amPM": "AM","duration": "1h 20m"},
+{"date": "24/06/2022","qualification": "GCSE","examCode": "1GU0 4H","subject": "Gujarati","title": "Paper 4: Writing in Gujarati Higher Tier","amPM": "AM","duration": "1h 25m"},
+{"date": "19/05/2022","qualification": "GCSE","examCode": "1HIA 10-13","subject": "History","title": "Paper 1: Thematic study and historic environment","amPM": "AM","duration": "1h 15m"},
+{"date": "16/06/2022","qualification": "GCSE","examCode": "1HIA B1-B4","subject": "History","title": "Paper 2: British depth study","amPM": "AM","duration": "0h 55m"},
+{"date": "21/06/2022","qualification": "GCSE","examCode": "1HIA P1-P5","subject": "History","title": "Paper 2: Period study","amPM": "AM","duration": "0h 55m"},
+{"date": "09/06/2022","qualification": "GCSE","examCode": "1HIA 30-33","subject": "History","title": "Paper 3: Modern depth study","amPM": "AM","duration": "1h 20m"},
+{"date": "16/06/2022","qualification": "GCSE","examCode": "1HIB B1-B4","subject": "History","title": "Paper 2: British depth study","amPM": "AM","duration": "0h 55m"},
+{"date": "21/06/2022","qualification": "GCSE","examCode": "1HIB P1-P5","subject": "History","title": "Paper 2: Period study","amPM": "AM","duration": "0h 55m"},
+{"date": "09/06/2022","qualification": "GCSE","examCode": "1HIB 30-33","subject": "History","title": "Paper 3: Modern depth study","amPM": "AM","duration": "1h 20m"},
+{"date": "19/05/2022","qualification": "GCSE","examCode": "1IN0 1F","subject": "Italian","title": "Paper 1: Listening and understanding in Italian Foundation Tier","amPM": "PM","duration": "0h 35m"},
+{"date": "19/05/2022","qualification": "GCSE","examCode": "1IN0 1H","subject": "Italian","title": "Paper 1: Listening and understanding in Italian Higher Tier","amPM": "PM","duration": "0h 45m"},
+{"date": "19/05/2022","qualification": "GCSE","examCode": "1IN0 3F","subject": "Italian","title": "Paper 3: Reading and understanding in Italian Foundation Tier","amPM": "PM","duration": "0h 45m"},
+{"date": "19/05/2022","qualification": "GCSE","examCode": "1IN0 3H","subject": "Italian","title": "Paper 3: Reading and understanding in Italian Higher Tier","amPM": "PM","duration": "1h 00m"},
+{"date": "14/06/2022","qualification": "GCSE","examCode": "1IN0 4F","subject": "Italian","title": "Paper 4: Writing in Italian Foundation Tier","amPM": "PM","duration": "1h 15m"},
+{"date": "14/06/2022","qualification": "GCSE","examCode": "1IN0 4H","subject": "Italian","title": "Paper 4: Writing in Italian Higher Tier","amPM": "PM","duration": "1h 20m"},
+{"date": "10/06/2022","qualification": "GCSE","examCode": "1JA0 1F","subject": "Japanese","title": "Paper 1: Listening and understanding in Japanese Foundation Tier","amPM": "PM","duration": "0h 35m"},
+{"date": "10/06/2022","qualification": "GCSE","examCode": "1JA0 1H","subject": "Japanese","title": "Paper 1: LIstening and understanding in Japanese Higher Tier","amPM": "PM","duration": "0h 45m"},
+{"date": "10/06/2022","qualification": "GCSE","examCode": "1JA0 3F","subject": "Japanese","title": "Paper 3: Reading and understanding in Japanese Foundation Tier","amPM": "PM","duration": "0h 50m"},
+{"date": "10/06/2022","qualification": "GCSE","examCode": "1JA0 3H","subject": "Japanese","title": "Paper 3: Reading and understanding in Japanese Higher Tier","amPM": "PM","duration": "1h 05m"},
+{"date": "20/06/2022","qualification": "GCSE","examCode": "1JA0 4F","subject": "Japanese","title": "Paper 4: Writing in Japanese Foundation Tier","amPM": "PM","duration": "1h 20m"},
+{"date": "20/06/2022","qualification": "GCSE","examCode": "1JA0 4H","subject": "Japanese","title": "Paper 4: Writing in Japanese Higher Tier","amPM": "PM","duration": "1h 25m"},
+{"date": "20/05/2022","qualification": "GCSE","examCode": "1MA1 1F","subject": "Mathematics","title": "Paper 1 (Non-Calculator) Foundation Tier","amPM": "AM","duration": "1h 30m"},
+{"date": "20/05/2022","qualification": "GCSE","examCode": "1MA1 1H","subject": "Mathematics","title": "Paper 1 (Non-Calculator) Higher Tier","amPM": "AM","duration": "1h 30m"},
+{"date": "07/06/2022","qualification": "GCSE","examCode": "1MA1 2F","subject": "Mathematics","title": "Paper 2 (Calculator) Foundation Tier","amPM": "AM","duration": "1h 30m"},
+{"date": "07/06/2022","qualification": "GCSE","examCode": "1MA1 2H","subject": "Mathematics","title": "Paper 2 (Calculator) Higher Tier","amPM": "AM","duration": "1h 30m"},
+{"date": "13/06/2022","qualification": "GCSE","examCode": "1MA1 3F","subject": "Mathematics","title": "Paper 3 (Calculator) Foundation Tier","amPM": "AM","duration": "1h 30m"},
+{"date": "13/06/2022","qualification": "GCSE","examCode": "1MA1 3H","subject": "Mathematics","title": "Paper 3 (Calculator) Higher Tier","amPM": "AM","duration": "1h 30m"},
+{"date": "22/06/2022","qualification": "GCSE","examCode": "1MU0 03","subject": "Music","title": "Component 3: Appraising","amPM": "AM","duration": "1h 45m"},
+{"date": "17/06/2022","qualification": "GCSE","examCode": "1PN0 1F","subject": "Persian","title": "Paper 1: Listening and understanding in Persian Foundation Tier","amPM": "PM","duration": "0h 35m"},
+{"date": "17/06/2022","qualification": "GCSE","examCode": "1PN0 1H","subject": "Persian","title": "Paper 1: Listening and understanding in Persian Higher Tier","amPM": "PM","duration": "0h 45m"},
+{"date": "17/06/2022","qualification": "GCSE","examCode": "1PN0 3F","subject": "Persian","title": "Paper 3: Reading and understanding in Persian Foundation Tier","amPM": "PM","duration": "0h 50m"},
+{"date": "17/06/2022","qualification": "GCSE","examCode": "1PN0 3H","subject": "Persian","title": "Paper 3: Reading and understanding in Persian Higher Tier","amPM": "PM","duration": "1h 05m"},
+{"date": "27/06/2022","qualification": "GCSE","examCode": "1PN0 4F","subject": "Persian","title": "Paper 4: Writing in Persian Foundation Tier","amPM": "AM","duration": "1h 20m"},
+{"date": "27/06/2022","qualification": "GCSE","examCode": "1PN0 4H","subject": "Persian","title": "Paper 4: Writing in Persian Higher Tier","amPM": "AM","duration": "1h 25m"},
+{"date": "24/05/2022","qualification": "GCSE","examCode": "1PE0 01","subject": "Physical Education","title": "Component 1: Fitness and Body Systems","amPM": "PM","duration": "1h 45m"},
+{"date": "10/06/2022","qualification": "GCSE","examCode": "1PE0 02","subject": "Physical Education","title": "Component 2: Health and Performance","amPM": "PM","duration": "1h 15m"},
+{"date": "24/05/2022","qualification": "GCSE","examCode": "3PE0 01","subject": "Physical Education (Short Course)","title": "Component 1: Theory","amPM": "PM","duration": "1h 30m"},
+{"date": "09/06/2022","qualification": "GCSE","examCode": "1PH0 1F","subject": "Physics","title": "Paper 1 Foundation Tier","amPM": "PM","duration": "1h 45m"},
+{"date": "09/06/2022","qualification": "GCSE","examCode": "1PH0 1H","subject": "Physics","title": "Paper 1 Higher Tier","amPM": "PM","duration": "1h 45m"},
+{"date": "23/06/2022","qualification": "GCSE","examCode": "1PH0 2F","subject": "Physics","title": "Paper 2 Foundation Tier","amPM": "AM","duration": "1h 45m"},
+{"date": "23/06/2022","qualification": "GCSE","examCode": "1PH0 2H","subject": "Physics","title": "Paper 2 Higher Tier","amPM": "AM","duration": "1h 45m"},
+{"date": "17/06/2022","qualification": "GCSE","examCode": "1PG0 1F","subject": "Portuguese","title": "Paper 1: Listening and understanding in Portuguese Foundation Tier","amPM": "PM","duration": "0h 35m"},
+{"date": "17/06/2022","qualification": "GCSE","examCode": "1PG0 1H","subject": "Portuguese","title": "Paper 1: Listening and understanding in Portuguese Higher Tier","amPM": "PM","duration": "0h 45m"},
+{"date": "17/06/2022","qualification": "GCSE","examCode": "1PG0 3F","subject": "Portuguese","title": "Paper 3: Reading and understanding in Portuguese Foundation Tier","amPM": "PM","duration": "0h 45m"},
+{"date": "17/06/2022","qualification": "GCSE","examCode": "1PG0 3H","subject": "Portuguese","title": "Paper 3: Reading and understanding in Portuguese Higher Tier","amPM": "PM","duration": "1h 00m"},
+{"date": "27/06/2022","qualification": "GCSE","examCode": "1PG0 4F","subject": "Portuguese","title": "Paper 4: Writing in Portuguese Foundation Tier","amPM": "AM","duration": "1h 15m"},
+{"date": "27/06/2022","qualification": "GCSE","examCode": "1PG0 4H","subject": "Portuguese","title": "Paper 4: Writing in Portuguese Higher Tier","amPM": "AM","duration": "1h 20m"},
+{"date": "17/05/2022","qualification": "GCSE","examCode": "1PS0 01","subject": "Psychology","title": "Paper 1","amPM": "PM","duration": "1h 45m"},
+{"date": "06/06/2022","qualification": "GCSE","examCode": "1PS0 02","subject": "Psychology","title": "Paper 2","amPM": "PM","duration": "1h 20m"},
+{"date": "16/05/2022","qualification": "GCSE","examCode": "1RA0 1A-1C","subject": "Religious Studies A","title": "Paper 1: Area of Study 1 – Study of Religion","amPM": "AM","duration": "1h 45m"},
+{"date": "26/05/2022","qualification": "GCSE","examCode": "1RA0 2A-2G","subject": "Religious Studies A","title": "Paper 2: Area of Study 2 – Study of Second Religion","amPM": "PM","duration": "0h 50m"},
+{"date": "08/06/2022","qualification": "GCSE","examCode": "1RA0 3A-3C","subject": "Religious Studies A","title": "Paper 3: Area of Study 3 – Philosophy and Ethics","amPM": "PM","duration": "0h 50m"},
+{"date": "08/06/2022","qualification": "GCSE","examCode": "1RA0 4A-4B","subject": "Religious Studies A","title": "Paper 4: Area of Study 4 – Textual Studies","amPM": "PM","duration": "0h 50m"},
+{"date": "16/05/2022","qualification": "GCSE","examCode": "3RA0 01","subject": "Religious Studies A (Short Course)","title": "Paper 1: Area of Study 1 – Study of Catholic Christianity","amPM": "AM","duration": "0h 50m"},
+{"date": "16/05/2022","qualification": "GCSE","examCode": "3RA0 02","subject": "Religious Studies A (Short Course)","title": "Paper 2: Area of Study 2 – Study of Christianity","amPM": "AM","duration": "0h 50m"},
+{"date": "08/06/2022","qualification": "GCSE","examCode": "3RA0 03","subject": "Religious Studies A (Short Course)","title": "Paper 3: Area of Study 3 – Study of Islam","amPM": "PM","duration": "0h 50m"},
+{"date": "26/05/2022","qualification": "GCSE","examCode": "3RA0 04","subject": "Religious Studies A (Short Course)","title": "Paper 4: Area of Study 4 – Study of Judaism","amPM": "PM","duration": "0h 50m"},
+{"date": "16/05/2022","qualification": "GCSE","examCode": "1RB0 1A-1G","subject": "Religious Studies B","title": "Paper 1: Area of Study 1 – Religion and Ethics","amPM": "AM","duration": "1h 45m"},
+{"date": "26/05/2022","qualification": "GCSE","examCode": "1RB0 2A-2G","subject": "Religious Studies B","title": "Paper 2: Area of Study 2 – Religion, Peace and Conflict","amPM": "PM","duration": "1h 45m"},
+{"date": "08/06/2022","qualification": "GCSE","examCode": "1RB0 3A-3G","subject": "Religious Studies B","title": "Paper 3: Area of Study 3 – Religion, Philosophy and Social Justice","amPM": "PM","duration": "1h 45m"},
+{"date": "16/05/2022","qualification": "GCSE","examCode": "3RB0 1A-1G","subject": "Religious Studies B (Short Course)","title": "Paper 1: Area of Study 1 – Religion and Ethics","amPM": "AM","duration": "0h 50m"},
+{"date": "26/05/2022","qualification": "GCSE","examCode": "3RB0 2A-2G","subject": "Religious Studies B (Short Course)","title": "Paper 2: Area of Study 2 – Religion, Peace and Conflict","amPM": "PM","duration": "0h 50m"},
+{"date": "15/06/2022","qualification": "GCSE","examCode": "1RU0 1F","subject": "Russian","title": "Paper 1: Listening and understanding in Russian Foundation Tier","amPM": "PM","duration": "0h 35m"},
+{"date": "15/06/2022","qualification": "GCSE","examCode": "1RU0 1H","subject": "Russian","title": "Paper 1: Listening and understanding in Russian Higher Tier","amPM": "PM","duration": "0h 45m"},
+{"date": "15/06/2022","qualification": "GCSE","examCode": "1RU0 3F","subject": "Russian","title": "Paper 3: Reading and understanding in Russian Foundation Tier","amPM": "PM","duration": "0h 50m"},
+{"date": "15/06/2022","qualification": "GCSE","examCode": "1RU0 3H","subject": "Russian","title": "Paper 3: Reading and understanding in Russian Higher Tier","amPM": "PM","duration": "1h 05m"},
+{"date": "28/06/2022","qualification": "GCSE","examCode": "1RU0 4F","subject": "Russian","title": "Paper 4: Writing in Russian Foundation Tier","amPM": "AM","duration": "1h 20m"},
+{"date": "28/06/2022","qualification": "GCSE","examCode": "1RU0 4H","subject": "Russian","title": "Paper 4: Writing in Russian Higher Tier","amPM": "AM","duration": "1h 25m"},
+{"date": "26/05/2022","qualification": "GCSE","examCode": "1SP0 1F","subject": "Spanish","title": "Paper 1: Listening and understanding in Spanish Foundation Tier","amPM": "AM","duration": "0h 35m"},
+{"date": "26/05/2022","qualification": "GCSE","examCode": "1SP0 1H","subject": "Spanish","title": "Paper 1: Listening and understanding in Spanish Higher Tier","amPM": "AM","duration": "0h 45m"},
+{"date": "26/05/2022","qualification": "GCSE","examCode": "1SP0 3F","subject": "Spanish","title": "Paper 3: Reading and understanding in Spanish Foundation Tier","amPM": "AM","duration": "0h 45m"},
+{"date": "26/05/2022","qualification": "GCSE","examCode": "1SP0 3H","subject": "Spanish","title": "Paper 3: Reading and understanding in Spanish Higher Tier","amPM": "AM","duration": "1h 00m"},
+{"date": "17/06/2022","qualification": "GCSE","examCode": "1SP0 4F","subject": "Spanish","title": "Paper 4: Writing in Spanish Foundation Tier","amPM": "AM","duration": "1h 15m"},
+{"date": "17/06/2022","qualification": "GCSE","examCode": "1SP0 4H","subject": "Spanish","title": "Paper 4: Writing in Spanish Higher Tier","amPM": "AM","duration": "1h 20m"},
+{"date": "14/06/2022","qualification": "GCSE","examCode": "1ST0 1F","subject": "Statistics","title": "Paper 1 Foundation Tier","amPM": "PM","duration": "1h 30m"},
+{"date": "14/06/2022","qualification": "GCSE","examCode": "1ST0 1H","subject": "Statistics","title": "Paper 1 Higher Tier","amPM": "PM","duration": "1h 30m"},
+{"date": "24/06/2022","qualification": "GCSE","examCode": "1ST0 2F","subject": "Statistics","title": "Paper 2 Foundation Tier","amPM": "AM","duration": "1h 30m"},
+{"date": "24/06/2022","qualification": "GCSE","examCode": "1ST0 2H","subject": "Statistics","title": "Paper 2 Higher Tier","amPM": "AM","duration": "1h 30m"},
+{"date": "16/05/2022","qualification": "GCSE","examCode": "1TU0 1F","subject": "Turkish","title": "Paper 1: Listening and understanding in Turkish Foundation Tier","amPM": "PM","duration": "0h 35m"},
+{"date": "16/05/2022","qualification": "GCSE","examCode": "1TU0 1H","subject": "Turkish","title": "Paper 1: Listening and understanding in Turkish Higher Tier","amPM": "PM","duration": "0h 45m"},
+{"date": "16/05/2022","qualification": "GCSE","examCode": "1TU0 3F","subject": "Turkish","title": "Paper 3: Reading and understanding in Turkish Foundation Tier","amPM": "PM","duration": "0h 50m"},
+{"date": "16/05/2022","qualification": "GCSE","examCode": "1TU0 3H","subject": "Turkish","title": "Paper 3: Reading and understanding in Turkish Higher Tier","amPM": "PM","duration": "1h 05m"},
+{"date": "06/06/2022","qualification": "GCSE","examCode": "1TU0 4F","subject": "Turkish","title": "Paper 4: Writing in Turkish Foundation Tier","amPM": "PM","duration": "1h 20m"},
+{"date": "06/06/2022","qualification": "GCSE","examCode": "1TU0 4H","subject": "Turkish","title": "Paper 4: Writing in Turkish Higher Tier","amPM": "PM","duration": "1h 25m"},
+{"date": "17/05/2022","qualification": "GCSE","examCode": "1UR0 1F","subject": "Urdu","title": "Paper 1: Listening and understanding in Urdu Foundation Tier","amPM": "PM","duration": "0h 35m"},
+{"date": "17/05/2022","qualification": "GCSE","examCode": "1UR0 1H","subject": "Urdu","title": "Paper 1: Listening and understanding in Urdu Higher Tier","amPM": "PM","duration": "0h 45m"},
+{"date": "17/05/2022","qualification": "GCSE","examCode": "1UR0 3F","subject": "Urdu","title": "Paper 3: Reading and understanding in Urdu Foundation Tier","amPM": "PM","duration": "0h 50m"},
+{"date": "17/05/2022","qualification": "GCSE","examCode": "1UR0 3H","subject": "Urdu","title": "Paper 3: Reading and understanding in Urdu Higher Tier","amPM": "PM","duration": "1h 05m"},
+{"date": "07/06/2022","qualification": "GCSE","examCode": "1UR0 4F","subject": "Urdu","title": "Paper 4: Writing in Urdu Foundation Tier","amPM": "PM","duration": "1h 20m"},
+{"date": "07/06/2022","qualification": "GCSE","examCode": "1UR0 4H","subject": "Urdu","title": "Paper 4: Writing in Urdu Higher Tier","amPM": "PM","duration": "1h 25m"},
+];
+
+const TIED_DATA = [
+    EDEXCEL_IGCSE_DATA, EDEXCEL_GCSE_DATA
+];
+
+const BOARD_TABLE = [
+    "Edexcel", "Edexcel"
+];
+
+const DO_HIGHLIGHT = [
+    "4PM1 01",
+    "4PM1 02",
+    "4MA1 1H",
+    "4MA1 2H",
+    "4CH1 1C",
+    "4CH1 2C",
+    "4PH1 1P",
+    "4PH1 2P",
+    "4BI1 1B",
+    "4BI1 2B",
+];
+
 const mainTable = document.getElementById("main-table");
 
 updateTable("");
 
+function doHighlight(item) {
+    if (DO_HIGHLIGHT.includes(item.examCode)) return true;
+    return false;
+}
+
+
 function updateTable(query) {
     mainTable.innerHTML = "";
-    EDEXCEL_DATA.forEach(function(item, index) {
-        if (query == "" || item.subject.toLowerCase().includes(query)) {
-            let currentRow = mainTable.insertRow(-1);
-            currentRow.insertCell(0).innerHTML = item.subject;
-            currentRow.insertCell(1).innerHTML = item.date;
-            currentRow.insertCell(2).innerHTML = item.amPM;
-            currentRow.insertCell(3).innerHTML = "Edexcel";
-            currentRow.insertCell(4).innerHTML = item.qualification;
-            currentRow.insertCell(5).innerHTML = item.examCode;
-            currentRow.insertCell(6).innerHTML = item.title;
-            currentRow.insertCell(7).innerHTML = item.duration;
-        }
+    TIED_DATA.forEach((board, boardIndex) => {
+        board.forEach((item, index) => {
+            if (query == "" || item.subject.toLowerCase().includes(query)) {
+                let currentRow = mainTable.insertRow(-1);
+                if (doHighlight(item)) {
+                    currentRow.classList.add("highlight");
+                }
+                
+                currentRow.insertCell(0).innerHTML = item.subject;
+                currentRow.insertCell(1).innerHTML = item.date;
+                currentRow.insertCell(2).innerHTML = item.amPM;
+                currentRow.insertCell(3).innerHTML = BOARD_TABLE[boardIndex];
+                currentRow.insertCell(4).innerHTML = item.qualification;
+                currentRow.insertCell(5).innerHTML = item.examCode;
+                currentRow.insertCell(6).innerHTML = item.title;
+                currentRow.insertCell(7).innerHTML = item.duration;
+            }
+        });
     });
-    }
+
+
+}
 
 function updateSearch() {
     const searchInputValue = document.getElementById("subject-input").value.toLowerCase();
