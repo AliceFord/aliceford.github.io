@@ -393,12 +393,21 @@ const OCR_GCSE_DATA = [
     {"date": "26/05/2022","qualification": "GCSE","examCode": "J625/10","subject": "Religious Studies","title": "Religion, philosophy and ethics in the modern world from a Hindu perspective","amPM": "PM","duration": "2h 00m "},
 ];
 
+const AQA_GCSE_DATA = [  // TODO: History
+    {"date": "23/05/2022","qualification": "GCSE","examCode": "8035/1","subject": "Geography", "title": "Paper 1: Living with the physical environment", "amPM": "AM", "duration": "1h 30m"},
+    {"date": "07/06/2022","qualification": "GCSE","examCode": "8035/2","subject": "Geography", "title": "Paper 2: Challenges in the human environment", "amPM": "PM", "duration": "1h 30m"},
+    {"date": "14/06/2022","qualification": "GCSE","examCode": "8035/3","subject": "Geography", "title": "Paper 3: Geographical applications", "amPM": "AM", "duration": "1h 00m"},
+    {"date": "24/05/2022","qualification": "GCSE","examCode": "8582/1","subject": "Physical Education", "title": "The human body and movement in physcial activity and sport", "amPM": "PM", "duration": "1h 15m"},
+    {"date": "10/06/2022","qualification": "GCSE","examCode": "8582/2","subject": "Physical Education", "title": "Socio-cultural influences and well-being in physical activity and sport", "amPM": "PM", "duration": "1h 15m"},
+    {"date": "31/05/2022","qualification": "GCSE","examCode": "8582/C","subject": "Physical Education", "title": "Non-exam assessment: Practical performance in physical activity and sport", "amPM": "N/A", "duration": ""},
+];
+
 const TIED_DATA = [
-    EDEXCEL_IGCSE_DATA, EDEXCEL_GCSE_DATA, OCR_GCSE_DATA
+    EDEXCEL_IGCSE_DATA, EDEXCEL_GCSE_DATA, OCR_GCSE_DATA, AQA_GCSE_DATA
 ];
 
 const BOARD_TABLE = [
-    "Edexcel", "Edexcel", "OCR"
+    "Edexcel", "Edexcel", "OCR", "AQA"
 ];
 
 const DO_HIGHLIGHT = [
@@ -418,6 +427,29 @@ const DO_HIGHLIGHT = [
     "4GN1 02",
     "J277/01",
     "J277/02",
+    "J282/01",
+    "J282/02",
+    "J282/03",
+    "J282/04",
+    "J282/05",
+    "J282/06",
+    "J199/11",
+    "J199/12",
+    "J199/21",
+    "J199/22",
+    "J199/23",
+    "J292/01",
+    "J292/02",
+    "J292/03",
+    "J292/04",
+    "J292/05",
+    "J292/06",
+    "8035/1",
+    "8035/2",
+    "8035/3",
+    "8582/1",
+    "8582/2",
+    "8582/C",
 ];
 
 const mainTable = document.getElementById("main-table");
