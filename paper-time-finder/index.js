@@ -414,12 +414,16 @@ const EDUQAS_GCSE_DATA = [  // TODO: Drama
     {"date": "10/06/2022","qualification": "GCSE","examCode": "C700U20-1","subject": "English Language", "title": "Component 2", "amPM": "AM", "duration": "2h 00m"},
 ];
 
+const CIE_IGCSE_DATA = [
+    {"date": "10/05/2022","qualification": "GCSE/IGCSE","examCode": "0983/12","subject": "Information & Communication Technology", "title": "Written Paper", "amPM": "AM", "duration": "2h 00m"},
+];
+
 const TIED_DATA = [
-    EDEXCEL_IGCSE_DATA, EDEXCEL_GCSE_DATA, OCR_GCSE_DATA, AQA_GCSE_DATA, EDUQAS_GCSE_DATA
+    EDEXCEL_IGCSE_DATA, EDEXCEL_GCSE_DATA, OCR_GCSE_DATA, AQA_GCSE_DATA, EDUQAS_GCSE_DATA, CIE_IGCSE_DATA
 ];
 
 const BOARD_TABLE = [
-    "Edexcel", "Edexcel", "OCR", "AQA", "Eduqas"
+    "Edexcel", "Edexcel", "OCR", "AQA", "Eduqas", "CIE"
 ];
 
 const DO_HIGHLIGHT = [
@@ -468,6 +472,10 @@ const DO_HIGHLIGHT = [
     "C700U20-1",
     "8365/1",
     "8365/2",
+    "8145/1B/B",
+    "8145/1A/B",
+    "8145/2B/C",
+    "0983/12"
 ];
 
 const mainTable = document.getElementById("main-table");
