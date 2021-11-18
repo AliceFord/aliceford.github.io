@@ -400,6 +400,11 @@ const AQA_GCSE_DATA = [  // TODO: History
     {"date": "24/05/2022","qualification": "GCSE","examCode": "8582/1","subject": "Physical Education", "title": "The human body and movement in physcial activity and sport", "amPM": "PM", "duration": "1h 15m"},
     {"date": "10/06/2022","qualification": "GCSE","examCode": "8582/2","subject": "Physical Education", "title": "Socio-cultural influences and well-being in physical activity and sport", "amPM": "PM", "duration": "1h 15m"},
     {"date": "31/05/2022","qualification": "GCSE","examCode": "8582/C","subject": "Physical Education", "title": "Non-exam assessment: Practical performance in physical activity and sport", "amPM": "N/A", "duration": ""},
+    {"date": "08/06/2022","qualification": "Level 2 AQA Certificate","examCode": "8365/1","subject": "Further Mathematics", "title": "Paper 1", "amPM": "PM", "duration": "1h 45m"},
+    {"date": "22/06/2022","qualification": "Level 2 AQA Certificate","examCode": "8365/2","subject": "Further Mathematics", "title": "Paper 2", "amPM": "PM", "duration": "1h 45m"},
+    {"date": "19/05/2022","qualification": "GCSE","examCode": "8145/1B/B","subject": "History", "title": "Paper 1 Section BB: Conflict and tension – The inter-war years, 1918-1939", "amPM": "AM", "duration": "1h 00m"},
+    {"date": "09/06/2022","qualification": "GCSE","examCode": "8145/1A/B","subject": "History", "title": "Paper 1 Section AB: Germany, 1890-1945: Democracy and dictatorship", "amPM": "AM", "duration": "1h 00m"},
+    {"date": "21/06/2022","qualification": "GCSE","examCode": "8145/2B/C","subject": "History", "title": "Paper 2 Section BC: Elizabethan England, c1568-1603", "amPM": "AM", "duration": "1h 00m"},
 ];
 
 const EDUQAS_GCSE_DATA = [  // TODO: Drama
@@ -414,7 +419,7 @@ const TIED_DATA = [
 ];
 
 const BOARD_TABLE = [
-    "Edexcel", "Edexcel", "OCR", "AQA", "EDUQAS"
+    "Edexcel", "Edexcel", "OCR", "AQA", "Eduqas"
 ];
 
 const DO_HIGHLIGHT = [
@@ -461,6 +466,8 @@ const DO_HIGHLIGHT = [
     "C720U10-A",
     "C720U20-A",
     "C700U20-1",
+    "8365/1",
+    "8365/2",
 ];
 
 const mainTable = document.getElementById("main-table");

@@ -15,3 +15,8 @@ body {
 .highlight {
   background-color: #0ff;
 }
+
+.disclaimer {
+  font-size: 0.8em;
+  color: #888;
+}
