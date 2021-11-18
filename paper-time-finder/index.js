@@ -393,7 +393,7 @@ const OCR_GCSE_DATA = [
     {"date": "26/05/2022","qualification": "GCSE","examCode": "J625/10","subject": "Religious Studies","title": "Religion, philosophy and ethics in the modern world from a Hindu perspective","amPM": "PM","duration": "2h 00m "},
 ];
 
-const AQA_GCSE_DATA = [  // TODO: History
+const AQA_GCSE_DATA = [
     {"date": "23/05/2022","qualification": "GCSE","examCode": "8035/1","subject": "Geography", "title": "Paper 1: Living with the physical environment", "amPM": "AM", "duration": "1h 30m"},
     {"date": "07/06/2022","qualification": "GCSE","examCode": "8035/2","subject": "Geography", "title": "Paper 2: Challenges in the human environment", "amPM": "PM", "duration": "1h 30m"},
     {"date": "14/06/2022","qualification": "GCSE","examCode": "8035/3","subject": "Geography", "title": "Paper 3: Geographical applications", "amPM": "AM", "duration": "1h 00m"},
@@ -407,11 +407,12 @@ const AQA_GCSE_DATA = [  // TODO: History
     {"date": "21/06/2022","qualification": "GCSE","examCode": "8145/2B/C","subject": "History", "title": "Paper 2 Section BC: Elizabethan England, c1568-1603", "amPM": "AM", "duration": "1h 00m"},
 ];
 
-const EDUQAS_GCSE_DATA = [  // TODO: Drama
+const EDUQAS_GCSE_DATA = [ 
     {"date": "18/05/2022","qualification": "GCSE","examCode": "C700U10-1","subject": "English Language", "title": "Component 1", "amPM": "AM", "duration": "1h 45m"},
     {"date": "25/05/2022","qualification": "GCSE","examCode": "C720U10-A","subject": "English Literature", "title": "Component 1", "amPM": "AM", "duration": "2h 00m"},
     {"date": "08/06/2022","qualification": "GCSE","examCode": "C720U20-A","subject": "English Literature", "title": "Component 2", "amPM": "AM", "duration": "2h 00m"},
     {"date": "10/06/2022","qualification": "GCSE","examCode": "C700U20-1","subject": "English Language", "title": "Component 2", "amPM": "AM", "duration": "2h 00m"},
+    {"date": "19/05/2022","qualification": "GCSE","examCode": "C690U30-1","subject": "Drama", "title": "Component 3", "amPM": "PM", "duration": "1h 30m"},
 ];
 
 const CIE_IGCSE_DATA = [
@@ -475,7 +476,11 @@ const DO_HIGHLIGHT = [
     "8145/1B/B",
     "8145/1A/B",
     "8145/2B/C",
-    "0983/12"
+    "0983/12",
+    "1MU0 03",
+    "1ST0 1H",
+    "1ST0 2H",
+    "C690U30-1"
 ];
 
 const mainTable = document.getElementById("main-table");
