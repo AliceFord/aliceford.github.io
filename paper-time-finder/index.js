@@ -485,6 +485,8 @@ const DO_HIGHLIGHT = [
 
 const mainTable = document.getElementById("main-table");
 
+var timeTableTracked = [];
+
 updateTable("");
 
 function doHighlight(item) {
@@ -503,19 +505,91 @@ function updateTable(query) {
                     currentRow.classList.add("highlight");
                 }
                 
-                currentRow.insertCell(0).innerHTML = item.subject;
-                currentRow.insertCell(1).innerHTML = item.date;
-                currentRow.insertCell(2).innerHTML = item.amPM;
-                currentRow.insertCell(3).innerHTML = BOARD_TABLE[boardIndex];
-                currentRow.insertCell(4).innerHTML = item.qualification;
-                currentRow.insertCell(5).innerHTML = item.examCode;
-                currentRow.insertCell(6).innerHTML = item.title;
-                currentRow.insertCell(7).innerHTML = item.duration;
+                currentRow.insertCell(0).innerHTML = `<input type=checkbox onclick="addToTimetable('${item.examCode}');"></input>`
+                currentRow.insertCell(1).innerHTML = item.subject;
+                currentRow.insertCell(2).innerHTML = item.date;
+                currentRow.insertCell(3).innerHTML = item.amPM;
+                currentRow.insertCell(4).innerHTML = BOARD_TABLE[boardIndex];
+                currentRow.insertCell(5).innerHTML = item.qualification;
+                currentRow.insertCell(6).innerHTML = item.examCode;
+                currentRow.insertCell(7).innerHTML = item.title;
+                currentRow.insertCell(8).innerHTML = item.duration;
             }
         });
     });
+}
 
+function addToTimetable(examCode) {
+    if (timeTableTracked.includes(examCode)) {
+        timeTableTracked = timeTableTracked.filter(item => item != examCode);
+    } else {
+        timeTableTracked.push(examCode);
+    }
+}
 
+function generateTimetable() {
+    const doc = new jsPDF();
+
+    doc.text("GCSE Timetable 2022", 10, 10);
+    doc.rect(10, 20, 175, 210);
+
+    doc.setDrawColor(217, 217, 217);
+
+    for (let i = 0; i < 7; i++) {
+        doc.line(10, 35 + i * 30, 185, 35 + i * 30);
+    }
+
+    doc.setDrawColor(0, 0, 0);
+
+    for (let i = 0; i < 7; i++) {
+        doc.line(10 + i * 25, 20, 10 + i * 25, 230);
+    }
+
+    for (let i = 0; i < 7; i++) {
+        doc.line(10, 20 + i * 30, 185, 20 + i * 30);
+    }
+
+    
+
+    for (let i = 0; i < 44; i++) {
+        let row = i % 7;
+        let col = Math.floor(i / 7);
+        doc.text(((i + 15) % 31 + 1).toString(), 10 + row * 25, 25 + col * 30);
+    }
+
+    doc.setFontSize(10);
+
+    timeTableTracked.forEach((item, index) => {
+        let exit = false;
+        for (let i = 0; i < TIED_DATA.length; i++) {
+            TIED_DATA[i].some((boardItem, boardIndex) => {
+                if (boardItem.examCode == item) {
+                    let position = 0;
+                    if (boardItem.date.split("/")[1] == '05') {
+                        position = parseInt(boardItem.date.split("/")[0]) - 16;
+                    } else {
+                        position = parseInt(boardItem.date.split("/")[0]) + 15;
+                    }
+                    
+                    let row = position % 7;
+                    let col = Math.floor(position / 7);
+
+                    if (boardItem.amPM == "AM") {
+                        doc.text(boardItem.subject, 10 + row * 25, 29 + col * 30);
+                        doc.text(boardItem.duration, 10 + row * 25, 34 + col * 30);
+                    } else {
+                        doc.text(boardItem.subject, 10 + row * 25, 40 + col * 30);
+                        doc.text(boardItem.duration, 10 + row * 25, 45 + col * 30);
+                    }
+                    exit = true;
+                    return true;
+                }
+            });
+            if (exit) break;
+        }
+    });
+
+    doc.save("timetable.pdf");
 }
 
 function updateSearch() {
