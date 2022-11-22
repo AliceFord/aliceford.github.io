@@ -5,7 +5,7 @@
     <meta name="description" content="4 Number Game">
     <meta name="author" content="TechieHelper">
 
-    <title>Tools</title>
+    <title>4 Number Game</title>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -16,13 +16,24 @@
   <body>
     <div>
         <div style="align-content: center;" id="inputDiv">
-            <label for="targetInput">Target: </label>
-            <input type="number" id="targetInput" value="24">
-            <button onclick="changeTarget();">Update Target</button>
-            <button onclick="newCombination();">Next</button>
+            <div align="center">
+                <label for="targetInput">Target: </label>
+                <input type="number" id="targetInput" value="24" max="50" min="1">
+                <button onclick="changeTarget();">Update Target</button>
+                <button onclick="newCombination();">Next</button>
+            </div>
             <br>
-            <p style="font-size: 120px;" id="numbers">
+            <p align="center" style="font-size: 120px;" id="numbers">
                 3 5 7 9
+            </p>
+            <br>
+            <div style="justify-content: center; text-align: center;">
+                Solution (click to reveal): 
+                <div id="solution" style="display: inline; overflow: hidden; filter: blur(5px);" onclick="toggleSolutionBlur();">3+5+7+9</div>
+            </div>
+            <br>
+            <p align="center" style="font-size: medium;">
+                Note: division should have brackets in solution
             </p>
         </div>
     </div>
