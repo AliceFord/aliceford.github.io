@@ -9,6 +9,7 @@ function changeTarget() {
     fetch(`${newTarget}.txt`).then((response) => {
         return response.text();
     }).then((fileContents) => {
+        console.log(fileContents);
         fileContents = fileContents.split("\r\n");
         for (let i = 0; i < fileContents.length; i++) {
             let current = fileContents[i].split(" ");
