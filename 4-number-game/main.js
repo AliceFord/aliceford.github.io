@@ -30,7 +30,7 @@ function newCombination() {
     let chosenArr = chosen.split("");
     chosenArr.sort(() => Math.random() - 0.5);
 
-    document.getElementById("solution").style.filter = "blur(5px)";
+    document.getElementById("solution").style.filter = "blur(8px)";
     solutionBlurred = true;
 
     document.getElementById("numbers").innerHTML = chosenArr.join(" ");
@@ -51,7 +51,7 @@ function toggleSolutionBlur() {
     if (solutionBlurred) {
         document.getElementById("solution").style.filter = "blur(0px)";
     } else {
-        document.getElementById("solution").style.filter = "blur(5px)";
+        document.getElementById("solution").style.filter = "blur(8px)";
     }
     solutionBlurred = !solutionBlurred;
 }

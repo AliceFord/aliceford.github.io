@@ -16,23 +16,22 @@
   <body>
     <div>
         <div style="align-content: center;" id="inputDiv">
-            <div align="center">
+            <div align="center" id="target-form">
                 <label for="targetInput">Target: </label>
-                <input type="number" id="targetInput" value="24" max="50" min="1">
-                <button onclick="changeTarget();">Update Target</button>
+                <input type="number" id="targetInput" value="24" max="50" min="1" onclick="changeTarget();">
                 <button onclick="newCombination();">Next</button>
             </div>
             <br>
-            <p align="center" style="font-size: 120px;" id="numbers">
+            <p align="center" style="font-size: 150px;" id="numbers">
                 3 5 7 9
             </p>
             <br>
-            <div style="justify-content: center; text-align: center;">
+            <div style="justify-content: center; text-align: center;" id="solution-form">
                 Solution (click to reveal): 
                 <div id="solution" style="display: inline; overflow: hidden; filter: blur(5px);" onclick="toggleSolutionBlur();">3+5+7+9</div>
             </div>
             <br>
-            <p align="center" style="font-size: medium;">
+            <p align="center" style="font-size: 15px;">
                 Note: division should have brackets in solution
             </p>
         </div>
