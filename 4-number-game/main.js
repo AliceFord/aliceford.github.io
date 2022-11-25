@@ -1,5 +1,6 @@
 var currentPossibilities = {};
 var currentCombinations = [];
+var diff = "A";
 
 var solutionBlurred = false;
 
@@ -15,8 +16,11 @@ function changeTarget() {
         for (let i = 0; i < fileContents.length; i++) {
             let current = fileContents[i].split(" ");
             if (current[0].length > 0) {
-                currentPossibilities[current[0]] = current[1];
-                currentCombinations.push(current[0]);
+                if (diff == "A" || current[2][0] == diff[0]) {
+                    console.log(current[1], current[2]);
+                    currentPossibilities[current[0]] = [current[1], current[2]];
+                    currentCombinations.push(current[0]);
+                }
             }
         }
 
@@ -34,7 +38,14 @@ function newCombination() {
     solutionBlurred = true;
 
     document.getElementById("numbers").innerHTML = chosenArr.join(" ");
-    document.getElementById("solution").innerHTML = getSolution(chosen, currentPossibilities[chosen]);
+    document.getElementById("solution").innerHTML = getSolution(chosen, currentPossibilities[chosen][0]);
+}
+
+function changeDifficulty() {
+    let newDifficulty = document.getElementById("difficultyInput").value;
+    diff = newDifficulty;
+
+    changeTarget();
 }
 
 function getSolution(number, solution) {

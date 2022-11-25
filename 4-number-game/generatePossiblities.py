@@ -24,6 +24,8 @@ for symbolOrder in symbolOrders:
 numberCombinations = list(combinations_with_replacement([1, 2, 3, 4, 5, 6, 7, 8, 9], 4))
 possibilitiesWithoutBrackets = []
 
+## TARGETED VERSION OF ALG
+
 for target in range(1, 51):
     outstream = ""
     currentTarget = int(str(target))
@@ -60,3 +62,38 @@ for target in range(1, 51):
 
     with open(str(currentTarget) + ".txt", "w") as f:
         f.write(outstream)
+
+
+## SMART ALG BY tomen835
+
+# found = [[]]*50 # 0-position is for number 1
+
+
+# for comb in numberCombinations:
+#     for bracketSet in bracketOptions:
+#         a, b, c, d = comb
+#         for possibility in symbolOperatorPossibilities:
+#             possibility = list(possibility)
+#             for i, char in enumerate(bracketSet):
+#                 index = 2 * i
+#                 if char == "(":
+#                     possibility[index] = "(" + possibility[index]
+#                 elif char == ")":
+#                     possibility[index] = possibility[index] + ")"
+#                 elif char == "[":
+#                     possibility[index] = "((" + possibility[index]
+#                 elif char == "]":
+#                     possibility[index] = possibility[index] + "))"
+#             possibility = "".join(possibility)
+
+#             try:
+#                 val = eval(possibility)
+#                 if val == int(val):
+#                     if val > 0 and val <= 50:
+#                         if str(a) + str(b) + str(c) + str(d) not in found[int(val)-1]:
+#                             with open("smart/" + str(int(val)) + ".txt", "a") as f:
+#                                 f.write(str(a) + str(b) + str(c) + str(d) + " " + possibility + "\n")
+                            
+#                             found[int(val)-1].append(str(a) + str(b) + str(c) + str(d))
+#             except ZeroDivisionError:
+#                 pass

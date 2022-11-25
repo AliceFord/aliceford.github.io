@@ -19,6 +19,13 @@
             <div align="center" id="target-form">
                 <label for="targetInput">Target: </label>
                 <input type="number" id="targetInput" value="24" max="50" min="1" onclick="changeTarget();">
+                <label for="difficultyInput">Difficulty: </label>
+                <select id="difficultyInput" onchange="if (this.selectedIndex) changeDifficulty();">
+                    <option value="A">Mixed</option>
+                    <option value="E">Easy</option>
+                    <option value="M">Medium</option>
+                    <option value="H">Hard</option>
+                </select>
                 <button onclick="newCombination();">Next</button>
             </div>
             <br>

@@ -1,460 +1,460 @@
-1112 a+b+c+d
-1113 a+b+c*d
-1114 a+b-c+d
-1115 a-b+c*d
-1116 a-b-c+d
-1117 a*d-b-c
-1118 d-a-b-c
-1122 a+b*c+d
-1123 a-b+c+d
-1124 a*c-b+d
-1125 a+b-c+d
-1126 a-b*c+d
-1127 a-b-c+d
-1128 a+b/c*d
-1129 d-a-b-c
-1133 a*c-b+d
-1134 c-a-b+d
-1135 (a-b)*c+d
-1136 a+b-c+d
-1137 a-b*c+d
-1138 a-b-c+d
-1139 a+b+d/c
-1144 (a+b/c)*d
-1145 (a-b)*c+d
-1147 a+b-c+d
-1148 a-b*c+d
-1149 a-b-c+d
-1155 (a+b)*c-d
-1156 (a-b)*d+c
-1157 (a-b)*d+c
-1158 a+b-c+d
-1159 a-b*c+d
-1166 (a-b/c)*d
-1167 (a+b)*c-d
-1168 d-c/(a+b)
-1169 a+b-c+d
-1179 (a+b)*c-d
-1189 d-c/(a+b)
-1222 b-a+c+d
-1223 a+b/c+d
-1224 a+b-c+d
-1225 a-b/c+d
-1226 a*b+d/c
-1227 d-a-b/c
-1228 a-b-c+d
-1229 a/b+d/c
-1233 a-b+c+d
-1234 a*b*d-c
-1235 a+b-c+d
-1236 a+b/c*d
-1237 b-a-c+d
-1238 (a-b)*c+d
-1239 a-b-c+d
-1244 a+b*c-d
-1245 b*d-a-c
-1246 a+b-c+d
-1247 a*b-c+d
-1248 a+b/c*d
-1249 (a-b)*c+d
-1255 a*b*c-d
-1256 a+b*c-d
-1257 a+b-c+d
-1258 a*b-c+d
-1259 b-a-c+d
-1266 b*c-a-d
-1267 a*b*c-d
-1268 a+b-c+d
-1269 a*b-c+d
-1277 (c-a)*b-d
-1278 b*c-a-d
-1279 a+b-c+d
-1288 a-c/b+d
-1289 a*d-c/b
-1299 (a-c)/b+d
-1333 a+b+c/d
-1334 a+b-c+d
-1335 a+b*c-d
-1336 a*b+d/c
-1337 d-a-b/c
-1338 d/(a+b)+c
-1339 b-a+d/c
-1344 a+b+c/d
-1345 a+b-c+d
-1346 a*b-c+d
-1347 a*b*c-d
-1348 a+b*c-d
-1349 (d-a)/c+b
-1355 a+b+c/d
-1356 a+b-c+d
-1357 a*b-c+d
-1358 b-a-c+d
-1359 b*c-a-d
-1366 a+b+c/d
-1367 a+b-c+d
-1368 a+b/c*d
-1369 b-a-c+d
-1377 a+b+c/d
-1378 a+b-c+d
-1379 a*b-c+d
-1388 a+b+c/d
-1389 a+b-c+d
-1399 a+b+c/d
-1444 a+b+c-d
-1445 a-b/c+d
-1446 a*d-b/c
-1447 d-a-b/c
-1448 b-a+d/c
-1449 (d/b-a)*c
-1455 a+b+c-d
-1456 a*b-c+d
-1457 b-a-c+d
-1458 (d/b-a)*c
-1459 b/(d/c-a)
-1466 a+b+c-d
-1467 a*b-c+d
-1468 a+c-d/b
-1469 b/c*d-a
-1477 a+b+c-d
-1478 a*b-c+d
-1479 b-a-c+d
-1488 a+b+c-d
-1489 a*b-c+d
-1499 a+b+c-d
-1555 a+b-c/d
-1556 a+b+c-d
-1557 d-a-b/c
-1566 a+b-c/d
-1567 a+b+c-d
-1568 (d-a-c)*b
-1577 a+b-c/d
-1578 a+b+c-d
-1579 c-(a+d)/b
-1588 a+b-c/d
-1589 a+b+c-d
-1599 a+b-c/d
-1666 a*b-c/d
-1667 a*b+c-d
-1668 a+b+c-d
-1669 a+b*c/d
-1677 a*b-c/d
-1678 a*b+c-d
-1679 a+b+c-d
-1688 a*b-c/d
-1689 a*b+c-d
-1699 a*b-c/d
-1777 b-a-c/d
-1778 b-a+c-d
-1779 a*b+c-d
-1788 b-a-c/d
-1789 b-a+c-d
-1799 b-a-c/d
-2222 a+b+c/d
-2223 a+b-c+d
-2224 a-b/c+d
-2225 (a-b)*c+d
-2226 a/b-c+d
-2227 a-b-c+d
-2228 a/b+d/c
-2229 (a/b+d)/c
-2233 a+b+c/d
-2234 a+b-c+d
-2235 a*d-b-c
-2236 c-a-b+d
-2237 a*b*c-d
-2238 a-b-c+d
-2239 a-b*c+d
-2244 a+b+c/d
-2245 a+b-c+d
-2246 a+b/c*d
-2247 (a+c)*b-d
-2248 a/b-c+d
-2249 a-b-c+d
-2255 a+b+c/d
-2256 a+b-c+d
-2257 a+b*c-d
-2258 (a-b)*d+c
-2259 a/b-c+d
-2266 a+b+c/d
-2267 a+b-c+d
-2268 (c+d)/a-b
-2269 a+b*c-d
-2277 a+b+c/d
-2278 a+b-c+d
-2279 (c-d/a)*b
-2288 a+b+c/d
-2289 a+b-c+d
-2299 a+b+c/d
-2333 a+b+c-d
-2334 a-b/c+d
-2335 (b-c)*a+d
-2336 a+b*c-d
-2337 a*d-b*c
-2338 b-a*c+d
-2339 a-b-c+d
-2344 a+b+c-d
-2345 a*b+c-d
-2346 a*b/d+c
-2347 c-a*b+d
-2348 b-a-c+d
-2349 a+b*c-d
-2355 a+b+c-d
-2356 a*b+c-d
-2357 (d-a*b)*c
-2358 a*c+b-d
-2359 b-a-c+d
-2366 a+b+c-d
-2367 a*b+c-d
-2368 b+c-d/a
-2369 a+c-d/b
-2377 a+b+c-d
-2378 a*b+c-d
-2379 (c+d)/a-b
-2388 a+b+c-d
-2389 a*b+c-d
-2399 a+b+c-d
-2444 a+b-c/d
-2445 a+b+c-d
-2446 b/c-a+d
-2447 a*b+c-d
-2448 a*b/d+c
-2449 b-a*c+d
-2455 a+b-c/d
-2456 a+b+c-d
-2457 a*d-b-c
-2458 a*b+c-d
-2459 a*c+b-d
-2466 a+b-c/d
-2467 a+b+c-d
-2468 a+b*c/d
-2469 a*b+c-d
-2477 a+b-c/d
-2478 a+b+c-d
-2479 b/a*c-d
-2488 a+b-c/d
-2489 a+b+c-d
-2499 a+b-c/d
-2555 (b-c)*a+d
-2556 b/c-a+d
-2557 a+b+c-d
-2558 b/c+d/a
-2559 (a*b-d)*c
-2566 c-a-b+d
-2567 c/a-b+d
-2568 a+b+c-d
-2569 c-a*b+d
-2577 (c-d)*a+b
-2578 c-a*b+d
-2579 a+b+c-d
-2588 (c-d)*a+b
-2589 a*d-b-c
-2599 (c-d)*a+b
-2666 b-a+c/d
-2667 b-a-c+d
-2668 b/a-c+d
-2669 a+b+c-d
-2677 b-a+c/d
-2678 b-a-c+d
-2679 a*d-b-c
-2688 b-a+c/d
-2689 b-a-c+d
-2699 b-a+c/d
-2777 b-a+c-d
-2778 b/c+d/a
-2779 (b/c+d)/a
-2788 b-a+c-d
-2789 (c-d)*a+b
-2799 b-a+c-d
-2888 b-a-c/d
-2889 b-a+c-d
-2899 b-a-c/d
-2999 (b+c/d)/a
-3333 a+b-c/d
-3334 a+b+c-d
-3335 (a-b)*c+d
-3336 (a*b+d)/c
-3337 a+b*c-d
-3338 a-b-c+d
-3339 d-a-b/c
-3344 a+b-c/d
-3345 a+b+c-d
-3346 a+b*c/d
-3347 c-a-b+d
-3348 a*b+c-d
-3349 a-b-c+d
-3355 a+b-c/d
-3356 a+b+c-d
-3357 a*c-b-d
-3358 (a-b)*d+c
-3359 a*b+c-d
-3366 a+b-c/d
-3367 a+b+c-d
-3368 c-a*b+d
-3369 a+b*c/d
-3377 a+b-c/d
-3378 a+b+c-d
-3379 (a-d)/b+c
-3388 a+b-c/d
-3389 a+b+c-d
-3399 a+b-c/d
-3444 (b+c)/d+a
-3445 (b-c)*a+d
-3446 a+b+c-d
-3447 a*d-b*c
-3448 a+b*c/d
-3449 b+c-d/a
-3455 b*c-a*d
-3456 a*c-b-d
-3457 a+b+c-d
-3458 (a+c)/d+b
-3459 b-a-c+d
-3466 c-a-b+d
-3467 c/a-b+d
-3468 a+b+c-d
-3469 a*c-b-d
-3478 (a+c)*b/d
-3479 a+b+c-d
-3488 c/(d-b)+a
-3489 b*c-a*d
-3555 a*b-c-d
-3556 b/a*d-c
-3557 b/c-a+d
-3558 a+b+c-d
-3559 d-a-b/c
-3566 (c-d)*a+b
-3567 c-a-b+d
-3568 a*c-b-d
-3569 a+b+c-d
-3577 (c-d)*a+b
-3578 c/(a-d/b)
-3579 c-b+d/a
-3588 (c-d)*a+b
-3589 c/(a-b)+d
-3599 (c-d)*a+b
-3666 (b+c)/d+a
-3667 a*b-c-d
-3668 b-a-c+d
-3669 b/a-c+d
-3677 c-a-b+d
-3678 (b-c)*a+d
-3679 b-a-c+d
-3689 c-b+d/a
-3699 (b+c)*a/d
-3777 b-a+c/d
-3778 b-a-c+d
-3779 a*b-c-d
-3788 a*b-c-d
-3789 b-a-c+d
-3799 b-a+c/d
-3888 b-a+c-d
-3889 d-a-b/c
-3899 b-a+c-d
-3999 b-a-c/d
-4444 (a+b*c)/d
-4445 (a-b)*c+d
-4446 (a*d-b)/c
-4447 a+b+c-d
-4448 a/b-c+d
-4449 a-b-c+d
-4455 (a-b)*c+d
-4456 a*b-c-d
-4457 (a-b)*d+c
-4458 a+b+c-d
-4459 a/b-c+d
-4466 c/a*d-b
-4467 c-a-b+d
-4468 (a+c)*b/d
-4469 a+b+c-d
-4477 (c-a)*b-d
-4478 c-a*b/d
-4479 (a+c+d)/b
-4488 c-(a+d)/b
-4489 (a+b*d)/c
-4555 b*c-a*d
-4556 (d-a)*b-c
-4558 b/a*d-c
-4559 a+b+c-d
-4566 (c-d)*a+b
-4567 d-(a+c)/b
-4568 c-a-b+d
-4569 a*b-c-d
-4577 c-a-b+d
-4578 a*b-c-d
-4588 c/a-b+d
-4599 (c-d)*a+b
-4666 (a*b+c)/d
-4667 (b-a)*c-d
-4668 b/c-a+d
-4669 b-a-c+d
-4677 b/(a-c)+d
-4678 b/a*d-c
-4679 (b-a)*c-d
-4688 c-a*b/d
-4689 c/a-b+d
-4777 (a*b+c)/d
-4778 b/c-a+d
-4779 b-a-c+d
-4788 c-a-b+d
-4789 b/a*c-d
-4799 c-(b+d)/a
-4888 b-a+c/d
-4889 b-a-c+d
-4899 b-a+c/d
-4999 b-a+c-d
-5555 (a-b)*c+d
-5556 a*d-b*c
-5557 (a-b)*d+c
-5558 (a-b)*d+c
-5559 a/b-c+d
-5566 (c-d)*a+b
-5567 a*d-b*c
-5568 (d-c)*a-b
-5569 c-a-b+d
-5577 (c-d)*a+b
-5578 a*d-b*c
-5579 (d-c)*a-b
-5588 (c-d)*a+b
-5589 a*d-b*c
-5599 (c-d)*a+b
-5666 (b-c)*d+a
-5667 (b-c)*d+a
-5668 (b-c)*d+a
-5669 b/c-a+d
-5677 (c-a)*b-d
-5678 b/(a-c)+d
-5679 c-a-b+d
-5688 c-a-b+d
-5689 c-(b+d)/a
-5699 (c-d)*b+a
-5777 (b-c)*d+a
-5778 (b-c)*d+a
-5779 b/c-a+d
-5788 (c-d)*b+a
-5789 c-a-b+d
-5799 (c-d)*b+a
-5888 (b-c)*d+a
-5889 b/c-a+d
-5899 c-a-b+d
-5999 b-a+c/d
-6666 (a*b-c)/d
-6667 d-(a+b)/c
-6678 (d-a)*b-c
-6679 a/(b-d)+c
-6688 a/(b-c)+d
-6689 c-a-b+d
-6699 c-a*b/d
-6777 (a*b-c)/d
-6778 b-(a+d)/c
-6779 a*d-b*c
-6789 c/a*d-b
-6799 c-a-b+d
-6888 (a*b-c)/d
-6889 b/(a-c)+d
-6899 b-(c+d)/a
-6999 (a*b-c)/d
-7777 a-(b+c)/d
-7789 a-(b+d)/c
-7799 (c-a)*b-d
-7888 a-(b+c)/d
-7899 b/(a-c)+d
-7999 a-(b+c)/d
+1112 a+b+c+d E
+1113 a+b+c*d M
+1114 a+b-c+d E
+1115 a-b+c*d M
+1116 a-b-c+d E
+1117 a*d-b-c M
+1118 d-a-b-c E
+1122 a+b*c+d M
+1123 a-b+c+d E
+1124 a*c-b+d M
+1125 a+b-c+d E
+1126 a-b*c+d M
+1127 a-b-c+d E
+1128 a+b/c*d H
+1129 d-a-b-c E
+1133 a*c-b+d M
+1134 c-a-b+d E
+1135 (a-b)*c+d H
+1136 a+b-c+d E
+1137 a-b*c+d M
+1138 a-b-c+d E
+1139 a+b+d/c H
+1144 (a+b/c)*d H
+1145 (a-b)*c+d H
+1147 a+b-c+d E
+1148 a-b*c+d M
+1149 a-b-c+d E
+1155 (a+b)*c-d H
+1156 (a-b)*d+c H
+1157 (a-b)*d+c H
+1158 a+b-c+d E
+1159 a-b*c+d M
+1166 (a-b/c)*d H
+1167 (a+b)*c-d H
+1168 d-c/(a+b) H
+1169 a+b-c+d E
+1179 (a+b)*c-d H
+1189 d-c/(a+b) H
+1222 b-a+c+d E
+1223 a+b/c+d M
+1224 a+b-c+d E
+1225 a-b/c+d M
+1226 a*b+d/c H
+1227 d-a-b/c M
+1228 a-b-c+d E
+1229 a/b+d/c H
+1233 a-b+c+d E
+1234 a*b*d-c M
+1235 a+b-c+d E
+1236 a+b/c*d H
+1237 b-a-c+d E
+1238 (a-b)*c+d H
+1239 a-b-c+d E
+1244 a+b*c-d M
+1245 b*d-a-c M
+1246 a+b-c+d E
+1247 a*b-c+d M
+1248 a+b/c*d H
+1249 (a-b)*c+d H
+1255 a*b*c-d M
+1256 a+b*c-d M
+1257 a+b-c+d E
+1258 a*b-c+d M
+1259 b-a-c+d E
+1266 b*c-a-d M
+1267 a*b*c-d M
+1268 a+b-c+d E
+1269 a*b-c+d M
+1277 (c-a)*b-d H
+1278 b*c-a-d M
+1279 a+b-c+d E
+1288 a-c/b+d H
+1289 a*d-c/b H
+1299 (a-c)/b+d H
+1333 a+b+c/d M
+1334 a+b-c+d E
+1335 a+b*c-d M
+1336 a*b+d/c H
+1337 d-a-b/c M
+1338 d/(a+b)+c H
+1339 b-a+d/c H
+1344 a+b+c/d M
+1345 a+b-c+d E
+1346 a*b-c+d M
+1347 a*b*c-d M
+1348 a+b*c-d M
+1349 (d-a)/c+b H
+1355 a+b+c/d M
+1356 a+b-c+d E
+1357 a*b-c+d M
+1358 b-a-c+d E
+1359 b*c-a-d M
+1366 a+b+c/d M
+1367 a+b-c+d E
+1368 a+b/c*d H
+1369 b-a-c+d E
+1377 a+b+c/d M
+1378 a+b-c+d E
+1379 a*b-c+d M
+1388 a+b+c/d M
+1389 a+b-c+d E
+1399 a+b+c/d M
+1444 a+b+c-d E
+1445 a-b/c+d M
+1446 a*d-b/c M
+1447 d-a-b/c M
+1448 b-a+d/c H
+1449 (d/b-a)*c H
+1455 a+b+c-d E
+1456 a*b-c+d M
+1457 b-a-c+d E
+1458 (d/b-a)*c H
+1459 b/(d/c-a) H
+1466 a+b+c-d E
+1467 a*b-c+d M
+1468 a+c-d/b H
+1469 b/c*d-a H
+1477 a+b+c-d E
+1478 a*b-c+d M
+1479 b-a-c+d E
+1488 a+b+c-d E
+1489 a*b-c+d M
+1499 a+b+c-d E
+1555 a+b-c/d M
+1556 a+b+c-d E
+1557 d-a-b/c M
+1566 a+b-c/d M
+1567 a+b+c-d E
+1568 (d-a-c)*b H
+1577 a+b-c/d M
+1578 a+b+c-d E
+1579 c-(a+d)/b H
+1588 a+b-c/d M
+1589 a+b+c-d E
+1599 a+b-c/d M
+1666 a*b-c/d M
+1667 a*b+c-d M
+1668 a+b+c-d E
+1669 a+b*c/d H
+1677 a*b-c/d M
+1678 a*b+c-d M
+1679 a+b+c-d E
+1688 a*b-c/d M
+1689 a*b+c-d M
+1699 a*b-c/d M
+1777 b-a-c/d M
+1778 b-a+c-d E
+1779 a*b+c-d M
+1788 b-a-c/d M
+1789 b-a+c-d E
+1799 b-a-c/d M
+2222 a+b+c/d M
+2223 a+b-c+d E
+2224 a-b/c+d M
+2225 (a-b)*c+d H
+2226 a/b-c+d M
+2227 a-b-c+d E
+2228 a/b+d/c M
+2229 (a/b+d)/c M
+2233 a+b+c/d M
+2234 a+b-c+d E
+2235 a*d-b-c M
+2236 c-a-b+d E
+2237 a*b*c-d M
+2238 a-b-c+d E
+2239 a-b*c+d M
+2244 a+b+c/d M
+2245 a+b-c+d E
+2246 a+b/c*d H
+2247 (a+c)*b-d H
+2248 a/b-c+d M
+2249 a-b-c+d E
+2255 a+b+c/d M
+2256 a+b-c+d E
+2257 a+b*c-d M
+2258 (a-b)*d+c H
+2259 a/b-c+d M
+2266 a+b+c/d M
+2267 a+b-c+d E
+2268 (c+d)/a-b H
+2269 a+b*c-d M
+2277 a+b+c/d M
+2278 a+b-c+d E
+2279 (c-d/a)*b H
+2288 a+b+c/d M
+2289 a+b-c+d E
+2299 a+b+c/d M
+2333 a+b+c-d E
+2334 a-b/c+d M
+2335 (b-c)*a+d H
+2336 a+b*c-d M
+2337 a*d-b*c H
+2338 b-a*c+d M
+2339 a-b-c+d E
+2344 a+b+c-d E
+2345 a*b+c-d M
+2346 a*b/d+c H
+2347 c-a*b+d M
+2348 b-a-c+d E
+2349 a+b*c-d M
+2355 a+b+c-d E
+2356 a*b+c-d M
+2357 (d-a*b)*c H
+2358 a*c+b-d M
+2359 b-a-c+d E
+2366 a+b+c-d E
+2367 a*b+c-d M
+2368 b+c-d/a H
+2369 a+c-d/b H
+2377 a+b+c-d E
+2378 a*b+c-d M
+2379 (c+d)/a-b H
+2388 a+b+c-d E
+2389 a*b+c-d M
+2399 a+b+c-d E
+2444 a+b-c/d M
+2445 a+b+c-d E
+2446 b/c-a+d M
+2447 a*b+c-d M
+2448 a*b/d+c H
+2449 b-a*c+d M
+2455 a+b-c/d M
+2456 a+b+c-d E
+2457 a*d-b-c M
+2458 a*b+c-d M
+2459 a*c+b-d M
+2466 a+b-c/d M
+2467 a+b+c-d E
+2468 a+b*c/d H
+2469 a*b+c-d M
+2477 a+b-c/d M
+2478 a+b+c-d E
+2479 b/a*c-d H
+2488 a+b-c/d M
+2489 a+b+c-d E
+2499 a+b-c/d M
+2555 (b-c)*a+d H
+2556 b/c-a+d M
+2557 a+b+c-d E
+2558 b/c+d/a M
+2559 (a*b-d)*c H
+2566 c-a-b+d E
+2567 c/a-b+d H
+2568 a+b+c-d E
+2569 c-a*b+d M
+2577 (c-d)*a+b H
+2578 c-a*b+d M
+2579 a+b+c-d E
+2588 (c-d)*a+b H
+2589 a*d-b-c M
+2599 (c-d)*a+b H
+2666 b-a+c/d M
+2667 b-a-c+d E
+2668 b/a-c+d H
+2669 a+b+c-d E
+2677 b-a+c/d M
+2678 b-a-c+d E
+2679 a*d-b-c M
+2688 b-a+c/d M
+2689 b-a-c+d E
+2699 b-a+c/d M
+2777 b-a+c-d E
+2778 b/c+d/a M
+2779 (b/c+d)/a M
+2788 b-a+c-d E
+2789 (c-d)*a+b H
+2799 b-a+c-d E
+2888 b-a-c/d M
+2889 b-a+c-d E
+2899 b-a-c/d M
+2999 (b+c/d)/a M
+3333 a+b-c/d M
+3334 a+b+c-d E
+3335 (a-b)*c+d H
+3336 (a*b+d)/c H
+3337 a+b*c-d M
+3338 a-b-c+d E
+3339 d-a-b/c M
+3344 a+b-c/d M
+3345 a+b+c-d E
+3346 a+b*c/d H
+3347 c-a-b+d E
+3348 a*b+c-d M
+3349 a-b-c+d E
+3355 a+b-c/d M
+3356 a+b+c-d E
+3357 a*c-b-d M
+3358 (a-b)*d+c H
+3359 a*b+c-d M
+3366 a+b-c/d M
+3367 a+b+c-d E
+3368 c-a*b+d M
+3369 a+b*c/d H
+3377 a+b-c/d M
+3378 a+b+c-d E
+3379 (a-d)/b+c H
+3388 a+b-c/d M
+3389 a+b+c-d E
+3399 a+b-c/d M
+3444 (b+c)/d+a M
+3445 (b-c)*a+d H
+3446 a+b+c-d E
+3447 a*d-b*c H
+3448 a+b*c/d H
+3449 b+c-d/a H
+3455 b*c-a*d H
+3456 a*c-b-d M
+3457 a+b+c-d E
+3458 (a+c)/d+b H
+3459 b-a-c+d E
+3466 c-a-b+d E
+3467 c/a-b+d H
+3468 a+b+c-d E
+3469 a*c-b-d M
+3478 (a+c)*b/d H
+3479 a+b+c-d E
+3488 c/(d-b)+a M
+3489 b*c-a*d H
+3555 a*b-c-d M
+3556 b/a*d-c H
+3557 b/c-a+d M
+3558 a+b+c-d E
+3559 d-a-b/c M
+3566 (c-d)*a+b H
+3567 c-a-b+d E
+3568 a*c-b-d M
+3569 a+b+c-d E
+3577 (c-d)*a+b H
+3578 c/(a-d/b) H
+3579 c-b+d/a H
+3588 (c-d)*a+b H
+3589 c/(a-b)+d H
+3599 (c-d)*a+b H
+3666 (b+c)/d+a M
+3667 a*b-c-d M
+3668 b-a-c+d E
+3669 b/a-c+d H
+3677 c-a-b+d E
+3678 (b-c)*a+d H
+3679 b-a-c+d E
+3689 c-b+d/a H
+3699 (b+c)*a/d H
+3777 b-a+c/d M
+3778 b-a-c+d E
+3779 a*b-c-d M
+3788 a*b-c-d M
+3789 b-a-c+d E
+3799 b-a+c/d M
+3888 b-a+c-d E
+3889 d-a-b/c M
+3899 b-a+c-d E
+3999 b-a-c/d M
+4444 (a+b*c)/d M
+4445 (a-b)*c+d H
+4446 (a*d-b)/c M
+4447 a+b+c-d E
+4448 a/b-c+d M
+4449 a-b-c+d E
+4455 (a-b)*c+d H
+4456 a*b-c-d M
+4457 (a-b)*d+c H
+4458 a+b+c-d E
+4459 a/b-c+d M
+4466 c/a*d-b H
+4467 c-a-b+d E
+4468 (a+c)*b/d H
+4469 a+b+c-d E
+4477 (c-a)*b-d H
+4478 c-a*b/d H
+4479 (a+c+d)/b H
+4488 c-(a+d)/b H
+4489 (a+b*d)/c H
+4555 b*c-a*d H
+4556 (d-a)*b-c H
+4558 b/a*d-c H
+4559 a+b+c-d E
+4566 (c-d)*a+b H
+4567 d-(a+c)/b H
+4568 c-a-b+d E
+4569 a*b-c-d M
+4577 c-a-b+d E
+4578 a*b-c-d M
+4588 c/a-b+d H
+4599 (c-d)*a+b H
+4666 (a*b+c)/d M
+4667 (b-a)*c-d H
+4668 b/c-a+d M
+4669 b-a-c+d E
+4677 b/(a-c)+d H
+4678 b/a*d-c H
+4679 (b-a)*c-d H
+4688 c-a*b/d H
+4689 c/a-b+d H
+4777 (a*b+c)/d M
+4778 b/c-a+d M
+4779 b-a-c+d E
+4788 c-a-b+d E
+4789 b/a*c-d H
+4799 c-(b+d)/a H
+4888 b-a+c/d M
+4889 b-a-c+d E
+4899 b-a+c/d M
+4999 b-a+c-d E
+5555 (a-b)*c+d H
+5556 a*d-b*c H
+5557 (a-b)*d+c H
+5558 (a-b)*d+c H
+5559 a/b-c+d M
+5566 (c-d)*a+b H
+5567 a*d-b*c H
+5568 (d-c)*a-b H
+5569 c-a-b+d E
+5577 (c-d)*a+b H
+5578 a*d-b*c H
+5579 (d-c)*a-b H
+5588 (c-d)*a+b H
+5589 a*d-b*c H
+5599 (c-d)*a+b H
+5666 (b-c)*d+a H
+5667 (b-c)*d+a H
+5668 (b-c)*d+a H
+5669 b/c-a+d M
+5677 (c-a)*b-d H
+5678 b/(a-c)+d H
+5679 c-a-b+d E
+5688 c-a-b+d E
+5689 c-(b+d)/a H
+5699 (c-d)*b+a H
+5777 (b-c)*d+a H
+5778 (b-c)*d+a H
+5779 b/c-a+d M
+5788 (c-d)*b+a H
+5789 c-a-b+d E
+5799 (c-d)*b+a H
+5888 (b-c)*d+a H
+5889 b/c-a+d M
+5899 c-a-b+d E
+5999 b-a+c/d M
+6666 (a*b-c)/d M
+6667 d-(a+b)/c M
+6678 (d-a)*b-c H
+6679 a/(b-d)+c M
+6688 a/(b-c)+d M
+6689 c-a-b+d E
+6699 c-a*b/d H
+6777 (a*b-c)/d M
+6778 b-(a+d)/c H
+6779 a*d-b*c H
+6789 c/a*d-b H
+6799 c-a-b+d E
+6888 (a*b-c)/d M
+6889 b/(a-c)+d H
+6899 b-(c+d)/a H
+6999 (a*b-c)/d M
+7777 a-(b+c)/d M
+7789 a-(b+d)/c H
+7799 (c-a)*b-d H
+7888 a-(b+c)/d M
+7899 b/(a-c)+d H
+7999 a-(b+c)/d M
