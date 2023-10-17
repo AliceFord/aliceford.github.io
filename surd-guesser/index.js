@@ -4,6 +4,8 @@ var timeTableTracked = [];
 
 updateTable("");
 
+var num;
+
 function updateTable(query) {
     num = parseFloat(query);
 
@@ -18,11 +20,13 @@ function updateTable(query) {
     const limit = Math.round(num ** 2);
     const lowerLimit = Math.round(num);
 
-    for (let a = lowerLimit; a <= limit; a++) {  // 
+    for (let a = lowerLimit; a <= limit; a++) {
         for (let b = 0; b <= a; b++) {
             outData[[a, b]] = Math.abs(Math.sqrt(a) + Math.sqrt(b) - num);
         }
     }
+
+    console.log(1);
 
     mainTable.innerHTML = "";
 
@@ -37,7 +41,7 @@ function updateTable(query) {
         return a[1] - b[1];
     });
 
-    sortable.forEach(function(item) {
+    sortable.slice(0,10).forEach(function(item) {
         let currentRow = mainTable.insertRow(-1);
 
         let a = item[0].split(",")[0];
