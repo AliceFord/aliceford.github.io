@@ -54,9 +54,9 @@ function updateTable(query) {
         }
 
         currentRow.insertCell(0).innerHTML = `<math display="block"><msqrt><mi>${a}</mi></msqrt> + <msqrt><mi>${b}</mi></msqrt></math>`
-        //currentRow.insertCell(0).innerHTML = `<span style='white-space: nowrap'>&radic;<span style='text-decoration:overline;'>${a}</span> + &radic;<span style='text-decoration:overline;'>${b}</span></span>`;
-        currentRow.insertCell(1).innerHTML = Math.round(item[1] * 1000000) / 1000000;
-        currentRow.insertCell(2).innerHTML = 100 * Math.round((item[1] / num) * 1000000) / 1000000 + "%";
+        currentRow.insertCell(1).innerHTML = Math.round((num - item[1]) * 1000000) / 1000000;
+        currentRow.insertCell(2).innerHTML = Math.round(item[1] * 1000000) / 1000000;
+        currentRow.insertCell(3).innerHTML = 100 * Math.round((item[1] / num) * 1000000) / 1000000 + "%";
     });
 }
 
