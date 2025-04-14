@@ -2,12 +2,12 @@
 <html lang="en"><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Vatsim Replay Mapper">
+    <meta name="description" content="Vatsim Sector Display">
     <meta name="author" content="Alice Ford">
 
-    <title>Vatsim Replay Mapper</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <title>Vatsim Sector Display</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
@@ -17,12 +17,14 @@
     <link href="main.css" rel="stylesheet">
   </head>
   <body>
-    <form action="/action_page.php">
-        <input type="file" id="myFile" name="filename" onchange="displayRoute();">
-      </form>
+    <form>
+        <input type="file" id="uksf" name="uksf-folder" onchange="displayRoute();" webkitdirectory>
+        <input type="text" id="sector" name="sector" placeholder="Sector Name" onchange="changeSector();">
+        <input type="file" id="nats-xml" name="nats-xml" onchange="loadNATSSector();">
+        <input type="text" id="nats-sector" name="nats-sector" placeholder="NATS Sector Name" onchange="changeNATSSector();">
+    </form>
     
     <div id="map"></div>
-    <script src="Leaflet.MultiOptionsPolyline.js"></script>
     <script src="main.js"></script>
   </body>
 </html>
