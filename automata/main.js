@@ -3,6 +3,8 @@ const ctx = canvas.getContext('2d');
 var Q = [];
 var t0 = 0;
 var delta = {};
+var hovering = false;
+var selectedState = null;
 
 class State {
     constructor(name, accepting, x, y) {
@@ -11,6 +13,7 @@ class State {
         this.x = x;
         this.y = y;
         this.velocity = {x: 0, y: 0};
+        this.colour = 'black';
     }
 }
 
@@ -18,7 +21,7 @@ function drawState(state) {
     ctx.beginPath();
     ctx.arc(state.x, state.y, 50, 0, 2 * Math.PI);
     ctx.lineWidth = 5;
-    ctx.strokeStyle = 'black';
+    ctx.strokeStyle = state.colour;
     ctx.stroke();
 }
 
@@ -161,7 +164,45 @@ function canvasClick(event) {
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    Q.push(new State("q" + Q.length, false, x, y));
+
+    if (hovering) {
+        if (selectedState) {
+            // add transition from selectedState to clicked state
+            for (const state of Q) {
+                if (state !== selectedState) {
+                    const dx2 = x - state.x;
+                    const dy2 = y - state.y;
+                    const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+                    if (dist2 < 50) {
+                        // const symbol = prompt("Enter transition symbol:");
+                        const symbol = '0'; // hardcoded for testing
+                        if (symbol) {
+                            if (!delta[selectedState.name]) {
+                                delta[selectedState.name] = [];
+                            }
+                            delta[selectedState.name].push([symbol, state.name]);
+                        }
+                        break;
+                    }
+                }
+            }
+            selectedState = null;
+        } else {
+            // find first (should be only) state being hovered over and set colour to blue
+            for (const state of Q) {
+                const dx = x - state.x;
+                const dy = y - state.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 50) {
+                    state.colour = 'blue';
+                    selectedState = state;
+                    break;
+                }
+            }
+        }
+    } else {
+        Q.push(new State("q" + Q.length, false, x, y));
+    }
 }
 
 function beginPhysics() {
@@ -235,6 +276,30 @@ function acceptedByAutomaton(str) {
     }
 
     return activeStates;
+}
+
+canvas.onmousemove = function(event) {
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+
+    var currentlyHovering = false;
+    for (const state of Q) {
+        const dx = mouseX - state.x;
+        const dy = mouseY - state.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 50 && !currentlyHovering) {
+            if (state !== selectedState) {
+                state.colour = 'yellow';
+            }
+            currentlyHovering = true;
+        } else {
+            if (state !== selectedState) {
+                state.colour = 'black';
+            }
+        }
+    }
+    hovering = currentlyHovering;
 }
 
 beginPhysics();
