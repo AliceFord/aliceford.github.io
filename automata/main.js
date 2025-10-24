@@ -23,6 +23,20 @@ function drawState(state) {
     ctx.lineWidth = 5;
     ctx.strokeStyle = state.colour;
     ctx.stroke();
+
+    if (state.accepting) {
+        ctx.beginPath();
+        ctx.arc(state.x, state.y, 40, 0, 2 * Math.PI);
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = state.colour;
+        ctx.stroke();
+    }
+
+    ctx.fillStyle = 'black';
+    ctx.font = '20px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(state.name, state.x, state.y);
 }
 
 function drawStates() {
@@ -42,10 +56,15 @@ function drawTransitions() {
             const r = 55;
 
             const angle = Math.atan2(toState.y - fromState.y, toState.x - fromState.x);
-            var fromX = fromState.x + (r+5) * Math.cos(angle);
-            var fromY = fromState.y + (r+5) * Math.sin(angle);
-            var toX = toState.x - (r+5) * Math.cos(angle);
-            var toY = toState.y - (r+5) * Math.sin(angle);
+            // offset along normal to the line so the segment is translated slightly
+            const offset = 6;
+            const nx = -Math.sin(angle); // normal x
+            const ny = Math.cos(angle);  // normal y
+
+            var fromX = fromState.x + (r+5) * Math.cos(angle) + nx * offset;
+            var fromY = fromState.y + (r+5) * Math.sin(angle) + ny * offset;
+            var toX = toState.x - (r+5) * Math.cos(angle) + nx * offset;
+            var toY = toState.y - (r+5) * Math.sin(angle) + ny * offset;
 
             ctx.beginPath();
             ctx.moveTo(fromX, fromY);
@@ -56,17 +75,17 @@ function drawTransitions() {
 
             // draw arrow head
 
-            fromX = fromState.x + r * Math.cos(angle);
-            fromY = fromState.y + r * Math.sin(angle);
-            toX = toState.x - r * Math.cos(angle);
-            toY = toState.y - r * Math.sin(angle);
+            fromX = fromState.x + r * Math.cos(angle) + nx * offset;
+            fromY = fromState.y + r * Math.sin(angle) + ny * offset;
+            toX = toState.x - r * Math.cos(angle) + nx * offset;
+            toY = toState.y - r * Math.sin(angle) + ny * offset;
 
             const arrowAngle = Math.atan2(toY - fromY, toX - fromX);
             const arrowLength = 10;
             ctx.beginPath();
             ctx.moveTo(toX, toY);
-            ctx.lineTo(toX - arrowLength * Math.cos(arrowAngle - Math.PI / 6), toY - arrowLength * Math.sin(angle - Math.PI / 6));
-            ctx.lineTo(toX - arrowLength * Math.cos(arrowAngle + Math.PI / 6), toY - arrowLength * Math.sin(angle + Math.PI / 6));
+            ctx.lineTo(toX - arrowLength * Math.cos(arrowAngle - Math.PI / 6), toY - arrowLength * Math.sin(arrowAngle - Math.PI / 6));
+            ctx.lineTo(toX - arrowLength * Math.cos(arrowAngle + Math.PI / 6), toY - arrowLength * Math.sin(arrowAngle + Math.PI / 6));
             ctx.lineTo(toX, toY);
             ctx.fillStyle = 'black';
             ctx.fill();
@@ -168,12 +187,14 @@ function canvasClick(event) {
     if (hovering) {
         if (selectedState) {
             // add transition from selectedState to clicked state
+            let found = false;
             for (const state of Q) {
                 if (state !== selectedState) {
                     const dx2 = x - state.x;
                     const dy2 = y - state.y;
                     const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
                     if (dist2 < 50) {
+                        found = true;
                         // const symbol = prompt("Enter transition symbol:");
                         const symbol = '0'; // hardcoded for testing
                         if (symbol) {
@@ -185,6 +206,9 @@ function canvasClick(event) {
                         break;
                     }
                 }
+            } 
+            if (!found) { // clicked on same state again, toggle accepting
+                selectedState.accepting = !selectedState.accepting;
             }
             selectedState = null;
         } else {
