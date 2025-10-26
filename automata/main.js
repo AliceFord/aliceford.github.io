@@ -1,10 +1,12 @@
 const canvas = document.getElementById('automata-canvas');
 const ctx = canvas.getContext('2d');
 var Q = [];
+var q0 = null;
 var t0 = 0;
 var delta = {};
 var hovering = false;
 var selectedState = null;
+var currentSolution = null;
 
 class State {
     constructor(name, accepting, x, y) {
@@ -49,7 +51,14 @@ function drawStates() {
 function drawTransitions() {
     for (const fromStateName in delta) {
         const fromState = Q.find(s => s.name === fromStateName);
+        var toStates = {}
         for (const [symbol, toStateName] of delta[fromStateName]) {
+            if (!toStates[toStateName]) {
+                toStates[toStateName] = [];
+            }
+            toStates[toStateName].push(symbol);
+        }
+        for (const toStateName in toStates) {
             const toState = Q.find(s => s.name === toStateName);
 
             // draw line. Note it should start and end at edge of circle
@@ -91,13 +100,40 @@ function drawTransitions() {
             ctx.fill();
 
             // // draw symbol label at midpoint
-            // const midX = (fromX + toX) / 2;
-            // const midY = (fromY + toY) / 2;
-            // ctx.fillStyle = 'red';
-            // ctx.font = '16px Arial';
-            // ctx.fillText(symbol, midX, midY);
+
+            const symbols = toStates[toStateName].join(',');
+            let midX = (fromX + toX) / 2 + nx * 15;
+            let midY = (fromY + toY) / 2 + ny * 15;
+            ctx.fillStyle = 'red';
+            ctx.font = '16px Arial';
+            ctx.fillText(symbols, midX, midY);
         }
     }
+}
+
+function drawQ0Transition() {
+    if (!q0) return;
+    // draw line from left side of canvas to q0
+    ctx.beginPath();
+    ctx.moveTo(q0.x - 100, q0.y);
+    ctx.lineTo(q0.x - 50, q0.y);
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // draw arrow head
+    const toX = q0.x - 50;
+    const toY = q0.y;
+    const arrowAngle = Math.PI * 2; // pointing right
+    const arrowLength = 10;
+    ctx.beginPath();
+    ctx.moveTo(toX, toY);
+    ctx.lineTo(toX - arrowLength * Math.cos(arrowAngle - Math.PI / 6), toY - arrowLength * Math.sin(arrowAngle - Math.PI / 6));
+    ctx.lineTo(toX - arrowLength * Math.cos(arrowAngle + Math.PI / 6), toY - arrowLength * Math.sin(arrowAngle + Math.PI / 6));
+    ctx.lineTo(toX, toY);
+    ctx.fillStyle = 'black';
+    ctx.fill();
+    
 }
 
 function applySpringForce(q0, q1, dt) {
@@ -172,6 +208,12 @@ function updatePhysics() {
         state.velocity.y *= dampingFactor;
     }
 
+    // force q0 to have velocity 0
+    if (q0) {
+        q0.velocity.x = 0;
+        q0.velocity.y = 0;
+    }
+
     // update positions
     for (const state of Q) {
         state.x += state.velocity.x * dt;
@@ -230,19 +272,20 @@ function canvasClick(event) {
 }
 
 function beginPhysics() {
-    Q.push(new State("q0", false, 100, 100));
-    Q.push(new State("q1", false, 350, 100));
-    Q.push(new State("q2", true, 600, 120));
+    setStateAsInitial(addNewState());
+    var q1 = addNewState();
+    var q2 = addNewState(true);
 
-    delta["q0"] = [['0', "q1"]];
-    delta["q1"] = [['1', "q2"], ['0', "q0"]];
-    delta["q2"] = [['0', "q0"]];
+    delta[q0.name] = [['0', q1.name]];
+    delta[q1.name] = [['1', q2.name], ['0', q0.name]];
+    delta[q2.name] = [['0', q0.name]];
 
     t0 = performance.now();
     setInterval(() => {
         updatePhysics();
         drawStates();
         drawTransitions();
+        drawQ0Transition();
     }, 1000 / 60);
 }
 
@@ -276,7 +319,7 @@ function epsilonClosure(statePaths) {
 
 function acceptedByAutomaton(str) {
     // start at initial state's epsilon-closure
-    let activeStates = epsilonClosure([{ state: Q[0], path: [Q[0].name] }]);
+    let activeStates = epsilonClosure([{ state: q0, path: [q0.name] }]);
 
     for (const symbol of str) {
         let newStates = [];
@@ -298,6 +341,9 @@ function acceptedByAutomaton(str) {
         // after consuming symbol, expand via epsilon again
         activeStates = epsilonClosure(newStates);
     }
+
+    // filter to accepting states
+    activeStates = activeStates.filter(({ state, path }) => state.accepting);
 
     return activeStates;
 }
@@ -324,6 +370,81 @@ canvas.onmousemove = function(event) {
         }
     }
     hovering = currentlyHovering;
+}
+
+function testString() {
+    const input = document.getElementById("string-to-test").value;
+    document.getElementById("string-to-test").value = "";
+    const result = acceptedByAutomaton(input);
+    if (result.length !== 0) {
+        document.getElementById("test-result").innerText = "Accepted";
+        document.getElementById("display-solution-button").disabled = false;
+        currentSolution = result[0]; // take first solution
+    } else {
+        document.getElementById("test-result").innerText = "Rejected";
+        document.getElementById("display-solution-button").disabled = true;
+        currentSolution = null;
+    }
+}
+
+function displaySolution() {
+    if (!currentSolution) {
+        console.error("No current solution to display.");
+        return;
+    }
+
+    // highlight states in solution path, one by one
+    let index = 0;
+    const interval = setInterval(() => {
+        if (index > 0) {
+            const prevStateName = currentSolution.path[index - 1];
+            const prevState = Q.find(s => s.name === prevStateName);
+            prevState.colour = 'black';
+        }
+        if (index < currentSolution.path.length) {
+            const stateName = currentSolution.path[index];
+            const state = Q.find(s => s.name === stateName);
+            state.colour = 'green';
+            index++;
+        } else {
+            clearInterval(interval);
+        }
+    }, 3000 / currentSolution.path.length);
+}
+
+function convertToAutomata() {
+    var regexInput = document.getElementById("regex-to-automata").value;
+
+    regexInput = "0"
+
+    // Clear existing automaton
+    Q = [];
+    delta = {};
+    selectedState = null;
+    currentSolution = null;
+    document.getElementById("test-result").innerText = "";
+    document.getElementById("display-solution-button").disabled = true;
+
+    // Parsing time!!
+    let state1 = addNewState();
+    setStateAsInitial(state1);
+    let state2 = addNewState(accepting=true);
+
+    delta[state1.name] = [['0', state2.name]];
+}
+
+function addNewState(accepting = false) {
+    let state = new State("q" + Q.length, accepting, Math.random() * (canvas.width - 100) + 50, Math.random() * (canvas.height - 100) + 50);
+    Q.push(state);
+    return state;
+}
+
+function setStateAsInitial(state) {
+    q0 = state;
+
+    // set to left hand side of the canvas in the middle vertically
+    state.x = 100;
+    state.y = canvas.height / 2;
 }
 
 beginPhysics();

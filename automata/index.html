@@ -12,6 +12,21 @@
   <body>
     <canvas id="automata-canvas" width="800" height="600" onclick="canvasClick(event)"></canvas>
 
+    <form onsubmit="testString(); return false;">
+      <label for="string-to-test">Input String:</label>
+      <input type="text" id="string-to-test" name="string-to-test" value="">
+      <button type="submit">Test String</button>
+      <br>
+      <label for="test-result">Result:</label>
+      <span id="test-result"></span>
+      <br>
+      <button id="display-solution-button" type="button" onclick="displaySolution()" disabled>Display Solution</button>
+      <br><br>
+      <label for="regex-to-automata">Regex to Automata:</label>
+      <input type="text" id="regex-to-automata" name="regex-to-automata" value="">
+      <button type="button" onclick="convertToAutomata()">Convert to Automata</button>
+    </form>
+
     <script src="main.js"></script>
   </body>
 </html>
