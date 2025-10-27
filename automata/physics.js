@@ -4,7 +4,7 @@ function applySpringForce(q1, q2, dt) {
     let r_ij_hat = {x: r_ij_vec.x / r_ij_mag, y: r_ij_vec.y / r_ij_mag};
 
     const k = 2; // spring constant
-    const F_ij_mag = k * (r_ij_mag - 200); // rest length of 200 pixels
+    const F_ij_mag = k * (r_ij_mag - 50); // rest length of 200 pixels
     const F_ij = {x: F_ij_mag * r_ij_hat.x, y: F_ij_mag * r_ij_hat.y};
 
     // // apply damping

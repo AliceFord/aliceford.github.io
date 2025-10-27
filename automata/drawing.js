@@ -1,14 +1,14 @@
 function drawState(state) {
     ctx.beginPath();
-    ctx.arc(state.x, state.y, 50, 0, 2 * Math.PI);
-    ctx.lineWidth = 5;
+    ctx.arc(state.x, state.y, 2, 0, 2 * Math.PI);
+    ctx.lineWidth = 4;
     ctx.strokeStyle = state.colour;
     ctx.stroke();
 
     if (state.accepting) {
         ctx.beginPath();
-        ctx.arc(state.x, state.y, 40, 0, 2 * Math.PI);
-        ctx.lineWidth = 3;
+        ctx.arc(state.x, state.y, 10, 0, 2 * Math.PI);
+        ctx.lineWidth = 2;
         ctx.strokeStyle = state.colour;
         ctx.stroke();
     }
@@ -41,11 +41,11 @@ function drawTransitions() {
             const toState = Q.find(s => s.name === toStateName);
 
             // draw line. Note it should start and end at edge of circle
-            const r = 55;
+            const r = 13;
 
             const angle = Math.atan2(toState.y - fromState.y, toState.x - fromState.x);
             // offset along normal to the line so the segment is translated slightly
-            const offset = 6;
+            const offset = 3;
             const nx = -Math.sin(angle); // normal x
             const ny = Math.cos(angle);  // normal y
 
@@ -69,7 +69,7 @@ function drawTransitions() {
             toY = toState.y - r * Math.sin(angle) + ny * offset;
 
             const arrowAngle = Math.atan2(toY - fromY, toX - fromX);
-            const arrowLength = 10;
+            const arrowLength = 6;
             ctx.beginPath();
             ctx.moveTo(toX, toY);
             ctx.lineTo(toX - arrowLength * Math.cos(arrowAngle - Math.PI / 6), toY - arrowLength * Math.sin(arrowAngle - Math.PI / 6));
@@ -95,16 +95,16 @@ function drawQ0Transition() {
     // draw line from left side of canvas to q0
     ctx.beginPath();
     ctx.moveTo(q0.x - 100, q0.y);
-    ctx.lineTo(q0.x - 50, q0.y);
+    ctx.lineTo(q0.x - 20, q0.y);
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 2;
     ctx.stroke();
 
     // draw arrow head
-    const toX = q0.x - 50;
+    const toX = q0.x - 15;
     const toY = q0.y;
     const arrowAngle = Math.PI * 2; // pointing right
-    const arrowLength = 10;
+    const arrowLength = 8;
     ctx.beginPath();
     ctx.moveTo(toX, toY);
     ctx.lineTo(toX - arrowLength * Math.cos(arrowAngle - Math.PI / 6), toY - arrowLength * Math.sin(arrowAngle - Math.PI / 6));

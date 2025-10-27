@@ -156,7 +156,7 @@ canvas.onmousemove = function(event) {
         const dx = mouseX - state.x;
         const dy = mouseY - state.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 50 && !currentlyHovering) {
+        if (dist < 15 && !currentlyHovering) {
             if (state !== selectedState) {
                 state.colour = 'yellow';
             }
@@ -311,6 +311,7 @@ function regexToTree(regex) {
     // Character by character parsing
     var tree = null;
     var justConcludedBracket = 0;
+    var firstSymbol = 2;
     let i = 0;
     while (i < regex.length) {
         const char = regex[i];
@@ -336,7 +337,7 @@ function regexToTree(regex) {
 
         else if (char === '*') {
             let starTree = new RegexNode('star')
-            if (tree.left === null || justConcludedBracket > 0) {
+            if (tree.left === null || (justConcludedBracket > 0 && firstSymbol > 0)) {
                 starTree.left = tree
                 tree = starTree
             } else {
@@ -387,6 +388,7 @@ function regexToTree(regex) {
                 newTree.right = dataAdded
                 tree = newTree
             }
+            firstSymbol--;
         }
 
         if (justConcludedBracket > 0) justConcludedBracket--;
@@ -417,7 +419,7 @@ function setStateAsInitial(state) {
     q0 = state;
 
     // set to left hand side of the canvas in the middle vertically
-    state.x = 100;
+    state.x = 70;
     state.y = canvas.height / 2;
 }
 
