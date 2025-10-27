@@ -13,11 +13,11 @@ function drawState(state) {
         ctx.stroke();
     }
 
-    ctx.fillStyle = 'black';
-    ctx.font = '20px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(state.name, state.x, state.y);
+    // ctx.fillStyle = 'black';
+    // ctx.font = '20px Arial';
+    // ctx.textAlign = 'center';
+    // ctx.textBaseline = 'middle';
+    // ctx.fillText(state.name, state.x, state.y);
 }
 
 function drawStates() {

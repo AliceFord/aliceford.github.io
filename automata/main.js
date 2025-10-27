@@ -213,8 +213,6 @@ function displaySolution() {
 function convertToAutomata() {
     var regexInput = document.getElementById("regex-to-automata").value;
 
-    regexInput = "0"
-
     // Clear existing automaton
     Q = [];
     delta = {};
@@ -224,11 +222,189 @@ function convertToAutomata() {
     document.getElementById("display-solution-button").disabled = true;
 
     // Parsing time!!
-    let state1 = addNewState();
-    setStateAsInitial(state1);
-    let state2 = addNewState(accepting=true);
+    // let state1 = addNewState();
+    // setStateAsInitial(state1);
+    // let state2 = addNewState(accepting=true);
+    let [newQ, newDelta, newQ0] = getAutomataFromTree(regexToTree(regexInput))
 
-    delta[state1.name] = [['0', state2.name]];
+    Q = newQ
+    delta = newDelta
+    setStateAsInitial(newQ0)
+
+    // delta[state1.name] = [['0', state2.name]];
+}
+
+function getAutomataFromTree(tree) {
+    // addAutomataFromTree(left branch), addAutomataFromTree(right branch), then tie them together. 
+    // function returns which nodes were added
+
+    console.log(tree)
+
+    if (tree.type == 'symbol') {
+        let newQ0 = getNewState(accepting=false)
+        let q1 = getNewState(accepting=true)
+        let newDelta = {}
+        newDelta[newQ0.name] = [[tree.value, q1.name]]
+        return [[newQ0, q1], newDelta, newQ0]
+    }
+
+    else if (tree.type == 'concat') {
+        let [leftQ, leftDelta, leftQ0] = getAutomataFromTree(tree.left)
+        let [rightQ, rightDelta, rightQ0] = getAutomataFromTree(tree.right)
+        // tie left's accepting states to right's initial state
+        for (const state of leftQ) {
+            if (state.accepting) {
+                if (!leftDelta[state.name]) {
+                    leftDelta[state.name] = [];
+                }
+                leftDelta[state.name].push(['ε', rightQ0.name]);
+                state.accepting = false; // no longer accepting
+            }
+        }
+        console.log(leftDelta)
+        return [[...leftQ, ...rightQ], {...leftDelta, ...rightDelta}, leftQ0]
+    }
+
+    else if (tree.type == 'union') {
+        let [leftQ, leftDelta, leftQ0] = getAutomataFromTree(tree.left)
+        let [rightQ, rightDelta, rightQ0] = getAutomataFromTree(tree.right)
+
+        let newQ0 = getNewState()
+        let newDelta = {}
+        newDelta[newQ0.name] = [['ε', leftQ0.name], ['ε', rightQ0.name]]
+
+        return [[...leftQ, ...rightQ, newQ0], {...leftDelta, ...rightDelta, ...newDelta}, newQ0]
+    }
+
+    else if (tree.type == 'star') {
+        let [leftQ, leftDelta, leftQ0] = getAutomataFromTree(tree.left)
+
+        let newQ0 = getNewState(accepted=true)
+        let newDelta = {}
+        newDelta[newQ0.name] = [['ε', leftQ0.name]]
+
+        for (const state of leftQ) {
+            if (state.accepting) {
+                if (!leftDelta[state.name]) {
+                    leftDelta[state.name] = [];
+                }
+                leftDelta[state.name].push(['ε', leftQ0.name]);
+            }
+        }
+
+        return [[...leftQ, newQ0], {...leftDelta, ...newDelta}, newQ0]
+    }
+}
+
+class RegexNode {
+    constructor(type, value=null) {
+        this.type = type; // 'symbol', 'concat', 'union', 'star'
+        this.value = value; // for 'symbol' type
+        this.left = null;
+        this.right = null;
+    }
+}
+
+function regexToTree(regex) {
+    // symbols: literals (a,b,c...), operators (*, +), parentheses
+
+    // Character by character parsing
+    var tree = null;
+    var justConcludedBracket = 0;
+    let i = 0;
+    while (i < regex.length) {
+        const char = regex[i];
+
+        let dataAdded = null;
+
+        if (char === '(') { 
+            // find close bracket
+            let openCount = 1;
+            let closeCount = 0;
+            for (var j = i+1; j < regex.length; j++) {
+                if (regex[j] === '(') openCount++;
+                else if (regex[j] === ')') closeCount++;
+                
+                if (openCount === closeCount) break;
+            }
+
+            dataAdded = regexToTree(regex.slice(i+1, j))
+            justConcludedBracket = 2
+
+            i = j;
+        }
+
+        else if (char === '*') {
+            let starTree = new RegexNode('star')
+            if (tree.left === null || justConcludedBracket > 0) {
+                starTree.left = tree
+                tree = starTree
+            } else {
+                starTree.left = tree.right
+                tree.right = starTree
+            }
+        }
+
+        else if (char === '+') {
+            let newTree = new RegexNode('union')
+            newTree.left = tree
+            
+            // now find next + in current scope, and set right subtree to that
+            let openCount = 1;
+            let closeCount = 0;
+            for (var j = i+1; j < regex.length; j++) {
+                if (regex[j] === '+') break;
+                else if (regex[j] === '(') openCount++;
+                else if (regex[j] === ')') closeCount++;
+
+                if (openCount === closeCount) break;
+            }
+
+            newTree.right = regexToTree(regex.slice(i+1, j))
+            tree = newTree
+
+            i = j;
+        }
+
+        else if (char === ' ') {}
+
+        else {
+            dataAdded = new RegexNode('symbol', value=char)
+        }
+
+        if (dataAdded != null) {
+            // (a). if current tree is empty, make node the tree
+            // (b). if current tree has left subtree not empty and right subtree empty, we must have a unison so insert into right (should be empty)
+            // (c). if not, then we have concat, insert concat node and put item on right
+
+            if (tree == null) {
+                tree = dataAdded
+            } else if (tree.left != null && tree.right == null && tree.type != 'star') {
+                tree.right = dataAdded
+            } else {
+                let newTree = new RegexNode('concat')
+                newTree.left = tree
+                newTree.right = dataAdded
+                tree = newTree
+            }
+        }
+
+        if (justConcludedBracket > 0) justConcludedBracket--;
+
+        i++;
+    }
+
+    return tree
+}
+
+function uuidv4() {
+  return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+    (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+  );
+}
+
+function getNewState(accepting = false) {
+    return new State("q" + uuidv4(), accepting, Math.random() * (canvas.width - 100) + 50, Math.random() * (canvas.height - 100) + 50);
 }
 
 function addNewState(accepting = false) {
